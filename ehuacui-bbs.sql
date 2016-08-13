@@ -6,7 +6,7 @@
 # https://github.com/sequelpro/sequelpro
 #
 # Host: 127.0.0.1 (MySQL 5.7.10)
-# Database: pybbs
+# Database: ehuacui-bbs
 # Generation Time: 2016-05-30 07:38:43 +0000
 # ************************************************************
 
@@ -20,12 +20,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table pybbs_collect
+# Dump of table ehuacui_collect
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_collect`;
+DROP TABLE IF EXISTS `ehuacui_collect`;
 
-CREATE TABLE `pybbs_collect` (
+CREATE TABLE `ehuacui_collect` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
@@ -35,12 +35,12 @@ CREATE TABLE `pybbs_collect` (
 
 
 
-# Dump of table pybbs_notification
+# Dump of table ehuacui_notification
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_notification`;
+DROP TABLE IF EXISTS `ehuacui_notification`;
 
-CREATE TABLE `pybbs_notification` (
+CREATE TABLE `ehuacui_notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `read` tinyint(1) NOT NULL COMMENT '是否已读：0默认 1已读',
   `author` varchar(50) NOT NULL DEFAULT '' COMMENT '发起通知用户昵称',
@@ -54,12 +54,12 @@ CREATE TABLE `pybbs_notification` (
 
 
 
-# Dump of table pybbs_permission
+# Dump of table ehuacui_permission
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_permission`;
+DROP TABLE IF EXISTS `ehuacui_permission`;
 
-CREATE TABLE `pybbs_permission` (
+CREATE TABLE `ehuacui_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL DEFAULT '' COMMENT '权限名称',
   `url` varchar(255) DEFAULT NULL COMMENT '授权路径',
@@ -68,10 +68,10 @@ CREATE TABLE `pybbs_permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-LOCK TABLES `pybbs_permission` WRITE;
-/*!40000 ALTER TABLE `pybbs_permission` DISABLE KEYS */;
+LOCK TABLES `ehuacui_permission` WRITE;
+/*!40000 ALTER TABLE `ehuacui_permission` DISABLE KEYS */;
 
-INSERT INTO `pybbs_permission` (`id`, `name`, `url`, `description`, `pid`)
+INSERT INTO `ehuacui_permission` (`id`, `name`, `url`, `description`, `pid`)
 VALUES
   (56, 'system', '', '系统设置', 0),
   (57, 'topic', '', '话题节点', 0),
@@ -108,16 +108,16 @@ VALUES
   (89, 'system:userblock', '/manage/userblock', '禁用用户', 56);
 
 
-/*!40000 ALTER TABLE `pybbs_permission` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehuacui_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table pybbs_reply
+# Dump of table ehuacui_reply
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_reply`;
+DROP TABLE IF EXISTS `ehuacui_reply`;
 
-CREATE TABLE `pybbs_reply` (
+CREATE TABLE `ehuacui_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tid` int(11) NOT NULL COMMENT '话题id',
   `content` longtext NOT NULL COMMENT '回复内容',
@@ -129,47 +129,47 @@ CREATE TABLE `pybbs_reply` (
 
 
 
-# Dump of table pybbs_role
+# Dump of table ehuacui_role
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_role`;
+DROP TABLE IF EXISTS `ehuacui_role`;
 
-CREATE TABLE `pybbs_role` (
+CREATE TABLE `ehuacui_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL DEFAULT '',
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-LOCK TABLES `pybbs_role` WRITE;
-/*!40000 ALTER TABLE `pybbs_role` DISABLE KEYS */;
+LOCK TABLES `ehuacui_role` WRITE;
+/*!40000 ALTER TABLE `ehuacui_role` DISABLE KEYS */;
 
-INSERT INTO `pybbs_role` (`id`, `name`, `description`)
+INSERT INTO `ehuacui_role` (`id`, `name`, `description`)
 VALUES
 	(1,'admin','超级管理员'),
 	(2,'banzhu','版主'),
 	(3,'user','普通用户');
 
-/*!40000 ALTER TABLE `pybbs_role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehuacui_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table pybbs_role_permission
+# Dump of table ehuacui_role_permission
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_role_permission`;
+DROP TABLE IF EXISTS `ehuacui_role_permission`;
 
-CREATE TABLE `pybbs_role_permission` (
+CREATE TABLE `ehuacui_role_permission` (
   `rid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   KEY `fk_role_permission` (`rid`),
   KEY `fk_permission_role` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-LOCK TABLES `pybbs_role_permission` WRITE;
-/*!40000 ALTER TABLE `pybbs_role_permission` DISABLE KEYS */;
+LOCK TABLES `ehuacui_role_permission` WRITE;
+/*!40000 ALTER TABLE `ehuacui_role_permission` DISABLE KEYS */;
 
-INSERT INTO `pybbs_role_permission` (`rid`, `pid`)
+INSERT INTO `ehuacui_role_permission` (`rid`, `pid`)
 VALUES
   (2, 71),
   (2, 75),
@@ -208,16 +208,16 @@ VALUES
   (1, 84),
   (1, 85);
 
-/*!40000 ALTER TABLE `pybbs_role_permission` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehuacui_role_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table pybbs_section
+# Dump of table ehuacui_section
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_section`;
+DROP TABLE IF EXISTS `ehuacui_section`;
 
-CREATE TABLE `pybbs_section` (
+CREATE TABLE `ehuacui_section` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL DEFAULT '' COMMENT '板块名称',
   `tab` varchar(45) NOT NULL DEFAULT '' COMMENT '板块标签',
@@ -228,10 +228,10 @@ CREATE TABLE `pybbs_section` (
   UNIQUE KEY `tabunique` (`tab`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-LOCK TABLES `pybbs_section` WRITE;
-/*!40000 ALTER TABLE `pybbs_section` DISABLE KEYS */;
+LOCK TABLES `ehuacui_section` WRITE;
+/*!40000 ALTER TABLE `ehuacui_section` DISABLE KEYS */;
 
-INSERT INTO `pybbs_section` (`id`, `name`, `tab`, `show_status`, `display_index`, `default_show`)
+INSERT INTO `ehuacui_section` (`id`, `name`, `tab`, `show_status`, `display_index`, `default_show`)
 VALUES
 	(1,'问答','ask',1,4,0),
 	(2,'博客','blog',1,5,0),
@@ -241,16 +241,16 @@ VALUES
 	(6,'招聘','job',0,99,0),
 	(7,'私活','privatejob',0,99,0);
 
-/*!40000 ALTER TABLE `pybbs_section` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehuacui_section` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table pybbs_topic
+# Dump of table ehuacui_topic
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_topic`;
+DROP TABLE IF EXISTS `ehuacui_topic`;
 
-CREATE TABLE `pybbs_topic` (
+CREATE TABLE `ehuacui_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tab` varchar(50) NOT NULL COMMENT '版块标识',
   `title` varchar(128) NOT NULL COMMENT '话题标题',
@@ -271,12 +271,12 @@ CREATE TABLE `pybbs_topic` (
 
 
 
-# Dump of table pybbs_topic_append
+# Dump of table ehuacui_topic_append
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_topic_append`;
+DROP TABLE IF EXISTS `ehuacui_topic_append`;
 
-CREATE TABLE `pybbs_topic_append` (
+CREATE TABLE `ehuacui_topic_append` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tid` int(11) NOT NULL,
   `content` longtext NOT NULL,
@@ -287,12 +287,12 @@ CREATE TABLE `pybbs_topic_append` (
 
 
 
-# Dump of table pybbs_user
+# Dump of table ehuacui_user
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_user`;
+DROP TABLE IF EXISTS `ehuacui_user`;
 
-CREATE TABLE `pybbs_user` (
+CREATE TABLE `ehuacui_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
   `score` int(11) NOT NULL COMMENT '积分',
@@ -312,26 +312,26 @@ CREATE TABLE `pybbs_user` (
   UNIQUE KEY `NICKNAME_UNIQUE` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-# Dump of table pybbs_user_role
+# Dump of table ehuacui_user_role
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `pybbs_user_role`;
+DROP TABLE IF EXISTS `ehuacui_user_role`;
 
-CREATE TABLE `pybbs_user_role` (
+CREATE TABLE `ehuacui_user_role` (
   `uid` int(11) NOT NULL,
   `rid` int(11) NOT NULL,
   KEY `fk_user_role` (`uid`),
   KEY `fk_role_user` (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-LOCK TABLES `pybbs_user_role` WRITE;
-/*!40000 ALTER TABLE `pybbs_user_role` DISABLE KEYS */;
+LOCK TABLES `ehuacui_user_role` WRITE;
+/*!40000 ALTER TABLE `ehuacui_user_role` DISABLE KEYS */;
 
-INSERT INTO `pybbs_user_role` (`uid`, `rid`)
+INSERT INTO `ehuacui_user_role` (`uid`, `rid`)
 VALUES
 	(1,1);
 
-/*!40000 ALTER TABLE `pybbs_user_role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehuacui_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
