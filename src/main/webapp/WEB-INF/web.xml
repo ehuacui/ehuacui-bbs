@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
 
-    <display-name>jfinal bbs V1.0.0</display-name>
+    <display-name>ehuacui bbs V1.0.0</display-name>
 
     <filter>
         <filter-name>jfinal</filter-name>
@@ -13,10 +13,22 @@
             <param-value>org.ehuacui.common.AppConfig</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>jfinal</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/page/401.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/page/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/page/500.html</location>
+    </error-page>
 
 </web-app>

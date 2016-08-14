@@ -17,14 +17,14 @@ public class Section extends BaseModel<Section> {
     public static final Section me = new Section();
 
     public List<Section> findAll() {
-        return super.find("select * from pybbs_section");
+        return super.find("select * from ehuacui_section");
     }
 
     public List<Section> findByShowStatus(boolean isshow) {
         Cache cache = Redis.use();
         List list = cache.get(CacheEnum.sections.name() + isshow);
         if(list == null) {
-            list = super.find("select * from pybbs_section where show_status = ? order by display_index", isshow);
+            list = super.find("select * from ehuacui_section where show_status = ? order by display_index", isshow);
             cache.set(CacheEnum.sections.name() + isshow, list);
         }
         return list;
@@ -35,7 +35,7 @@ public class Section extends BaseModel<Section> {
         Section section = cache.get(CacheEnum.section.name() + tab);
         if(section == null) {
             section = findFirst(
-                    "select * from pybbs_section where tab = ?",
+                    "select * from ehuacui_section where tab = ?",
                     tab
             );
             cache.set(CacheEnum.section.name() + tab, section);

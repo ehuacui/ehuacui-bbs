@@ -57,7 +57,7 @@ public class ApiController extends BaseController {
         Page<Topic> page = Topic.me.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
         //处理数据
         for(Topic topic: page.getList()) {
-            topic.remove("content", "isdelete", "show_status");
+            topic.remove("content", "is_delete", "show_status");
         }
         success(page);
     }
@@ -133,7 +133,7 @@ public class ApiController extends BaseController {
             Page<Reply> replyPage = Reply.me.pageByAuthor(1, 7, nickname);
             //处理数据
             for(Topic topic: topicPage.getList()) {
-                topic.remove("content", "isdelete", "show_status");
+                topic.remove("content", "is_delete", "show_status");
             }
             //渲染markdown
             if(mdrender) {
@@ -176,7 +176,7 @@ public class ApiController extends BaseController {
                     .set("good", false)
                     .set("show_status", true)
                     .set("reply_count", 0)
-                    .set("isdelete", false)
+                    .set("is_delete", false)
                     .save();
             //索引话题
             if (PropKit.getBoolean("solr.status")) {
@@ -298,7 +298,7 @@ public class ApiController extends BaseController {
                         .set("content", content)
                         .set("in_time", now)
                         .set("author", user.getStr("nickname"))
-                        .set("isdelete", false)
+                        .set("is_delete", false)
                         .save();
                 //topic reply_count++
                 topic.set("reply_count", topic.getInt("reply_count") + 1)

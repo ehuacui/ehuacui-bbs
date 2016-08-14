@@ -38,7 +38,7 @@ public class Topic extends BaseModel<Topic> {
                     pageNumber,
                     pageSize,
                     "select t.* ",
-                    "from pybbs_topic t where t.isdelete = ? and t.tab = ? order by t.top desc, t.last_reply_time desc",
+                    "from ehuacui_topic t where t.is_delete = ? and t.tab = ? order by t.top desc, t.last_reply_time desc",
                     false,
                     tab
             );
@@ -57,7 +57,7 @@ public class Topic extends BaseModel<Topic> {
                 pageNumber,
                 pageSize,
                 "select t.* ",
-                "from pybbs_topic t where t.isdelete = ? order by t.top desc, t.last_reply_time desc",
+                "from ehuacui_topic t where t.is_delete = ? order by t.top desc, t.last_reply_time desc",
                 false
         );
     }
@@ -74,7 +74,7 @@ public class Topic extends BaseModel<Topic> {
                 pageNumber,
                 pageSize,
                 "select t.* ",
-                "from pybbs_topic t where t.isdelete = ? and t.good = ? order by t.top desc, t.last_reply_time desc",
+                "from ehuacui_topic t where t.is_delete = ? and t.good = ? order by t.top desc, t.last_reply_time desc",
                 false,
                 true
         );
@@ -92,7 +92,7 @@ public class Topic extends BaseModel<Topic> {
                 pageNumber,
                 pageSize,
                 "select t.* ",
-                "from pybbs_topic t where t.isdelete = ? and t.id not in (select r.tid from pybbs_reply r) order by t.top desc, t.last_reply_time desc",
+                "from ehuacui_topic t where t.is_delete = ? and t.id not in (select r.tid from ehuacui_reply r) order by t.top desc, t.last_reply_time desc",
                 false
         );
     }
@@ -122,7 +122,7 @@ public class Topic extends BaseModel<Topic> {
      */
     public List<Topic> findOtherTopicByAuthor(Integer currentTopicId, String author, Integer limit) {
         return super.find(
-                "select * from pybbs_topic where isdelete = ? and id <> ? and author = ? order by in_time desc limit ?",
+                "select * from ehuacui_topic where is_delete = ? and id <> ? and author = ? order by in_time desc limit ?",
                 false,
                 currentTopicId,
                 author,
@@ -142,7 +142,7 @@ public class Topic extends BaseModel<Topic> {
                 pageNumber,
                 pageSize,
                 "select * ",
-                "from pybbs_topic where isdelete = ? and author = ? order by in_time desc",
+                "from ehuacui_topic where is_delete = ? and author = ? order by in_time desc",
                 false,
                 author
         );
@@ -153,7 +153,7 @@ public class Topic extends BaseModel<Topic> {
      * @return
      */
     public List<Topic> findAll() {
-        List<Topic> topics = super.find("select * from pybbs_topic where isdelete = ?", false);
+        List<Topic> topics = super.find("select * from ehuacui_topic where is_delete = ?", false);
         for(Topic topic: topics) {
             List<TopicAppend> topicAppends = TopicAppend.me.findByTid(topic.getInt("id"));
             topic.put("topicAppends", topicAppends);
@@ -166,7 +166,7 @@ public class Topic extends BaseModel<Topic> {
      * @param id
      */
     public void deleteById(Integer id) {
-        Db.update("update pybbs_topic set isdelete = ? where id = ?", true, id);
+        Db.update("update ehuacui_topic set is_delete = ? where id = ?", true, id);
     }
 
     /**

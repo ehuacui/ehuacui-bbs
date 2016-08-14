@@ -11,10 +11,10 @@
                 <#if userinfo??>
                     <span class="pull-right">
                         <@py.hasPermission name="reply:edit" id="${userinfo.id!}">
-                            <a href="/r/edit?id=${reply.id!}">编辑</a>
+                            <a href="/reply/edit?id=${reply.id!}">编辑</a>
                         </@py.hasPermission>
                         <@py.hasPermission name="reply:delete" id="${userinfo.id!}">
-                            <a href="javascript:if(confirm('确定要删除吗？'))location.href='/r/delete?id=${reply.id!}'">删除</a>
+                            <a href="javascript:if(confirm('确定要删除吗？'))location.href='/reply/delete?id=${reply.id!}'">删除</a>
                         </@py.hasPermission>
                         <a href="javascript:replythis('${reply.author}');">回复</a>
                     </span>

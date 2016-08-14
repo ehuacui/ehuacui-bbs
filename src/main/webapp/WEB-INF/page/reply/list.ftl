@@ -12,7 +12,7 @@
             </div>
             <div class="panel-body" style="padding: 0 15px;">
                 <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/r/list" urlParas="" showdivide="no"/>
+                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/reply/list" urlParas="" showdivide="no"/>
             </div>
         </div>
     </div>

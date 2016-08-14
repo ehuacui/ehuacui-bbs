@@ -33,7 +33,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/t", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/topic", viewPath = "WEB-INF/page")
 public class TopicController extends BaseController {
 
     /**
@@ -119,7 +119,7 @@ public class TopicController extends BaseController {
                         .set("good", false)
                         .set("show_status", true)
                         .set("reply_count", 0)
-                        .set("isdelete", false)
+                        .set("is_delete", false)
                         .save();
                 //索引话题
                 if (PropKit.getBoolean("solr.status")) {
@@ -131,7 +131,7 @@ public class TopicController extends BaseController {
                 //清理用户缓存
                 clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
                 clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-                redirect("/t/" + topic.getInt("id"));
+                redirect("/topic/" + topic.getInt("id"));
             }
         }
     }
@@ -168,7 +168,7 @@ public class TopicController extends BaseController {
             //清理缓存
             clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(topic.getStr("author"), "utf-8"));
             clearCache(Constants.CacheEnum.topic.name() + id);
-            redirect("/t/" + topic.getInt("id"));
+            redirect("/topic/" + topic.getInt("id"));
         }
     }
 
@@ -195,7 +195,7 @@ public class TopicController extends BaseController {
                 topicAppend.set("tid", tid)
                         .set("content", content)
                         .set("in_time", now)
-                        .set("isdelete", false)
+                        .set("is_delete", false)
                         .save();
                 //索引话题
                 if (PropKit.getBoolean("solr.status")) {
@@ -205,7 +205,7 @@ public class TopicController extends BaseController {
                 }
                 //清理缓存
                 clearCache(Constants.CacheEnum.topicappends.name() + tid);
-                redirect("/t/" + tid);
+                redirect("/topic/" + tid);
             }
         } else {
             renderText(Constants.OP_ERROR_MESSAGE);
@@ -241,7 +241,7 @@ public class TopicController extends BaseController {
             }
             //清理缓存
             clearCache(Constants.CacheEnum.topicappends.name() + topic.getInt("id"));
-            redirect("/t/" + topic.getInt("id"));
+            redirect("/topic/" + topic.getInt("id"));
         }
     }
 
@@ -293,7 +293,7 @@ public class TopicController extends BaseController {
         Integer id = getParaToInt("id");
         Topic.me.top(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
-        redirect("/t/" + id);
+        redirect("/topic/" + id);
     }
 
     /**
@@ -308,6 +308,6 @@ public class TopicController extends BaseController {
         Integer id = getParaToInt("id");
         Topic.me.good(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
-        redirect("/t/" + id);
+        redirect("/topic/" + id);
     }
 }

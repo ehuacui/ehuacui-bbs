@@ -22,7 +22,7 @@ public class Notification extends BaseModel<Notification> {
      */
     public int findNotReadCount(String author) {
         return super.find(
-                "select id from pybbs_notification where `read` = ? and target_author = ?",
+                "select id from ehuacui_notification where `read` = ? and target_author = ?",
                 false,
                 author
             ).size();
@@ -40,7 +40,7 @@ public class Notification extends BaseModel<Notification> {
                 pageNumber,
                 pageSize,
                 "select n.*, t.title ",
-                "from pybbs_notification n, pybbs_topic t where n.tid = t.id " +
+                "from ehuacui_notification n, ehuacui_topic t where n.tid = t.id " +
                         "and n.target_author = ? order by n.read, n.in_time desc",
                 author
             );
@@ -51,7 +51,7 @@ public class Notification extends BaseModel<Notification> {
      * @param author
      */
     public void makeUnreadToRead(String author) {
-        Db.update("update pybbs_notification set `read` = ? where `read` = ? and target_author = ?", true, false, author);
+        Db.update("update ehuacui_notification set `read` = ? where `read` = ? and target_author = ?", true, false, author);
     }
 
     /**

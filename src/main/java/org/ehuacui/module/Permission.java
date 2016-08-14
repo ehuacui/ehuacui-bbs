@@ -25,7 +25,7 @@ public class Permission extends BaseModel<Permission> {
      * @return
      */
     public List<Permission> findByPid(Integer pid) {
-        return super.find("select * from pybbs_permission where pid = ?", pid);
+        return super.find("select * from ehuacui_permission where pid = ?", pid);
     }
 
     /**
@@ -33,7 +33,7 @@ public class Permission extends BaseModel<Permission> {
      * @return
      */
     public List<Permission> findAll() {
-        return super.find("select * from pybbs_permission where pid <> 0");
+        return super.find("select * from ehuacui_permission where pid <> 0");
     }
 
     /**
@@ -53,7 +53,7 @@ public class Permission extends BaseModel<Permission> {
      * @param pid
      */
     public void deleteByPid(Integer pid) {
-        Db.update("delete from pybbs_permission where pid = ?", pid);
+        Db.update("delete from ehuacui_permission where pid = ?", pid);
     }
 
     /**
@@ -68,8 +68,8 @@ public class Permission extends BaseModel<Permission> {
         List<Permission> permissions = cache.get(CacheEnum.userpermissions.name() + userId);
         if(permissions == null) {
             permissions = super.find(
-                    "select p.* from pybbs_user u, pybbs_role r, pybbs_permission p, " +
-                            "pybbs_user_role ur, pybbs_role_permission rp where u.id = ur.uid " +
+                    "select p.* from ehuacui_user u, ehuacui_role r, ehuacui_permission p, " +
+                            "ehuacui_user_role ur, ehuacui_role_permission rp where u.id = ur.uid " +
                             "and r.id = ur.rid and r.id = rp.rid and p.id = rp.pid " +
                             "and u.id = ?",
                     userId

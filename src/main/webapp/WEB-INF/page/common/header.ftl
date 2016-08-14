@@ -31,7 +31,7 @@
                 </li>
                 <#if userinfo??>
                     <li class="hidden-md hidden-lg">
-                        <a href="/t/create">发布话题</a>
+                        <a href="/topic/create">发布话题</a>
                     </li>
                     <li <#if page_tab == 'notification'> class="active" </#if>>
                         <a href="/notification">通知 <span class="badge" id="badge">${notifications!}</span></a>
@@ -57,7 +57,7 @@
                                 <li><a href="/section/list">板块管理</a></li>
                             </@py.hasPermission>
                             <@py.hasPermission name="reply:list" id="${userinfo.id!}">
-                                <li><a href="/r/list">回复管理</a></li>
+                                <li><a href="/reply/list">回复管理</a></li>
                             </@py.hasPermission>
                             <@py.hasPermission name="system:users" id="${userinfo.id!}">
                                 <li role="separator" class="divider"></li>
@@ -73,10 +73,10 @@
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/solr">索引所有话题(慎用)</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:deleteallindex" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:delete:all:index" id="${userinfo.id!}">
                                 <li><a href="/deleteallindex">删除所有索引</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:clearcache" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:clear:cache" id="${userinfo.id!}">
                                 <li><a href="/clear">删除所有缓存</a></li>
                             </@py.hasPermission>
                         </ul>

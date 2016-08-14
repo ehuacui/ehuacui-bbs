@@ -28,7 +28,7 @@ public class User extends BaseModel<User> {
      * @return
      */
     public User findByThirdId(String thirdId) {
-        return super.findFirst("select * from pybbs_user where third_id = ?", thirdId);
+        return super.findFirst("select * from ehuacui_user where third_id = ?", thirdId);
     }
 
     /**
@@ -41,7 +41,7 @@ public class User extends BaseModel<User> {
         User user = cache.get(CacheEnum.useraccesstoken.name() + accessToken);
         if(user == null) {
             user = findFirst(
-                    "select * from pybbs_user where access_token = ? and expire_time > ?",
+                    "select * from ehuacui_user where access_token = ? and expire_time > ?",
                     accessToken,
                     new Date());
             cache.set(CacheEnum.useraccesstoken.name() + accessToken, user);
@@ -62,7 +62,7 @@ public class User extends BaseModel<User> {
         User user = cache.get(CacheEnum.usernickname.name() + URLEncoder.encode(nickname, "utf-8"));
         if(user == null) {
             user = findFirst(
-                    "select * from pybbs_user where nickname = ?",
+                    "select * from ehuacui_user where nickname = ?",
                     URLDecoder.decode(nickname, "utf-8")
             );
             cache.set(CacheEnum.usernickname.name() + URLEncoder.encode(nickname, "utf-8"), user);
@@ -77,7 +77,7 @@ public class User extends BaseModel<User> {
      * @return
      */
     public Page<User> page(Integer pageNumber, Integer pageSize) {
-        return super.paginate(pageNumber, pageSize, "select * ", "from pybbs_user order by in_time desc");
+        return super.paginate(pageNumber, pageSize, "select * ", "from ehuacui_user order by in_time desc");
     }
 
     /**
@@ -85,7 +85,7 @@ public class User extends BaseModel<User> {
      * @param nickname
      */
     public void deleteByNickname(String nickname) {
-        Db.update("delete from pybbs_user where nickname = ?", nickname);
+        Db.update("delete from ehuacui_user where nickname = ?", nickname);
     }
 
     /**
@@ -95,7 +95,7 @@ public class User extends BaseModel<User> {
      */
     public void correlationRole(Integer userId, Integer[] roles) {
         //先删除已经存在的关联
-        Db.update("delete from pybbs_user_role where uid = ?", userId);
+        Db.update("delete from ehuacui_user_role where uid = ?", userId);
         //建立新的关联关系
         if(roles != null) {
             for (Integer rid : roles) {
@@ -113,8 +113,8 @@ public class User extends BaseModel<User> {
      * @return
      */
     public List<User> findByPermissionId(Integer id) {
-        return super.find("select u.* from pybbs_user u, pybbs_user_role ur, pybbs_role r, pybbs_role_permission rp, " +
-                "pybbs_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id and p.id = ?",
+        return super.find("select u.* from ehuacui_user u, ehuacui_user_role ur, ehuacui_role r, ehuacui_role_permission rp, " +
+                "ehuacui_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id and p.id = ?",
                 id);
     }
 
@@ -124,7 +124,7 @@ public class User extends BaseModel<User> {
      */
     public List<User> scores(Integer limit) {
         return super.find(
-                "select user.*, role.description from pybbs_user user, pybbs_role role, pybbs_user_role ur " +
+                "select user.*, role.description from ehuacui_user user, ehuacui_role role, ehuacui_user_role ur " +
                         "where user.id = ur.uid and ur.rid = role.id order by score desc, in_time desc limit ?",
                 limit
         );

@@ -4,10 +4,10 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a href="/">主页</a> / <a href="/t/${topic.id}">${topic.title}</a> / 内容追加
+                <a href="/">主页</a> / <a href="/topic/${topic.id}">${topic.title}</a> / 内容追加
             </div>
             <div class="panel-body">
-                <form action="/t/append/${topic.id}" method="post" id="replyForm">
+                <form action="/topic/append/${topic.id}" method="post" id="replyForm">
                     <div class="form-group">
                         <textarea name="content" id="content" rows="15"
                                   class="form-control" placeholder="支持Markdown语法哦~"></textarea>

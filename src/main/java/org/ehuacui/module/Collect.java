@@ -26,7 +26,7 @@ public class Collect extends BaseModel<Collect> {
         Collect collect = cache.get(CacheEnum.collect.name() + tid + "_" + uid);
         if(collect == null) {
             collect = super.findFirst(
-                    "select * from pybbs_collect where tid = ? and uid = ?",
+                    "select * from ehuacui_collect where tid = ? and uid = ?",
                     tid,
                     uid
             );
@@ -45,7 +45,7 @@ public class Collect extends BaseModel<Collect> {
         Long count = cache.get(CacheEnum.collectcount.name() + tid);
         if(count == null) {
             count = super.findFirst(
-                    "select count(1) as count from pybbs_collect where tid = ?",
+                    "select count(1) as count from ehuacui_collect where tid = ?",
                     tid
             ).getLong("count");
             cache.set(CacheEnum.collectcount.name() + tid, count);
@@ -68,7 +68,7 @@ public class Collect extends BaseModel<Collect> {
                     pageNumber,
                     pageSize,
                     "select c.*, t.* ",
-                    " from pybbs_collect c left join pybbs_topic t on c.tid = t.id where t.isdelete = ? and c.uid = ?",
+                    " from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id where t.is_delete = ? and c.uid = ?",
                     false,
                     uid);
             cache.set(CacheEnum.collects.name() + uid, page);
@@ -86,7 +86,7 @@ public class Collect extends BaseModel<Collect> {
         Long count = cache.get(CacheEnum.usercollectcount.name() + uid);
         if(count == null) {
             count = super.findFirst(
-                    "select count(1) as count from pybbs_collect where uid = ?",
+                    "select count(1) as count from ehuacui_collect where uid = ?",
                     uid
             ).getLong("count");
             cache.set(CacheEnum.usercollectcount.name() + uid, count);

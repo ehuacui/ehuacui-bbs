@@ -15,14 +15,14 @@ public class RolePermission extends BaseModel<RolePermission> {
     public static final RolePermission me = new RolePermission();
 
     public List<RolePermission> findByRoleId(Integer roleId) {
-        return super.find("select * from pybbs_role_permission where rid = ?", roleId);
+        return super.find("select * from ehuacui_role_permission where rid = ?", roleId);
     }
 
     public void deleteByPermissionId(Integer permissionId) {
-        Db.update("delete from pybbs_role_permission where pid = ?", permissionId);
+        Db.update("delete from ehuacui_role_permission where pid = ?", permissionId);
     }
 
     public void deleteByRoleId(Integer roleId) {
-        Db.update("delete from pybbs_role_permission where rid = ?", roleId);
+        Db.update("delete from ehuacui_role_permission where rid = ?", roleId);
     }
 }

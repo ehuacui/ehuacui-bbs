@@ -27,7 +27,7 @@ public class TopicAppend extends BaseModel<TopicAppend> {
         List list = cache.get(CacheEnum.topicappends.name() + tid);
         if(list == null) {
             list = find(
-                    "select * from pybbs_topic_append where isdelete = ? and tid = ? order by in_time",
+                    "select * from ehuacui_topic_append where is_delete = ? and tid = ? order by in_time",
                     false,
                     tid);
             cache.set(CacheEnum.topicappends.name() + tid, list);
@@ -40,6 +40,6 @@ public class TopicAppend extends BaseModel<TopicAppend> {
      * @param tid
      */
     public void deleteByTid(Integer tid) {
-        Db.update("update pybbs_topic_append set isdelete = 1 where tid = ?", tid);
+        Db.update("update ehuacui_topic_append set is_delete = 1 where tid = ?", tid);
     }
 }

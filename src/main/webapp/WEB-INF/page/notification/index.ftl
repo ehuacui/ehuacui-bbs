@@ -23,7 +23,7 @@
                                     <#elseif notification.action == "AT">
                                         在回复
                                     </#if>
-                                    <a href="/t/${notification.tid!}">${notification.title!}</a>
+                                    <a href="/topic/${notification.tid!}">${notification.title!}</a>
                                     <#if notification.action == "REPLY">
                                         里回复了你
                                     <#elseif notification.action == "AT">

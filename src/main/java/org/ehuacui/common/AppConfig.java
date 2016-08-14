@@ -77,7 +77,7 @@ public class AppConfig extends JFinalConfig {
 
         AutoTableBindPlugin atbp = new AutoTableBindPlugin(
                 druidPlugin,
-                ParamNameStyles.lowerUnderlineModule("pybbs")
+                ParamNameStyles.lowerUnderlineModule("ehuacui")
         );
         atbp.addExcludeClasses(BaseModel.class);
         atbp.setShowSql(getPropertyToBoolean("showSql", true));

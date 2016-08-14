@@ -22,7 +22,7 @@ public class Reply extends BaseModel<Reply> {
      * @return
      */
     public int findCountByTid(Integer tid) {
-        return super.find("select id from pybbs_reply where isdelete = ? and tid = ?", false, tid).size();
+        return super.find("select id from ehuacui_reply where is_delete = ? and tid = ?", false, tid).size();
     }
 
     /**
@@ -36,7 +36,7 @@ public class Reply extends BaseModel<Reply> {
                 pageNumber,
                 pageSize,
                 "select r.author as replyAuthor, r.content, r.in_time, t.id as tid, t.author as topicAuthor, t.title ",
-                "from pybbs_reply r left join pybbs_topic t on r.tid = t.id order by r.in_time desc"
+                "from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id order by r.in_time desc"
             );
     }
 
@@ -53,7 +53,7 @@ public class Reply extends BaseModel<Reply> {
         return super.paginate(
                 pageNumber,
                 pageSize,
-                "select * ", "from pybbs_reply where isdelete = ? and tid = ?",
+                "select * ", "from ehuacui_reply where is_delete = ? and tid = ?",
                 false,
                 tid
         );
@@ -65,7 +65,7 @@ public class Reply extends BaseModel<Reply> {
      * @return
      */
     public List<Reply> findByTopicId(Integer topicId) {
-        return super.find("select * from pybbs_reply where isdelete = ? and tid = ?", false, topicId);
+        return super.find("select * from ehuacui_reply where is_delete = ? and tid = ?", false, topicId);
     }
 
     /**
@@ -80,7 +80,7 @@ public class Reply extends BaseModel<Reply> {
                 pageNumber,
                 pageSize,
                 "select t.title, t.author as topicAuthor, t.in_time, r.tid, r.content ",
-                "from pybbs_topic t, pybbs_reply r where t.isdelete = ? and r.isdelete = ? and t.id = r.tid and r.author = ? order by r.in_time desc",
+                "from ehuacui_topic t, ehuacui_reply r where t.is_delete = ? and r.is_delete = ? and t.id = r.tid and r.author = ? order by r.in_time desc",
                 false,
                 false,
                 author
@@ -92,10 +92,10 @@ public class Reply extends BaseModel<Reply> {
      * @param tid
      */
     public void deleteByTid(Integer tid) {
-        Db.update("update pybbs_reply set isdelete = ? where tid = ?", true, tid);
+        Db.update("update ehuacui_reply set is_delete = ? where tid = ?", true, tid);
     }
 
     public void deleteById(Integer id) {
-        Db.update("update pybbs_reply set isdelete = ? where id = ?", true, id);
+        Db.update("update ehuacui_reply set is_delete = ? where id = ?", true, id);
     }
 }

@@ -3,7 +3,7 @@
     <div class="panel-heading">作者其他话题</div>
     <div class="panel-body">
         <#list otherTopics as topic>
-            <p><a href="/t/${topic.id!}">${topic.title!}</a></p>
+            <p><a href="/topic/${topic.id!}">${topic.title!}</a></p>
             <#if topic_has_next>
                 <div class="divide pad-bot-10"></div>
             </#if>

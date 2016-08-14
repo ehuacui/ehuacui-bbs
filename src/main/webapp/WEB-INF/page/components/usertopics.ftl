@@ -3,7 +3,7 @@
     <div class="media">
         <div class="media-body">
             <div class="title">
-                <a href="/t/${topic.id!}">${topic.title!}</a>
+                <a href="/topic/${topic.id!}">${topic.title!}</a>
             </div>
             <p>
                 <a href="#">${topic.getNameByTab(topic.tab)}</a>

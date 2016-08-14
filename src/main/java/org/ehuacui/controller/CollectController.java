@@ -48,7 +48,7 @@ public class CollectController extends BaseController {
         clearCache(CacheEnum.collects.name() + user.getInt("id"));
         clearCache(CacheEnum.collectcount.name() + tid);
         clearCache(CacheEnum.collect.name() + tid + "_" + user.getInt("id"));
-        redirect("/t/" + tid);
+        redirect("/topic/" + tid);
     }
 
     /**
@@ -67,7 +67,7 @@ public class CollectController extends BaseController {
             clearCache(CacheEnum.collects.name() + user.getInt("id"));
             clearCache(CacheEnum.collectcount.name() + tid);
             clearCache(CacheEnum.collect.name() + tid + "_" + user.getInt("id"));
-            redirect("/t/" + tid);
+            redirect("/topic/" + tid);
         }
     }
 }

@@ -25,23 +25,23 @@
                             <#if userinfo??>
                                 <#if userinfo.id == authorinfo.id>
                                     <span>•</span>
-                                    <span><a href="/t/append/${topic.id}">内容追加</a></span>
+                                    <span><a href="/topic/append/${topic.id}">内容追加</a></span>
                                 </#if>
                                 <@py.hasPermission name="topic:edit" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="/t/edit?id=${topic.id}">编辑</a></span>
+                                    <span><a href="/topic/edit?id=${topic.id}">编辑</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:delete" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要删除吗？'))location.href='/t/delete?id=${topic.id}'">删除</a></span>
+                                    <span><a href="javascript:if(confirm('确定要删除吗？'))location.href='/topic/delete?id=${topic.id}'">删除</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:top" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic._top!}吗？'))location.href='/t/top?id=${topic.id}'">${topic._top!}</a></span>
+                                    <span><a href="javascript:if(confirm('确定要${topic._top!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic._top!}</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:good" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic._good!}吗？'))location.href='/t/good?id=${topic.id}'">${topic._good!}</a></span>
+                                    <span><a href="javascript:if(confirm('确定要${topic._good!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic._good!}</a></span>
                                 </@py.hasPermission>
                             </#if>
                         </p>
@@ -65,9 +65,9 @@
                         <span>•</span>
                         <span>${topicAppend.formatDate(topicAppend.in_time)}</span>
                         <#if userinfo??>
-                            <@py.hasPermission name="topic:appendedit" id="${userinfo.id!}">
+                            <@py.hasPermission name="topic:append:edit" id="${userinfo.id!}">
                                 <span>•</span>
-                                <a href="/t/appendedit?id=${topicAppend.id!}">编辑</a>
+                                <a href="/topic/appendedit?id=${topicAppend.id!}">编辑</a>
                             </@py.hasPermission>
                         </#if>
                     </p>
@@ -76,7 +76,7 @@
             </#list>
             <#if userinfo??>
                 <div class="panel-footer">
-                    <a href="javascript:window.open('http://service.weibo.com/share/share.php?url=${shareDomain!}/t/${topic.id!}?r=${userinfo.nickname!}&title=${topic.title!}', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');">分享微博</a>&nbsp;
+                    <a href="javascript:window.open('http://service.weibo.com/share/share.php?url=${shareDomain!}/topic/${topic.id!}?r=${userinfo.nickname!}&title=${topic.title!}', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');">分享微博</a>&nbsp;
                     <#if collect??>
                         <a href="/collect/delete?tid=${topic.id!}">取消收藏</a>
                     <#else>
@@ -97,7 +97,7 @@
                     <#include "../components/replies.ftl"/>
                     <@replies replies=page.getList()/>
                     <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/t/${topic.id}"/>
+                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/topic/${topic.id}"/>
                 </div>
             </div>
         </#if>
@@ -108,7 +108,7 @@
                     <a href="javascript:;" id="goTop" class="pull-right">回到顶部</a>
                 </div>
                 <div class="panel-body">
-                    <form action="/r/save" method="post" id="replyForm">
+                    <form action="/reply/save" method="post" id="replyForm">
                         <input type="hidden" value="${topic.id}" name="tid"/>
 
                         <div class="form-group">

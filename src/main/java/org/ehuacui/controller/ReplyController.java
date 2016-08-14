@@ -27,7 +27,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/r", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/reply", viewPath = "WEB-INF/page")
 public class ReplyController extends BaseController {
 
     @Before({
@@ -51,7 +51,7 @@ public class ReplyController extends BaseController {
                         .set("content", content)
                         .set("in_time", now)
                         .set("author", user.getStr("nickname"))
-                        .set("isdelete", false)
+                        .set("is_delete", false)
                         .save();
                 //topic reply_count++
                 Topic topic = Topic.me.findById(tid);
@@ -91,7 +91,7 @@ public class ReplyController extends BaseController {
                 clearCache(CacheEnum.topic.name() + tid);
                 clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
                 clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-                redirect("/t/" + tid + "#reply" + reply.getInt("id"));
+                redirect("/topic/" + tid + "#reply" + reply.getInt("id"));
             }
         }
     }
@@ -116,7 +116,7 @@ public class ReplyController extends BaseController {
         } else if(method.equals("POST")) {
             String content = getPara("content");
             reply.set("content", content).update();
-            redirect("/t/" + reply.getInt("tid") + "#reply" + id);
+            redirect("/topic/" + reply.getInt("tid") + "#reply" + id);
         }
     }
 
@@ -144,7 +144,7 @@ public class ReplyController extends BaseController {
         //清理缓存
 //        clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
 //        clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-        redirect("/t/" + topic.getInt("id"));
+        redirect("/topic/" + topic.getInt("id"));
     }
 
     /**

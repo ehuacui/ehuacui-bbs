@@ -4,10 +4,10 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a href="/">主页</a> / <a href="/t/${topic.id!}">${topic.title!}</a> / 编辑回复
+                <a href="/">主页</a> / <a href="/topic/${topic.id!}">${topic.title!}</a> / 编辑回复
             </div>
             <div class="panel-body">
-                <form action="/r/edit" method="post" id="replyForm">
+                <form action="/reply/edit" method="post" id="replyForm">
                     <input type="hidden" name="id" value="${reply.id!}"/>
 
                     <div class="form-group">
