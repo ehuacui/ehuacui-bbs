@@ -20,7 +20,7 @@ public class UserStatusInterceptor implements Interceptor {
         String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
 
         User user = User.me.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
-        if(user.getBoolean("isblock")) {
+        if(user.getBoolean("is_block")) {
             controller.renderText("您的账户已被禁用!");
         } else {
             inv.invoke();

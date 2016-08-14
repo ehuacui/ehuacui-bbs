@@ -25,7 +25,7 @@ public class ApiInterceptor implements Interceptor {
         if (StrUtil.notBlank(token)) {
             user = User.me.findByAccessToken(token);
             if (user != null) {
-                if (user.getBoolean("isblock")) {
+                if (user.getBoolean("is_block")) {
                     msg = "您的账户已被禁用";
                 } else {
                     flag = true;

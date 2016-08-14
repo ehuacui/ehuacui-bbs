@@ -86,7 +86,7 @@ public class ApiController extends BaseController {
             }
             //查询话题作者信息
             User authorinfo = User.me.findByNickname(topic.getStr("author"));
-            authorinfo.remove("receive_msg", "isblock", "third_access_token", "third_id", "channel", "expire_time",
+            authorinfo.remove("receive_msg", "is_block", "third_access_token", "third_id", "channel", "expire_time",
                     "access_token");
             //查询回复
             List<Reply> replies = Reply.me.findByTopicId(tid);
@@ -127,7 +127,7 @@ public class ApiController extends BaseController {
         } else {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("currentUser", currentUser);
-            currentUser.remove("receive_msg", "isblock", "third_access_token", "third_id", "channel", "expire_time",
+            currentUser.remove("receive_msg", "is_block", "third_access_token", "third_id", "channel", "expire_time",
                     "access_token");
             Page<Topic> topicPage = Topic.me.pageByAuthor(1, 7, nickname);
             Page<Reply> replyPage = Reply.me.pageByAuthor(1, 7, nickname);

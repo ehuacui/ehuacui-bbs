@@ -94,7 +94,7 @@ public class OauthController extends BaseController {
                         .set("access_token", access_token)
                         .set("score", 0)
                         .set("third_id", String.valueOf(githubId))
-                        .set("isblock", false)
+                        .set("is_block", false)
                         .set("channel", Constants.LoginEnum.Github.name())
                         .set("receive_msg", true);//邮箱接收社区消息
                 flag = false;
@@ -205,7 +205,7 @@ public class OauthController extends BaseController {
                         .set("access_token", access_token)
                         .set("score", 0)
                         .set("third_id", String.valueOf(weiboId))
-                        .set("isblock", false)
+                        .set("is_block", false)
                         .set("signature", description)
                         .set("channel", Constants.LoginEnum.Weibo.name())
                         .set("receive_msg", true);//邮箱接收社区消息

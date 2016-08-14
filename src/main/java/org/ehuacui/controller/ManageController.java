@@ -105,7 +105,7 @@ public class ManageController extends BaseController {
     public void userblock() {
         Integer id = getParaToInt("id");
         User user = User.me.findById(id);
-        user.set("isblock", !user.getBoolean("isblock")).update();
+        user.set("is_block", !user.getBoolean("is_block")).update();
         clearCache(CacheEnum.usernickname.name() + user.getStr("nickname"));
         clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
         redirect("/manage/users");

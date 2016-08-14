@@ -276,7 +276,7 @@ CREATE TABLE `ehuacui_user` (
   `in_time` datetime NOT NULL COMMENT '录入时间',
   `expire_time` datetime NOT NULL,
   `channel` varchar(50) NOT NULL,
-  `isblock` tinyint(1) NOT NULL COMMENT '禁用0默认 1禁用',
+  `is_block` tinyint(1) NOT NULL COMMENT '禁用0默认 1禁用',
   `third_access_token` varchar(50) DEFAULT NULL COMMENT '第三方登录获取的access_token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `NICKNAME_UNIQUE` (`nickname`)

@@ -2,9 +2,9 @@
 <div class="container">
     <br>
     <div class="text-center">
-        &copy;2016 Powered by <a href="http://bbs.tomoya.cn" target="_blank">朋也社区</a>
+        &copy;2016 Powered by PyBBS &amp; EHuaCui
         <a href="http://www.miitbeian.gov.cn/">${beianName!}</a>
-        ${tongjiJs!}
+        <script src="https://s4.cnzz.com/z_stat.php?id=1260134844&web_id=1260134844" language="JavaScript"></script>
     </div>
     <br>
 </div>
