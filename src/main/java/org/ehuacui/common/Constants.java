@@ -33,4 +33,11 @@ public class Constants {
         Weibo
     }
 
+    //通知事件
+    public enum NotificationEnum {
+        REPLY,
+        COLLECT,
+        AT
+    }
+
 }

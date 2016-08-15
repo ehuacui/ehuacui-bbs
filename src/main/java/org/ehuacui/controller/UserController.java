@@ -2,6 +2,7 @@ package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
 import org.ehuacui.module.Collect;
@@ -35,13 +36,13 @@ public class UserController extends BaseController {
         if (StrUtil.isBlank(nickname)) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
-            User currentUser = User.me.findByNickname(nickname);
+            User currentUser = ServiceHolder.userService.findByNickname(nickname);
             if(currentUser != null) {
-                Long collectCount = Collect.me.countByUid(currentUser.getInt("id"));
+                Long collectCount = ServiceHolder.collectService.countByUid(currentUser.getInt("id"));
                 currentUser.put("collectCount", collectCount);
 
-                Page<Topic> topicPage = Topic.me.pageByAuthor(1, 7, nickname);
-                Page<Reply> replyPage = Reply.me.pageByAuthor(1, 7, nickname);
+                Page<Topic> topicPage = ServiceHolder.topicService.pageByAuthor(1, 7, nickname);
+                Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
                 setAttr("topicPage", topicPage);
                 setAttr("replyPage", replyPage);
                 setAttr("pageTitle", currentUser.getStr("nickname") + " 个人主页");
@@ -58,12 +59,12 @@ public class UserController extends BaseController {
      */
     public void topics() throws UnsupportedEncodingException {
         String nickname = getPara(0);
-        User user = User.me.findByNickname(nickname);
+        User user = ServiceHolder.userService.findByNickname(nickname);
         if (user == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             setAttr("currentUser", user);
-            Page<Topic> page = Topic.me.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
+            Page<Topic> page = ServiceHolder.topicService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
             setAttr("page", page);
             render("user/topics.ftl");
         }
@@ -74,12 +75,12 @@ public class UserController extends BaseController {
      */
     public void replies() throws UnsupportedEncodingException {
         String nickname = getPara(0);
-        User user = User.me.findByNickname(nickname);
+        User user = ServiceHolder.userService.findByNickname(nickname);
         if (user == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             setAttr("currentUser", user);
-            Page<Reply> page = Reply.me.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
+            Page<Reply> page = ServiceHolder.replyService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
             setAttr("page", page);
             render("user/replies.ftl");
         }
@@ -90,12 +91,12 @@ public class UserController extends BaseController {
      */
     public void collects() throws UnsupportedEncodingException {
         String nickname = getPara(0);
-        User user = User.me.findByNickname(nickname);
+        User user = ServiceHolder.userService.findByNickname(nickname);
         if (user == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             setAttr("currentUser", user);
-            Page<Collect> page = Collect.me.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getInt("id"));
+            Page<Collect> page = ServiceHolder.collectService.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getInt("id"));
             setAttr("page", page);
             render("user/collects.ftl");
         }

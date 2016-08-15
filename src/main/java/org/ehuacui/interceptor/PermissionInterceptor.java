@@ -1,6 +1,7 @@
 package org.ehuacui.interceptor;
 
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.Permission;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
@@ -23,10 +24,10 @@ public class PermissionInterceptor implements Interceptor {
         HttpServletRequest request = controller.getRequest();
         String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
 
-        User user = User.me.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+        User user = ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
 
         //处理权限部分
-        Map<String, String> permissions = Permission.me.findPermissions(user.getInt("id"));
+        Map<String, String> permissions = ServiceHolder.permissionService.findPermissions(user.getInt("id"));
         //String path = request.getRequestURI();
         String path = request.getServletPath();
         if (permissions.containsValue(path)) {

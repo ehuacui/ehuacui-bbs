@@ -3,15 +3,17 @@ package org.ehuacui.controller;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.ApiInterceptor;
 import org.ehuacui.module.Collect;
 import org.ehuacui.module.Notification;
-import org.ehuacui.module.NotificationEnum;
 import org.ehuacui.module.Reply;
 import org.ehuacui.module.Section;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.TopicAppend;
 import org.ehuacui.module.User;
+import org.ehuacui.service.IUser;
+import org.ehuacui.service.impl.UserService;
 import org.ehuacui.utils.SolrUtil;
 import org.ehuacui.utils.StrUtil;
 import org.ehuacui.ext.route.ControllerBind;
@@ -43,7 +45,7 @@ public class ApiController extends BaseController {
      * 获取显示的版块列表
      */
     public void sections() {
-        success(Section.me.findByShowStatus(true));
+        success(ServiceHolder.sectionService.findByShowStatus(true));
     }
 
     /**
@@ -54,7 +56,7 @@ public class ApiController extends BaseController {
         if (StrUtil.isBlank(tab)) {
             tab = "all";
         }
-        Page<Topic> page = Topic.me.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
+        Page<Topic> page = ServiceHolder.topicService.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
         //处理数据
         for(Topic topic: page.getList()) {
             topic.remove("content", "is_delete", "show_status");
@@ -69,12 +71,12 @@ public class ApiController extends BaseController {
     public void topic() throws UnsupportedEncodingException {
         Integer tid = getParaToInt(0);
         Boolean mdrender = getParaToBoolean("mdrender", true);
-        Topic topic = Topic.me.findById(tid);
+        Topic topic = ServiceHolder.topicService.findById(tid);
         if (topic == null) {
             error("话题不存在");
         } else {
             //查询追加内容
-            List<TopicAppend> topicAppends = TopicAppend.me.findByTid(tid);
+            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
             //话题浏览次数+1
             topic.set("view", topic.getInt("view") + 1).update();
             //更新redis里的topic数据
@@ -85,13 +87,13 @@ public class ApiController extends BaseController {
                 cache.set(CacheEnum.topic.name() + tid, _topic);
             }
             //查询话题作者信息
-            User authorinfo = User.me.findByNickname(topic.getStr("author"));
+            User authorinfo = ServiceHolder.userService.findByNickname(topic.getStr("author"));
             authorinfo.remove("receive_msg", "is_block", "third_access_token", "third_id", "channel", "expire_time",
                     "access_token");
             //查询回复
-            List<Reply> replies = Reply.me.findByTopicId(tid);
+            List<Reply> replies = ServiceHolder.replyService.findByTopicId(tid);
             //查询收藏数量
-            long collectCount = Collect.me.countByTid(tid);
+            long collectCount = ServiceHolder.collectService.countByTid(tid);
 
             //渲染markdown
             if(mdrender) {
@@ -121,7 +123,8 @@ public class ApiController extends BaseController {
     public void user() throws UnsupportedEncodingException {
         String nickname = getPara(0);
         Boolean mdrender = getParaToBoolean("mdrender", true);
-        User currentUser = User.me.findByNickname(nickname);
+        IUser userService = new UserService();
+        User currentUser = userService.findByNickname(nickname);
         if (currentUser == null) {
             error("用户不存在");
         } else {
@@ -129,8 +132,8 @@ public class ApiController extends BaseController {
             map.put("currentUser", currentUser);
             currentUser.remove("receive_msg", "is_block", "third_access_token", "third_id", "channel", "expire_time",
                     "access_token");
-            Page<Topic> topicPage = Topic.me.pageByAuthor(1, 7, nickname);
-            Page<Reply> replyPage = Reply.me.pageByAuthor(1, 7, nickname);
+            Page<Topic> topicPage = ServiceHolder.topicService.pageByAuthor(1, 7, nickname);
+            Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
             //处理数据
             for(Topic topic: topicPage.getList()) {
                 topic.remove("content", "is_delete", "show_status");
@@ -197,13 +200,13 @@ public class ApiController extends BaseController {
         if(tid == null) {
             error("话题ID不能为空");
         } else {
-            Topic topic = Topic.me.findById(tid);
+            Topic topic = ServiceHolder.topicService.findById(tid);
             if(topic == null) {
                 error("收藏的话题不存在");
             } else {
                 Date now = new Date();
                 User user = getUserByToken();
-                Collect collect = Collect.me.findByTidAndUid(tid, user.getInt("id"));
+                Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
                 if(collect == null) {
                     collect = new Collect();
                     collect.set("tid", tid)
@@ -211,10 +214,10 @@ public class ApiController extends BaseController {
                             .set("in_time", now)
                             .save();
                     //创建通知
-                    Notification.me.sendNotification(
+                    ServiceHolder.notificationService.sendNotification(
                             user.getStr("nickname"),
                             topic.getStr("author"),
-                            NotificationEnum.COLLECT.name(),
+                            Constants.NotificationEnum.COLLECT.name(),
                             tid,
                             ""
                     );
@@ -239,7 +242,7 @@ public class ApiController extends BaseController {
     public void del_collect() {
         Integer tid = getParaToInt("tid");
         User user = getUserByToken();
-        Collect collect = Collect.me.findByTidAndUid(tid, user.getInt("id"));
+        Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
         if(collect == null) {
             error("请先收藏");
         } else {
@@ -261,11 +264,11 @@ public class ApiController extends BaseController {
         if(StrUtil.isBlank(nickname)) {
             error("用户昵称不能为空");
         } else {
-            User user = User.me.findByNickname(nickname);
+            User user = ServiceHolder.userService.findByNickname(nickname);
             if(user == null) {
                 error("无效用户");
             } else {
-                Page<Collect> page = Collect.me.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getInt("id"));
+                Page<Collect> page = ServiceHolder.collectService.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getInt("id"));
                 if(mdrender) {
                     for(Collect collect: page.getList()) {
                         collect.put("content", collect.marked(collect.get("content")));
@@ -287,7 +290,7 @@ public class ApiController extends BaseController {
         if(tid == null || StrUtil.isBlank(content)) {
             error("话题ID和回复内容都不能为空");
         } else {
-            Topic topic = Topic.me.findById(tid);
+            Topic topic = ServiceHolder.topicService.findById(tid);
             if(topic == null) {
                 error("话题不存在");
             } else {
@@ -309,10 +312,10 @@ public class ApiController extends BaseController {
                 //发送通知
                 //回复者与话题作者不是一个人的时候发送通知
                 if(!user.getStr("nickname").equals(topic.getStr("author"))) {
-                    Notification.me.sendNotification(
+                    ServiceHolder.notificationService.sendNotification(
                             user.getStr("nickname"),
                             topic.getStr("author"),
-                            NotificationEnum.REPLY.name(),
+                            Constants.NotificationEnum.REPLY.name(),
                             tid,
                             content
                     );
@@ -321,12 +324,12 @@ public class ApiController extends BaseController {
                 List<String> atUsers = StrUtil.fetchUsers(content);
                 for(String u: atUsers) {
                     if(!u.equals(topic.getStr("author"))) {
-                        User _user = User.me.findByNickname(u);
+                        User _user = ServiceHolder.userService.findByNickname(u);
                         if (_user != null) {
-                            Notification.me.sendNotification(
+                            ServiceHolder.notificationService.sendNotification(
                                     user.getStr("nickname"),
                                     _user.getStr("nickname"),
-                                    NotificationEnum.AT.name(),
+                                    Constants.NotificationEnum.AT.name(),
                                     tid,
                                     content
                             );
@@ -349,7 +352,7 @@ public class ApiController extends BaseController {
     @ActionKey("/api/notification/count")
     public void msgCount() {
         User user = getUserByToken();
-        int count = Notification.me.findNotReadCount(user.getStr("nickname"));
+        int count = ServiceHolder.notificationService.findNotReadCount(user.getStr("nickname"));
         success(count);
     }
 
@@ -361,14 +364,14 @@ public class ApiController extends BaseController {
     public void notifications() {
         Boolean mdrender = getParaToBoolean("mdrender", true);
         User user = getUserByToken();
-        Page<Notification> page = Notification.me.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getStr("nickname"));
+        Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getStr("nickname"));
         if(mdrender) {
             for (Notification notification : page.getList()) {
                 notification.set("content", notification.marked(notification.get("content")));
             }
         }
         //将通知都设置成已读的
-        Notification.me.makeUnreadToRead(user.getStr("nickname"));
+        ServiceHolder.notificationService.makeUnreadToRead(user.getStr("nickname"));
         success(page);
     }
 

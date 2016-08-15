@@ -1,5 +1,6 @@
 package org.ehuacui.template;
 
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.User;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -22,7 +23,7 @@ public class ScoresDirective implements TemplateDirectiveModel {
             throws TemplateException, IOException {
         List<User> scores = new ArrayList<User>();
         if(map.containsKey("limit") && map.get("limit") != null) {
-            scores = User.me.scores(Integer.parseInt(map.get("limit").toString()));
+            scores = ServiceHolder.userService.scores(Integer.parseInt(map.get("limit").toString()));
         }
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_23);
         environment.setVariable("list", builder.build().wrap(scores));

@@ -1,5 +1,6 @@
 package org.ehuacui.utils;
 
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.TopicAppend;
 import com.jfinal.kit.PropKit;
@@ -41,7 +42,7 @@ public class SolrUtil {
      */
     public boolean indexAll() {
         try {
-            List<Topic> topics = Topic.me.findAll();
+            List<Topic> topics = ServiceHolder.topicService.findAll();
             List<SolrInputDocument> docs = new ArrayList<>();
             for (Topic topic : topics) {
                 SolrInputDocument doc = new SolrInputDocument();
@@ -80,7 +81,7 @@ public class SolrUtil {
             doc.addField("id", topic.getInt("id"));
             doc.addField("title", topic.getStr("title"));
             doc.addField("in_time", topic.getDate("in_time"));
-            List<TopicAppend> topicAppends = TopicAppend.me.findByTid(topic.getInt("id"));
+            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getInt("id"));
             StringBuffer content = new StringBuffer(topic.getStr("content"));
             for(TopicAppend ta: topicAppends) {
                 content.append("\n")//换行

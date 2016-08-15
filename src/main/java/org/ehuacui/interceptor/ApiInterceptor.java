@@ -1,5 +1,6 @@
 package org.ehuacui.interceptor;
 
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.Result;
 import org.ehuacui.utils.StrUtil;
@@ -23,7 +24,7 @@ public class ApiInterceptor implements Interceptor {
         User user;
         String msg = "请先登录";
         if (StrUtil.notBlank(token)) {
-            user = User.me.findByAccessToken(token);
+            user = ServiceHolder.userService.findByAccessToken(token);
             if (user != null) {
                 if (user.getBoolean("is_block")) {
                     msg = "您的账户已被禁用";

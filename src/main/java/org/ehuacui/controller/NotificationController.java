@@ -1,6 +1,7 @@
 package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Notification;
 import org.ehuacui.module.User;
@@ -20,9 +21,9 @@ public class NotificationController extends BaseController {
     @Before(UserInterceptor.class)
     public void index() {
         User user = getUser();
-        Page<Notification> page = Notification.me.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getStr("nickname"));
+        Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getStr("nickname"));
         //将通知都设置成已读的
-        Notification.me.makeUnreadToRead(user.getStr("nickname"));
+        ServiceHolder.notificationService.makeUnreadToRead(user.getStr("nickname"));
         setAttr("page", page);
         render("notification/index.ftl");
     }

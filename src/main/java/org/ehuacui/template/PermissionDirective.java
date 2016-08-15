@@ -1,5 +1,6 @@
 package org.ehuacui.template;
 
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.Permission;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -24,7 +25,7 @@ public class PermissionDirective implements TemplateDirectiveModel {
 
         boolean b = false;
         if(map.containsKey("name") && map.get("name") != null && map.get("id") != null) {
-            Map<String, String> permissions = Permission.me.findPermissions(Integer.parseInt(map.get("id").toString()));
+            Map<String, String> permissions = ServiceHolder.permissionService.findPermissions(Integer.parseInt(map.get("id").toString()));
             b = permissions.containsKey(map.get("name").toString());
         }
 

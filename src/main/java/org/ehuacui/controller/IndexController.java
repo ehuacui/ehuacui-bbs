@@ -2,6 +2,7 @@ package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Section;
@@ -39,14 +40,14 @@ public class IndexController extends BaseController {
             tab = "all";
         }
         if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
-            Section section = Section.me.findByTab(tab);
+            Section section = ServiceHolder.sectionService.findByTab(tab);
             setAttr("sectionName", section.getStr("name"));
         } else {
             setAttr("sectionName", "版块");
         }
-        Page page = Topic.me.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
+        Page page = ServiceHolder.topicService.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
         setAttr("tab", tab);
-        setAttr("sections", Section.me.findByShowStatus(true));
+        setAttr("sections", ServiceHolder.sectionService.findByShowStatus(true));
         setAttr("page", page);
         render("index.ftl");
     }

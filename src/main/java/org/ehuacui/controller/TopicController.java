@@ -2,6 +2,7 @@ package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
@@ -41,7 +42,7 @@ public class TopicController extends BaseController {
      */
     public void index() throws UnsupportedEncodingException {
         Integer tid = getParaToInt(0);
-        Topic topic = Topic.me.findById(tid);
+        Topic topic = ServiceHolder.topicService.findById(tid);
         if (topic == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
@@ -49,7 +50,7 @@ public class TopicController extends BaseController {
             topic.put("_top", topic.getBoolean("top") ? "取消置顶" : "置顶");
             topic.put("_good", topic.getBoolean("good") ? "取消加精" : "加精");
             //查询追加内容
-            List<TopicAppend> topicAppends = TopicAppend.me.findByTid(tid);
+            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
             //话题浏览次数+1
             topic.set("view", topic.getInt("view") + 1).update();
             //更新redis里的topic数据
@@ -60,19 +61,19 @@ public class TopicController extends BaseController {
                 cache.set(Constants.CacheEnum.topic.name() + tid, _topic);
             }
             //查询版块名称
-            Section section = Section.me.findByTab(topic.getStr("tab"));
+            Section section = ServiceHolder.sectionService.findByTab(topic.getStr("tab"));
             //查询话题作者信息
-            User authorinfo = User.me.findByNickname(topic.getStr("author"));
+            User authorinfo = ServiceHolder.userService.findByNickname(topic.getStr("author"));
             //查询作者其他话题
-            List<Topic> otherTopics = Topic.me.findOtherTopicByAuthor(tid, topic.getStr("author"), 7);
+            List<Topic> otherTopics = ServiceHolder.topicService.findOtherTopicByAuthor(tid, topic.getStr("author"), 7);
             //查询回复
-            Page<Reply> page = Reply.me.page(getParaToInt("p"), PropKit.getInt("replyPageSize"), tid);
+            Page<Reply> page = ServiceHolder.replyService.page(getParaToInt("p"), PropKit.getInt("replyPageSize"), tid);
             //查询收藏数量
-            long collectCount = Collect.me.countByTid(tid);
+            long collectCount = ServiceHolder.collectService.countByTid(tid);
             //查询当前用户是否收藏了该话题
             User user = getUser();
             if (user != null) {
-                Collect collect = Collect.me.findByTidAndUid(tid, user.getInt("id"));
+                Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
                 setAttr("collect", collect);
             }
             setAttr("topic", topic);
@@ -96,7 +97,7 @@ public class TopicController extends BaseController {
     public void create() throws UnsupportedEncodingException {
         String method = getRequest().getMethod();
         if (method.equals("GET")) {
-            setAttr("sections", Section.me.findByShowStatus(true));
+            setAttr("sections", ServiceHolder.sectionService.findByShowStatus(true));
             render("topic/create.ftl");
         } else if (method.equals("POST")) {
             Date now = new Date();
@@ -146,10 +147,10 @@ public class TopicController extends BaseController {
     })
     public void edit() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
-        Topic topic = Topic.me.findById(id);
+        Topic topic = ServiceHolder.topicService.findById(id);
         String method = getRequest().getMethod();
         if (method.equals("GET")) {
-            setAttr("sections", Section.me.findByShowStatus(true));
+            setAttr("sections", ServiceHolder.sectionService.findByShowStatus(true));
             setAttr("topic", topic);
             render("topic/edit.ftl");
         } else if (method.equals("POST")) {
@@ -182,7 +183,7 @@ public class TopicController extends BaseController {
     public void append() {
         String method = getRequest().getMethod();
         Integer tid = getParaToInt(0);
-        Topic topic = Topic.me.findById(tid);
+        Topic topic = ServiceHolder.topicService.findById(tid);
         User user = getUser();
         if (topic.getStr("author").equals(user.getStr("nickname"))) {
             if (method.equals("GET")) {
@@ -223,8 +224,8 @@ public class TopicController extends BaseController {
     public void appendedit() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
-        TopicAppend topicAppend = TopicAppend.me.findById(id);
-        Topic topic = Topic.me.findById(topicAppend.getInt("tid"));
+        TopicAppend topicAppend = ServiceHolder.topicAppendService.findById(id);
+        Topic topic = ServiceHolder.topicService.findById(topicAppend.getInt("tid"));
         if (method.equals("GET")) {
             setAttr("topicAppend", topicAppend);
             setAttr("topic", topic);
@@ -259,16 +260,16 @@ public class TopicController extends BaseController {
         if (id == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
-            TopicAppend.me.deleteByTid(id);
-            Reply.me.deleteByTid(id);
-            Topic topic = Topic.me.findById(id);
+            ServiceHolder.topicAppendService.deleteByTid(id);
+            ServiceHolder.replyService.deleteByTid(id);
+            Topic topic = ServiceHolder.topicService.findById(id);
             //删除用户积分
-//            User user = User.me.findByNickname(topic.getStr("author"));
+//            User user = ServiceHolder.userService.findByNickname(topic.getStr("author"));
 //            Integer score = user.getInt("score");
 //            score = score > 7 ? score - 7 : 0;
 //            user.set("score", score).update();
             //删除话题（非物理删除）
-            Topic.me.deleteById(id);
+            ServiceHolder.topicService.deleteById(id);
             //删除索引
             if (PropKit.getBoolean("solr.status")) {
                 SolrUtil solrUtil = new SolrUtil();
@@ -291,7 +292,7 @@ public class TopicController extends BaseController {
     })
     public void top() {
         Integer id = getParaToInt("id");
-        Topic.me.top(id);
+        ServiceHolder.topicService.top(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
         redirect("/topic/" + id);
     }
@@ -306,7 +307,7 @@ public class TopicController extends BaseController {
     })
     public void good() {
         Integer id = getParaToInt("id");
-        Topic.me.good(id);
+        ServiceHolder.topicService.good(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
         redirect("/topic/" + id);
     }

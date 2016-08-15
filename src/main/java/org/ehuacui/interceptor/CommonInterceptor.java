@@ -1,6 +1,7 @@
 package org.ehuacui.interceptor;
 
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.Notification;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
@@ -27,11 +28,11 @@ public class CommonInterceptor implements Interceptor {
 
         if(StrUtil.notBlank(user_cookie)) {
             String user_access_token = StrUtil.getDecryptToken(user_cookie);
-            User user = User.me.findByAccessToken(user_access_token);
+            User user = ServiceHolder.userService.findByAccessToken(user_access_token);
             if(user == null) {
                 controller.removeCookie(Constants.USER_ACCESS_TOKEN, "/", PropKit.get("cookie.domain"));
             } else {
-                int count = Notification.me.findNotReadCount(user.getStr("nickname"));
+                int count = ServiceHolder.notificationService.findNotReadCount(user.getStr("nickname"));
                 controller.setAttr("notifications", count == 0 ? null : count);
                 controller.setAttr("userinfo", user);
             }

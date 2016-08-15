@@ -1,21 +1,21 @@
 package org.ehuacui.controller;
 
+import com.jfinal.aop.Before;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
 import org.ehuacui.module.Notification;
-import org.ehuacui.module.NotificationEnum;
 import org.ehuacui.module.Reply;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.route.ControllerBind;
-import com.jfinal.aop.Before;
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.tx.Tx;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,12 +36,12 @@ public class ReplyController extends BaseController {
     })
     public void save() throws UnsupportedEncodingException {
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             renderError(404);
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String content = getPara("content");
             Integer tid = getParaToInt("tid");
-            if(tid == null) {
+            if (tid == null) {
                 renderText(Constants.OP_ERROR_MESSAGE);
             } else {
                 Date now = new Date();
@@ -54,7 +54,7 @@ public class ReplyController extends BaseController {
                         .set("is_delete", false)
                         .save();
                 //topic reply_count++
-                Topic topic = Topic.me.findById(tid);
+                Topic topic = ServiceHolder.topicService.findById(tid);
                 topic.set("reply_count", topic.getInt("reply_count") + 1)
                         .set("last_reply_time", now)
                         .set("last_reply_author", user.getStr("nickname"))
@@ -62,25 +62,25 @@ public class ReplyController extends BaseController {
 //                user.set("score", user.getInt("score") + 5).update();
                 //发送通知
                 //回复者与话题作者不是一个人的时候发送通知
-                if(!user.getStr("nickname").equals(topic.getStr("author"))) {
-                    Notification.me.sendNotification(
+                if (!user.getStr("nickname").equals(topic.getStr("author"))) {
+                    ServiceHolder.notificationService.sendNotification(
                             user.getStr("nickname"),
                             topic.getStr("author"),
-                            NotificationEnum.REPLY.name(),
+                            Constants.NotificationEnum.REPLY.name(),
                             tid,
                             content
                     );
                 }
                 //检查回复内容里有没有at用户,有就发通知
                 List<String> atUsers = StrUtil.fetchUsers(content);
-                for(String u: atUsers) {
-                    if(!u.equals(topic.getStr("author"))) {
-                        User _user = User.me.findByNickname(u);
+                for (String u : atUsers) {
+                    if (!u.equals(topic.getStr("author"))) {
+                        User _user = ServiceHolder.userService.findByNickname(u);
                         if (_user != null) {
-                            Notification.me.sendNotification(
+                            ServiceHolder.notificationService.sendNotification(
                                     user.getStr("nickname"),
                                     _user.getStr("nickname"),
-                                    NotificationEnum.AT.name(),
+                                    Constants.NotificationEnum.AT.name(),
                                     tid,
                                     content
                             );
@@ -107,13 +107,13 @@ public class ReplyController extends BaseController {
     public void edit() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
-        Reply reply = Reply.me.findById(id);
-        if(method.equals("GET")) {
-            Topic topic = Topic.me.findById(reply.getInt("tid"));
+        Reply reply = ServiceHolder.replyService.findById(id);
+        if (method.equals("GET")) {
+            Topic topic = ServiceHolder.topicService.findById(reply.getInt("tid"));
             setAttr("reply", reply);
             setAttr("topic", topic);
             render("reply/edit.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String content = getPara("content");
             reply.set("content", content).update();
             redirect("/topic/" + reply.getInt("tid") + "#reply" + id);
@@ -131,13 +131,13 @@ public class ReplyController extends BaseController {
     })
     public void delete() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
-        Reply reply = Reply.me.findById(id);
-        Topic topic = Topic.me.findById(reply.getInt("tid"));
+        Reply reply = ServiceHolder.replyService.findById(id);
+        Topic topic = ServiceHolder.topicService.findById(reply.getInt("tid"));
         topic.set("reply_count", topic.getInt("reply_count") - 1).update();
-        Reply.me.deleteById(id);
+        ServiceHolder.replyService.deleteById(id);
         clearCache(CacheEnum.topic.name() + topic.getInt("id"));
         //用户积分计算
-//        User user = User.me.findByNickname(reply.getStr("author"));
+//        User user = ServiceHolder.userService.findByNickname(reply.getStr("author"));
 //        Integer score = user.getInt("score");
 //        score = score > 7 ? score - 7 : 0;
 //        user.set("score", score).update();
@@ -155,7 +155,7 @@ public class ReplyController extends BaseController {
             PermissionInterceptor.class
     })
     public void list() {
-        setAttr("page", Reply.me.findAll(getParaToInt("p", 1), PropKit.getInt("pageSize")));
+        setAttr("page", ServiceHolder.replyService.findAll(getParaToInt("p", 1), PropKit.getInt("pageSize")));
         render("reply/list.ftl");
     }
 }

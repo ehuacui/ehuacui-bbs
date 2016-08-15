@@ -5,6 +5,7 @@ import org.ehuacui.common.Constants.CacheEnum;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
+import org.ehuacui.service.ITopicAppend;
 
 import java.util.List;
 
@@ -15,31 +16,4 @@ import java.util.List;
  */
 public class TopicAppend extends BaseModel<TopicAppend> {
 
-    public static final TopicAppend me = new TopicAppend();
-
-    /**
-     * 查询话题追加内容
-     * @param tid
-     * @return
-     */
-    public List<TopicAppend> findByTid(Integer tid) {
-        Cache cache = Redis.use();
-        List list = cache.get(CacheEnum.topicappends.name() + tid);
-        if(list == null) {
-            list = find(
-                    "select * from ehuacui_topic_append where is_delete = ? and tid = ? order by in_time",
-                    false,
-                    tid);
-            cache.set(CacheEnum.topicappends.name() + tid, list);
-        }
-        return list;
-    }
-
-    /**
-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deleteByTid(Integer tid) {
-        Db.update("update ehuacui_topic_append set is_delete = 1 where tid = ?", tid);
-    }
 }

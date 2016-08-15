@@ -1,11 +1,13 @@
 package org.ehuacui.common;
 
-import org.ehuacui.module.Section;
-import org.ehuacui.module.User;
-import org.ehuacui.utils.MarkdownUtil;
-import org.ehuacui.utils.StrUtil;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Model;
+import org.ehuacui.module.Section;
+import org.ehuacui.module.User;
+import org.ehuacui.service.ISection;
+import org.ehuacui.service.IUser;
+import org.ehuacui.utils.MarkdownUtil;
+import org.ehuacui.utils.StrUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -48,7 +50,7 @@ public class BaseModel<T extends Model> extends Model<T> {
      * @return
      */
     public String getNameByTab(String tab) {
-        Section section = Section.me.findByTab(tab);
+        Section section = ServiceHolder.sectionService.findByTab(tab);
         if (section != null) {
             return section.getStr("name");
         }
@@ -62,7 +64,7 @@ public class BaseModel<T extends Model> extends Model<T> {
      * @return
      */
     public String getAvatarByNickname(String nickname) throws UnsupportedEncodingException {
-        User user = User.me.findByNickname(nickname);
+        User user = ServiceHolder.userService.findByNickname(nickname);
         if (user != null) {
             return user.getStr("avatar");
         }

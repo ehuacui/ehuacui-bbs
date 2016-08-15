@@ -2,6 +2,7 @@ package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.Role;
 import org.ehuacui.module.UserRole;
 import org.ehuacui.module.User;
@@ -86,7 +87,7 @@ public class OauthController extends BaseController {
 
             Date now = new Date();
             String access_token = StrUtil.getUUID();
-            User user = User.me.findByThirdId(String.valueOf(githubId));
+            User user = ServiceHolder.userService.findByThirdId(String.valueOf(githubId));
             boolean flag = true;
             if (user == null) {
                 user = new User();
@@ -109,7 +110,7 @@ public class OauthController extends BaseController {
             } else {
                 user.save();
                 //新注册的用户角色都是普通用户
-                Role role = Role.me.findByName("user");
+                Role role = ServiceHolder.roleService.findByName("user");
                 if(role != null) {
                     UserRole userRole = new UserRole();
                     userRole.set("uid", user.getInt("id"))
@@ -197,7 +198,7 @@ public class OauthController extends BaseController {
 
             Date now = new Date();
             String access_token = StrUtil.getUUID();
-            User user = User.me.findByThirdId(String.valueOf(weiboId));
+            User user = ServiceHolder.userService.findByThirdId(String.valueOf(weiboId));
             boolean flag = true;
             if (user == null) {
                 user = new User();
@@ -221,7 +222,7 @@ public class OauthController extends BaseController {
             } else {
                 user.save();
                 //新注册的用户角色都是普通用户
-                Role role = Role.me.findByName("user");
+                Role role = ServiceHolder.roleService.findByName("user");
                 if(role != null) {
                     UserRole userRole = new UserRole();
                     userRole.set("uid", user.getInt("id"))

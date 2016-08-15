@@ -49,7 +49,7 @@ public class BaseController extends Controller {
         String user_cookie = getCookie(Constants.USER_ACCESS_TOKEN);
 
         if(StrUtil.notBlank(user_cookie)) {
-            return User.me.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+            return ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
         }
         return null;
     }
@@ -57,7 +57,7 @@ public class BaseController extends Controller {
     public User getUserByToken() {
         String token = getPara("token");
         if(StrUtil.notBlank(token)) {
-            return User.me.findByAccessToken(token);
+            return ServiceHolder.userService.findByAccessToken(token);
         }
         return null;
     }

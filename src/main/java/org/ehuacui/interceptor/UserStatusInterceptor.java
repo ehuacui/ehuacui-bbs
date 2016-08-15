@@ -1,6 +1,7 @@
 package org.ehuacui.interceptor;
 
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
 import com.jfinal.aop.Interceptor;
@@ -19,7 +20,7 @@ public class UserStatusInterceptor implements Interceptor {
         Controller controller = inv.getController();
         String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
 
-        User user = User.me.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+        User user = ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
         if(user.getBoolean("is_block")) {
             controller.renderText("您的账户已被禁用!");
         } else {

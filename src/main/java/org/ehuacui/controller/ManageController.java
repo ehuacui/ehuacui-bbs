@@ -3,6 +3,7 @@ package org.ehuacui.controller;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Permission;
@@ -33,7 +34,7 @@ public class ManageController extends BaseController {
      * 用户列表
      */
     public void users() {
-        setAttr("page", User.me.page(getParaToInt("p", 1), PropKit.getInt("pageSize")));
+        setAttr("page", ServiceHolder.userService.page(getParaToInt("p", 1), PropKit.getInt("pageSize")));
         render("system/users.ftl");
     }
 
@@ -47,9 +48,9 @@ public class ManageController extends BaseController {
     public void deleteuser() {
         Integer id = getParaToInt("id");
         //删除与用户关联的角色
-        UserRole.me.deleteByUserId(id);
+        ServiceHolder.userRoleService.deleteByUserId(id);
         //删除用户
-        User.me.deleteById(id);
+        ServiceHolder.userService.deleteById(id);
         redirect("/manage/users");
     }
 
@@ -57,7 +58,7 @@ public class ManageController extends BaseController {
      * 角色列表
      */
     public void roles() {
-        setAttr("roles", Role.me.findAll());
+        setAttr("roles", ServiceHolder.roleService.findAll());
         render("system/roles.ftl");
     }
 
@@ -67,11 +68,11 @@ public class ManageController extends BaseController {
     public void permissions() {
         Integer pid = getParaToInt("pid");
         if(pid == null) {
-            setAttr("permissions", Permission.me.findByPid(0));
-            setAttr("childPermissions", Permission.me.findAll());
+            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
+            setAttr("childPermissions", ServiceHolder.permissionService.findAll());
         } else {
-            setAttr("permissions", Permission.me.findByPid(0));
-            setAttr("childPermissions", Permission.me.findByPid(pid));
+            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
+            setAttr("childPermissions", ServiceHolder.permissionService.findByPid(pid));
             setAttr("pid", pid);
         }
         render("system/permissions.ftl");
@@ -84,15 +85,15 @@ public class ManageController extends BaseController {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
         if(method.equals("GET")) {
-            setAttr("user", User.me.findById(id));
+            setAttr("user", ServiceHolder.userService.findById(id));
             //查询所有的权限
-            setAttr("roles", Role.me.findAll());
+            setAttr("roles", ServiceHolder.roleService.findAll());
             //当前用户已经存在的角色
-            setAttr("_roles", UserRole.me.findByUserId(id));
+            setAttr("_roles", ServiceHolder.userRoleService.findByUserId(id));
             render("system/userrole.ftl");
         } else if(method.equals("POST")) {
             Integer[] roles = getParaValuesToInt("roles");
-            User.me.correlationRole(id, roles);
+            ServiceHolder.userService.correlationRole(id, roles);
             //清除缓存
             clearCache(CacheEnum.userpermissions.name() + id);
             redirect("/manage/users");
@@ -104,7 +105,7 @@ public class ManageController extends BaseController {
      */
     public void userblock() {
         Integer id = getParaToInt("id");
-        User user = User.me.findById(id);
+        User user = ServiceHolder.userService.findById(id);
         user.set("is_block", !user.getBoolean("is_block")).update();
         clearCache(CacheEnum.usernickname.name() + user.getStr("nickname"));
         clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
@@ -118,7 +119,7 @@ public class ManageController extends BaseController {
         String method = getRequest().getMethod();
         if(method.equals("GET")) {
             //查询所有的权限
-            setAttr("permissions", Permission.me.findWithChild());
+            setAttr("permissions", ServiceHolder.permissionService.findWithChild());
             render("system/addrole.ftl");
         } else if(method.equals("POST")) {
             String name = getPara("name");
@@ -129,7 +130,7 @@ public class ManageController extends BaseController {
                     .save();
             //保存关联数据
             Integer[] roles = getParaValuesToInt("roles");
-            Role.me.correlationPermission(role.getInt("id"), roles);
+            ServiceHolder.roleService.correlationPermission(role.getInt("id"), roles);
             redirect("/manage/roles");
         }
     }
@@ -142,7 +143,7 @@ public class ManageController extends BaseController {
         String method = getRequest().getMethod();
         if(method.equals("GET")) {
             setAttr("pid", pid);
-            setAttr("permissions", Permission.me.findByPid(0));
+            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
             render("system/addpermission.ftl");
         } else if(method.equals("POST")) {
             String name = getPara("name");
@@ -169,22 +170,22 @@ public class ManageController extends BaseController {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
         if(method.equals("GET")) {
-            setAttr("_permission", Permission.me.findById(id));
-            setAttr("permissions", Permission.me.findByPid(0));
+            setAttr("_permission", ServiceHolder.permissionService.findById(id));
+            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
             render("system/editpermission.ftl");
         } else if(method.equals("POST")) {
             Integer pid = getParaToInt("pid");
             String name = getPara("name");
             String url = getPara("url");
             String description = getPara("description");
-            Permission permission = Permission.me.findById(id);
+            Permission permission = ServiceHolder.permissionService.findById(id);
             permission.set("name", name)
                     .set("url", url)
                     .set("description", description)
                     .set("pid", pid)
                     .update();
             //清除缓存
-            List<User> userpermissions = User.me.findByPermissionId(id);
+            List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
             for(User u: userpermissions) {
                 clearCache(CacheEnum.userpermissions.name() + u.getInt("id"));
             }
@@ -198,13 +199,13 @@ public class ManageController extends BaseController {
     public void rolepermission() {
         Integer roleId = getParaToInt("id");
         String method = getRequest().getMethod();
-        Role role = Role.me.findById(roleId);
+        Role role = ServiceHolder.roleService.findById(roleId);
         if(method.equals("GET")) {
             setAttr("role", role);
             //查询所有的权限
-            setAttr("permissions", Permission.me.findWithChild());
+            setAttr("permissions", ServiceHolder.permissionService.findWithChild());
             //查询角色已经配置的权限
-            setAttr("_permissions", RolePermission.me.findByRoleId(roleId));
+            setAttr("_permissions", ServiceHolder.rolePermissionService.findByRoleId(roleId));
             render("system/rolepermission.ftl");
         } else if(method.equals("POST")) {
             String name = getPara("name");
@@ -213,9 +214,9 @@ public class ManageController extends BaseController {
                     .set("description", description)
                     .update();
             Integer[] permissions = getParaValuesToInt("permissions");
-            Role.me.correlationPermission(roleId, permissions);
+            ServiceHolder.roleService.correlationPermission(roleId, permissions);
             //清除缓存
-            List<UserRole> userRoles = UserRole.me.findByRoleId(roleId);
+            List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(roleId);
             for(UserRole ur: userRoles) {
                 clearCache(CacheEnum.userpermissions.name() + ur.getInt("uid"));
             }
@@ -232,11 +233,11 @@ public class ManageController extends BaseController {
         if(id == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
-            UserRole.me.deleteByRoleId(id);
-            RolePermission.me.deleteByRoleId(id);
-            Role.me.deleteById(id);
+            ServiceHolder.userRoleService.deleteByRoleId(id);
+            ServiceHolder.rolePermissionService.deleteByRoleId(id);
+            ServiceHolder.roleService.deleteById(id);
             //清除缓存
-            List<UserRole> userRoles = UserRole.me.findByRoleId(id);
+            List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
             for(UserRole ur: userRoles) {
                 clearCache(CacheEnum.userpermissions.name() + ur.getInt("uid"));
             }
@@ -253,19 +254,19 @@ public class ManageController extends BaseController {
         if(id == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
-            Permission permission = Permission.me.findById(id);
+            Permission permission = ServiceHolder.permissionService.findById(id);
             Integer pid = permission.getInt("pid");
             String url = "/manage/permissions?pid=" + pid;
             //如果是父节点，就删除父节点下的所有权限
             if(pid == 0) {
-                Permission.me.deleteByPid(id);
+                ServiceHolder.permissionService.deleteByPid(id);
                 url = "/manage/permissions";
             }
             //删除与角色关联的数据
-            RolePermission.me.deleteByPermissionId(id);
-            Permission.me.deleteById(id);
+            ServiceHolder.rolePermissionService.deleteByPermissionId(id);
+            ServiceHolder.permissionService.deleteById(id);
             //清除缓存
-            List<User> userpermissions = User.me.findByPermissionId(id);
+            List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
             for(User u: userpermissions) {
                 clearCache(CacheEnum.userpermissions.name() + u.getInt("id"));
             }

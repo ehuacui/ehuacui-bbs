@@ -2,6 +2,7 @@ package org.ehuacui.controller;
 
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Section;
@@ -24,7 +25,7 @@ public class SectionController extends BaseController {
      * 板块列表
      */
     public void list() {
-        setAttr("sections", Section.me.findAll());
+        setAttr("sections", ServiceHolder.sectionService.findAll());
         render("section/list.ftl");
     }
 
@@ -33,7 +34,7 @@ public class SectionController extends BaseController {
      */
     public void changeshowstatus() {
         Integer id = getParaToInt("id");
-        Section section = Section.me.findById(id);
+        Section section = ServiceHolder.sectionService.findById(id);
         section.set("show_status", !section.getBoolean("show_status")).update();
         clearCache(Constants.CacheEnum.sections.name() + true);
         clearCache(Constants.CacheEnum.sections.name() + false);
@@ -46,7 +47,7 @@ public class SectionController extends BaseController {
      */
     public void delete() {
         Integer id = getParaToInt("id");
-        Section section = Section.me.findById(id);
+        Section section = ServiceHolder.sectionService.findById(id);
         section.delete();
         clearCache(Constants.CacheEnum.sections.name() + true);
         clearCache(Constants.CacheEnum.sections.name() + false);
@@ -82,7 +83,7 @@ public class SectionController extends BaseController {
     public void edit() {
         String method = getRequest().getMethod();
         Integer id = getParaToInt("id");
-        Section section = Section.me.findById(id);
+        Section section = ServiceHolder.sectionService.findById(id);
         if(method.equals("GET")) {
             setAttr("section", section);
             render("section/edit.ftl");

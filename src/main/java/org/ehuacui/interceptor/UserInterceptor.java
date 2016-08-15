@@ -1,6 +1,7 @@
 package org.ehuacui.interceptor;
 
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
 import com.jfinal.aop.Interceptor;
@@ -27,7 +28,7 @@ public class UserInterceptor implements Interceptor {
         boolean flag = false;
         User user = null;
         if(StrUtil.notBlank(user_cookie)) {
-            user = User.me.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+            user = ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
             if(user != null) {
                 flag = true;
             }

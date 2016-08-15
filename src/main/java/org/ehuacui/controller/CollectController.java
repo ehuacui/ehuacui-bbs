@@ -1,15 +1,16 @@
 package org.ehuacui.controller;
 
+import com.jfinal.aop.Before;
 import org.ehuacui.common.BaseController;
+import org.ehuacui.common.Constants;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Collect;
 import org.ehuacui.module.Notification;
-import org.ehuacui.module.NotificationEnum;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.User;
-import org.ehuacui.ext.route.ControllerBind;
-import com.jfinal.aop.Before;
 
 import java.util.Date;
 
@@ -34,12 +35,12 @@ public class CollectController extends BaseController {
                 .set("uid", user.getInt("id"))
                 .set("in_time", now)
                 .save();
-        Topic topic = Topic.me.findById(tid);
+        Topic topic = ServiceHolder.topicService.findById(tid);
         //创建通知
-        Notification.me.sendNotification(
+        ServiceHolder.notificationService.sendNotification(
                 user.getStr("nickname"),
                 topic.getStr("author"),
-                NotificationEnum.COLLECT.name(),
+                Constants.NotificationEnum.COLLECT.name(),
                 tid,
                 ""
         );
@@ -58,8 +59,8 @@ public class CollectController extends BaseController {
     public void delete() {
         Integer tid = getParaToInt("tid");
         User user = getUser();
-        Collect collect = Collect.me.findByTidAndUid(tid, user.getInt("id"));
-        if(collect == null) {
+        Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
+        if (collect == null) {
             renderText("请先收藏");
         } else {
             collect.delete();
