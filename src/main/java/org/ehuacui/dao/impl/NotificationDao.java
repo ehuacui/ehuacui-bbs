@@ -1,9 +1,9 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.dao.INotificationDao;
 import org.ehuacui.module.Notification;
-import org.ehuacui.service.INotificationService;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class NotificationService implements INotificationService {
+public class NotificationDao implements INotificationDao {
 
     private static final Notification me = new Notification();
 

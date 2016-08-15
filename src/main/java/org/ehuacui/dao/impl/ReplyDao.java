@@ -1,10 +1,10 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.dao.IReplyDao;
 import org.ehuacui.module.Reply;
-import org.ehuacui.service.IReplyService;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class ReplyService implements IReplyService {
+public class ReplyDao implements IReplyDao {
 
     private Reply me = new Reply();
 

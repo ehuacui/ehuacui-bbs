@@ -1,18 +1,18 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.dao.ICollectDao;
 import org.ehuacui.module.Collect;
-import org.ehuacui.service.ICollectService;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class CollectService implements ICollectService {
+public class CollectDao implements ICollectDao {
 
     private Collect me = new Collect();
 

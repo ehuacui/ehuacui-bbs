@@ -4,8 +4,6 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Model;
 import org.ehuacui.module.Section;
 import org.ehuacui.module.User;
-import org.ehuacui.service.ISection;
-import org.ehuacui.service.IUser;
 import org.ehuacui.utils.MarkdownUtil;
 import org.ehuacui.utils.StrUtil;
 import org.jsoup.Jsoup;

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface ITopic {
+public interface ITopicService {
 
     /**
      * 根据tab分页查询话题列表

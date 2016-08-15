@@ -1,14 +1,13 @@
-package org.ehuacui.service;
+package org.ehuacui.dao;
 
 import org.ehuacui.module.RolePermission;
-import org.ehuacui.service.impl.RolePermissionService;
 
 import java.util.List;
 
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IRolePermission {
+public interface IRolePermissionDao {
 
     List<RolePermission> findByRoleId(Integer roleId);
 

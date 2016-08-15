@@ -9,25 +9,25 @@ import org.ehuacui.service.impl.*;
  */
 public class ServiceHolder {
 
-    public final static ICollect collectService = new CollectService();
+    public final static ICollectService collectService = new CollectService();
 
-    public final static INotification notificationService = new NotificationService();
+    public final static INotificationService notificationService = new NotificationService();
 
-    public final static IPermission permissionService = new PermissionService();
+    public final static IPermissionService permissionService = new PermissionService();
 
-    public final static IReply replyService = new ReplyService();
+    public final static IReplyService replyService = new ReplyService();
 
-    public final static IRole roleService = new RoleService();
+    public final static IRoleService roleService = new RoleService();
 
-    public final static IRolePermission rolePermissionService = new RolePermissionService();
+    public final static IRolePermissionService rolePermissionService = new RolePermissionService();
 
-    public final static ISection sectionService = new SectionService();
+    public final static ISectionService sectionService = new SectionService();
 
-    public final static ITopic topicService = new TopicService();
+    public final static ITopicService topicService = new TopicService();
 
-    public final static ITopicAppend topicAppendService = new TopicAppendService();
+    public final static ITopicAppendService topicAppendService = new TopicAppendService();
 
-    public final static IUser userService = new UserService();
+    public final static IUserService userService = new UserService();
 
-    public final static IUserRole userRoleService = new UserRoleService();
+    public final static IUserRoleService userRoleService = new UserRoleService();
 }

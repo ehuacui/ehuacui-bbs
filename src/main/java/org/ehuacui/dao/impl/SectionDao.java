@@ -1,10 +1,10 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.dao.ISectionDao;
 import org.ehuacui.module.Section;
-import org.ehuacui.service.ISectionService;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class SectionService implements ISectionService {
+public class SectionDao implements ISectionDao {
 
     private Section me = new Section();
 

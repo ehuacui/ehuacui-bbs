@@ -1,11 +1,11 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.dao.IPermissionDao;
 import org.ehuacui.module.Permission;
-import org.ehuacui.service.IPermissionService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class PermissionService implements IPermissionService {
+public class PermissionDao implements IPermissionDao {
 
     private Permission me = new Permission();
 

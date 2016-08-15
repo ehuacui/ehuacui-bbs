@@ -1,10 +1,10 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.dao.IRoleDao;
 import org.ehuacui.module.Role;
 import org.ehuacui.module.RolePermission;
-import org.ehuacui.service.IRoleService;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class RoleService implements IRoleService {
+public class RoleDao implements IRoleDao {
 
     private Role me = new Role();
 

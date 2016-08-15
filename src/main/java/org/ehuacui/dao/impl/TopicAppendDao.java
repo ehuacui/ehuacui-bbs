@@ -1,11 +1,11 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.dao.ITopicAppendDao;
 import org.ehuacui.module.TopicAppend;
-import org.ehuacui.service.ITopicAppendService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class TopicAppendService implements ITopicAppendService {
+public class TopicAppendDao implements ITopicAppendDao {
 
     private TopicAppend me = new TopicAppend();
 

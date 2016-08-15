@@ -48,7 +48,7 @@ public class TopicController extends BaseController {
         } else {
             //处理一下置顶，精华
             topic.put("_top", topic.getBoolean("top") ? "取消置顶" : "置顶");
-            topic.put("_good", topic.getBoolean("good") ? "取消加精" : "加精");
+            topic.put("_good", topic.getBoolean("good") ? "取消精华" : "精华");
             //查询追加内容
             List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
             //话题浏览次数+1
@@ -298,7 +298,7 @@ public class TopicController extends BaseController {
     }
 
     /**
-     * 加精
+     * 设置精华
      */
     @Before({
             UserInterceptor.class,

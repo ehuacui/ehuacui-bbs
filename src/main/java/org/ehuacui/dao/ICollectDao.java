@@ -1,4 +1,4 @@
-package org.ehuacui.service;
+package org.ehuacui.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Collect;
@@ -6,7 +6,7 @@ import org.ehuacui.module.Collect;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface ICollect {
+public interface ICollectDao {
     /**
      * 根据话题id与用户查询收藏记录
      *

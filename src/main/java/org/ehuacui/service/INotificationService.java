@@ -7,7 +7,7 @@ import org.ehuacui.service.impl.NotificationService;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface INotification {
+public interface INotificationService {
     /**
      * 查询未读通知数量
      * @param author

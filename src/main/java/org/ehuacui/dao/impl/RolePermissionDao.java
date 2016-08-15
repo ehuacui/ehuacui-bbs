@@ -1,8 +1,8 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
+import org.ehuacui.dao.IRolePermissionDao;
 import org.ehuacui.module.RolePermission;
-import org.ehuacui.service.IRolePermissionService;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class RolePermissionService implements IRolePermissionService {
+public class RolePermissionDao implements IRolePermissionDao {
 
     private RolePermission me = new RolePermission();
 

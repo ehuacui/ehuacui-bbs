@@ -1,15 +1,14 @@
-package org.ehuacui.service;
+package org.ehuacui.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Role;
-import org.ehuacui.service.impl.RoleService;
 
 import java.util.List;
 
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IRole {
+public interface IRoleDao {
 
     Page<Role> page(Integer pageNumber, Integer pageSize);
 

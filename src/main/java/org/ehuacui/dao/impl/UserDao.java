@@ -1,13 +1,13 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.dao.IUserDao;
 import org.ehuacui.module.User;
 import org.ehuacui.module.UserRole;
-import org.ehuacui.service.IUserService;
 import org.ehuacui.utils.StrUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -21,7 +21,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class UserService implements IUserService {
+public class UserDao implements IUserDao {
     private User me = new User();
 
     @Override

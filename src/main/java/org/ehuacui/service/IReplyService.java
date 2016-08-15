@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IReply {
+public interface IReplyService {
 
     /**
      * 根据话题id查询回复数量

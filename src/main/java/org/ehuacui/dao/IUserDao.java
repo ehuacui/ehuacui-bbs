@@ -1,8 +1,7 @@
-package org.ehuacui.service;
+package org.ehuacui.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.User;
-import org.ehuacui.service.impl.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IUser {
+public interface IUserDao {
 
     User findById(Integer id);
 

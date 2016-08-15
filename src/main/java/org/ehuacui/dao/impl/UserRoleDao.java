@@ -1,8 +1,8 @@
-package org.ehuacui.service.impl;
+package org.ehuacui.dao.impl;
 
 import com.jfinal.plugin.activerecord.Db;
+import org.ehuacui.dao.IUserRoleDao;
 import org.ehuacui.module.UserRole;
-import org.ehuacui.service.IUserRoleService;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class UserRoleService implements IUserRoleService {
+public class UserRoleDao implements IUserRoleDao {
 
     private UserRole me = new UserRole();
 
