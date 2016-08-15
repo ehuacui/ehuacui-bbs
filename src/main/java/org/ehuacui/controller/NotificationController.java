@@ -1,14 +1,14 @@
 package org.ehuacui.controller;
 
-import org.ehuacui.common.BaseController;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.interceptor.UserInterceptor;
-import org.ehuacui.module.Notification;
-import org.ehuacui.module.User;
-import org.ehuacui.ext.route.ControllerBind;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.common.BaseController;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
+import org.ehuacui.interceptor.UserInterceptor;
+import org.ehuacui.module.Notification;
+import org.ehuacui.module.User;
 
 /**
  * Created by ehuacui.

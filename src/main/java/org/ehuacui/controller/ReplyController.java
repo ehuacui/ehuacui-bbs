@@ -11,7 +11,6 @@ import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
-import org.ehuacui.module.Notification;
 import org.ehuacui.module.Reply;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.User;

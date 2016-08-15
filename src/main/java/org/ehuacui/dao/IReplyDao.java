@@ -12,6 +12,7 @@ public interface IReplyDao {
 
     /**
      * 根据话题id查询回复数量
+     *
      * @param tid
      * @return
      */
@@ -19,6 +20,7 @@ public interface IReplyDao {
 
     /**
      * 分页查询全部话题
+     *
      * @param pageNumber
      * @param pageSize
      * @return
@@ -27,6 +29,7 @@ public interface IReplyDao {
 
     /**
      * 分页查询话题的回复列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param tid
@@ -36,6 +39,7 @@ public interface IReplyDao {
 
     /**
      * 根据话题id查询回复列表
+     *
      * @param topicId
      * @return
      */
@@ -43,6 +47,7 @@ public interface IReplyDao {
 
     /**
      * 分页查询回复列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -52,6 +57,7 @@ public interface IReplyDao {
 
     /**
      * 删除话题回复内容
+     *
      * @param tid
      */
     void deleteByTid(Integer tid);

@@ -1,7 +1,6 @@
 package org.ehuacui.service;
 
 import org.ehuacui.module.RolePermission;
-import org.ehuacui.service.impl.RolePermissionService;
 
 import java.util.List;
 

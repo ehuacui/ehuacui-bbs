@@ -15,8 +15,6 @@
  */
 package org.ehuacui.ext.plugin.tablebind;
 
-import org.ehuacui.ext.kit.ClassSearcher;
-import org.ehuacui.ext.kit.Reflect;
 import com.google.common.collect.Lists;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
@@ -25,6 +23,8 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.IDataSourceProvider;
 import com.jfinal.plugin.activerecord.Model;
+import org.ehuacui.ext.kit.ClassSearcher;
+import org.ehuacui.ext.kit.Reflect;
 
 import javax.sql.DataSource;
 import java.io.File;

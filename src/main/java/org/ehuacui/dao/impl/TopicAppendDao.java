@@ -25,6 +25,7 @@ public class TopicAppendDao implements ITopicAppendDao {
 
     /**
      * 查询话题追加内容
+     *
      * @param tid
      * @return
      */
@@ -32,7 +33,7 @@ public class TopicAppendDao implements ITopicAppendDao {
     public List<TopicAppend> findByTid(Integer tid) {
         Cache cache = Redis.use();
         List list = cache.get(CacheEnum.topicappends.name() + tid);
-        if(list == null) {
+        if (list == null) {
             list = me.find(
                     "select * from ehuacui_topic_append where is_delete = ? and tid = ? order by in_time",
                     false,
@@ -44,6 +45,7 @@ public class TopicAppendDao implements ITopicAppendDao {
 
     /**
      * 删除话题追加内容
+     *
      * @param tid
      */
     @Override

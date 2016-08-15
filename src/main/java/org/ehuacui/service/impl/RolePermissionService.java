@@ -1,6 +1,6 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.RolePermission;
 import org.ehuacui.service.IRolePermissionService;
 
@@ -13,20 +13,18 @@ import java.util.List;
  */
 public class RolePermissionService implements IRolePermissionService {
 
-    private RolePermission me = new RolePermission();
-
     @Override
     public List<RolePermission> findByRoleId(Integer roleId) {
-        return me.find("select * from ehuacui_role_permission where rid = ?", roleId);
+        return DaoHolder.rolePermissionDao.findByRoleId(roleId);
     }
 
     @Override
     public void deleteByPermissionId(Integer permissionId) {
-        Db.update("delete from ehuacui_role_permission where pid = ?", permissionId);
+        DaoHolder.rolePermissionDao.deleteByPermissionId(permissionId);
     }
 
     @Override
     public void deleteByRoleId(Integer roleId) {
-        Db.update("delete from ehuacui_role_permission where rid = ?", roleId);
+        DaoHolder.rolePermissionDao.deleteByRoleId(roleId);
     }
 }

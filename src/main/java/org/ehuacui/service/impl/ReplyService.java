@@ -1,8 +1,7 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.Reply;
 import org.ehuacui.service.IReplyService;
 
@@ -15,8 +14,6 @@ import java.util.List;
  */
 public class ReplyService implements IReplyService {
 
-    private Reply me = new Reply();
-
     /**
      * 根据话题id查询回复数量
      *
@@ -25,7 +22,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public int findCountByTid(Integer tid) {
-        return me.find("select id from ehuacui_reply where is_delete = ? and tid = ?", false, tid).size();
+        return DaoHolder.replyDao.findCountByTid(tid);
     }
 
     /**
@@ -37,12 +34,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> findAll(Integer pageNumber, Integer pageSize) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select r.author as replyAuthor, r.content, r.in_time, t.id as tid, t.author as topicAuthor, t.title ",
-                "from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id order by r.in_time desc"
-        );
+        return DaoHolder.replyDao.findAll(pageNumber, pageSize);
     }
 
     /**
@@ -55,15 +47,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> page(Integer pageNumber, Integer pageSize, Integer tid) {
-        int count = this.findCountByTid(tid);
-        pageNumber = pageNumber == null ? (count / PropKit.getInt("replyPageSize")) + 1 : pageNumber;
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select * ", "from ehuacui_reply where is_delete = ? and tid = ?",
-                false,
-                tid
-        );
+        return DaoHolder.replyDao.page(pageNumber, pageSize, tid);
     }
 
     /**
@@ -74,7 +58,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public List<Reply> findByTopicId(Integer topicId) {
-        return me.find("select * from ehuacui_reply where is_delete = ? and tid = ?", false, topicId);
+        return DaoHolder.replyDao.findByTopicId(topicId);
     }
 
     /**
@@ -87,15 +71,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select t.title, t.author as topicAuthor, t.in_time, r.tid, r.content ",
-                "from ehuacui_topic t, ehuacui_reply r where t.is_delete = ? and r.is_delete = ? and t.id = r.tid and r.author = ? order by r.in_time desc",
-                false,
-                false,
-                author
-        );
+        return DaoHolder.replyDao.pageByAuthor(pageNumber, pageSize, author);
     }
 
     /**
@@ -105,16 +81,16 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public void deleteByTid(Integer tid) {
-        Db.update("update ehuacui_reply set is_delete = ? where tid = ?", true, tid);
+        DaoHolder.replyDao.deleteByTid(tid);
     }
 
     @Override
     public void deleteById(Integer id) {
-        Db.update("update ehuacui_reply set is_delete = ? where id = ?", true, id);
+        DaoHolder.replyDao.deleteById(id);
     }
 
     @Override
     public Reply findById(Integer id) {
-        return me.findById(id);
+        return DaoHolder.replyDao.findById(id);
     }
 }

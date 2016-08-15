@@ -1,7 +1,6 @@
 package org.ehuacui.cron4j;
 
 import com.jfinal.kit.LogKit;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 

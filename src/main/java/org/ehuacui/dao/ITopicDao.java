@@ -57,6 +57,7 @@ public interface ITopicDao {
 
     /**
      * 查询当前作者其他话题
+     *
      * @param currentTopicId
      * @param author
      * @param limit
@@ -66,6 +67,7 @@ public interface ITopicDao {
 
     /**
      * 查询用户
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -75,24 +77,28 @@ public interface ITopicDao {
 
     /**
      * 查询所有话题
+     *
      * @return
      */
     List<Topic> findAll();
 
     /**
      * 删除话题
+     *
      * @param id
      */
     void deleteById(Integer id);
 
     /**
      * 话题置顶
+     *
      * @param id
      */
     void top(Integer id);
 
     /**
      * 话题加精
+     *
      * @param id
      */
     void good(Integer id);

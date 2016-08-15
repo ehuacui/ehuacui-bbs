@@ -26,9 +26,11 @@ public class EmailSender {
     private String charset = "utf-8";
 
     private static EmailSender emailSender;
-    static{
+
+    static {
         PropKit.use("config.properties");
     }
+
     public static EmailSender getInstance() {
         if (emailSender == null) {
             emailSender = new EmailSender();

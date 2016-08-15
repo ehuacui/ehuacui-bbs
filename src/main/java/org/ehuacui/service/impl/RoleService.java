@@ -1,9 +1,8 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.Role;
-import org.ehuacui.module.RolePermission;
 import org.ehuacui.service.IRoleService;
 
 import java.util.List;
@@ -15,11 +14,9 @@ import java.util.List;
  */
 public class RoleService implements IRoleService {
 
-    private Role me = new Role();
-
     @Override
     public Page<Role> page(Integer pageNumber, Integer pageSize) {
-        return me.paginate(pageNumber, pageSize, "select * ", "from ehuacui_role");
+        return DaoHolder.roleDao.page(pageNumber, pageSize);
     }
 
     /**
@@ -30,39 +27,26 @@ public class RoleService implements IRoleService {
      */
     @Override
     public Role findByName(String name) {
-        return me.findFirst(
-                "select * from ehuacui_role where name = ?",
-                name
-        );
+        return DaoHolder.roleDao.findByName(name);
     }
 
     @Override
     public List<Role> findAll() {
-        return me.find("select * from ehuacui_role");
+        return DaoHolder.roleDao.findAll();
     }
 
     @Override
     public void correlationPermission(Integer roleId, Integer[] permissionIds) {
-        //先删除已经存在的关联
-        Db.update("delete from ehuacui_role_permission where rid = ?", roleId);
-        //建立新的关联关系
-        if (permissionIds != null) {
-            for (Integer pid : permissionIds) {
-                RolePermission rolePermission = new RolePermission();
-                rolePermission.set("rid", roleId)
-                        .set("pid", pid)
-                        .save();
-            }
-        }
+        DaoHolder.roleDao.correlationPermission(roleId, permissionIds);
     }
 
     @Override
     public void deleteById(Integer id) {
-        me.deleteById(id);
+        DaoHolder.roleDao.deleteById(id);
     }
 
     @Override
     public Role findById(Integer id) {
-        return me.findById(id);
+        return DaoHolder.roleDao.findById(id);
     }
 }

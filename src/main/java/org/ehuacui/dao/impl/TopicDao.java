@@ -206,5 +206,5 @@ public class TopicDao implements ITopicDao {
         Topic topic = findById(id);
         topic.set("good", !topic.getBoolean("good")).update();
     }
-    
+
 }

@@ -2,7 +2,6 @@ package org.ehuacui.service;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Notification;
-import org.ehuacui.service.impl.NotificationService;
 
 /**
  * Created by jianwei.zhou on 2016/8/15.
@@ -10,6 +9,7 @@ import org.ehuacui.service.impl.NotificationService;
 public interface INotificationService {
     /**
      * 查询未读通知数量
+     *
      * @param author
      * @return
      */
@@ -17,6 +17,7 @@ public interface INotificationService {
 
     /**
      * 查询通知列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -26,19 +27,14 @@ public interface INotificationService {
 
     /**
      * 将用户的通知都置为已读
+     *
      * @param author
      */
     void makeUnreadToRead(String author);
 
     /**
-     * 判断通知是否已读
-     * @param notification
-     * @return
-     */
-    String isRead(Notification notification);
-
-    /**
      * 启动线程发送通知
+     *
      * @param author
      * @param targetAuthor
      * @param action

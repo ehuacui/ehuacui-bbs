@@ -1,13 +1,8 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.redis.Cache;
-import com.jfinal.plugin.redis.Redis;
-import org.ehuacui.common.Constants.CacheEnum;
-import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.Topic;
-import org.ehuacui.module.TopicAppend;
 import org.ehuacui.service.ITopicService;
 
 import java.util.List;
@@ -19,8 +14,6 @@ import java.util.List;
  */
 public class TopicService implements ITopicService {
 
-    private Topic me = new Topic();
-
     /**
      * 根据tab分页查询话题列表
      *
@@ -31,22 +24,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> page(Integer pageNumber, Integer pageSize, String tab) {
-        if (tab.equals("all")) {
-            return pageAll(pageNumber, pageSize);
-        } else if (tab.equals("good")) {
-            return pageGood(pageNumber, pageSize);
-        } else if (tab.equals("noreply")) {
-            return pageNoReply(pageNumber, pageSize);
-        } else {
-            return me.paginate(
-                    pageNumber,
-                    pageSize,
-                    "select t.* ",
-                    "from ehuacui_topic t where t.is_delete = ? and t.tab = ? order by t.top desc, t.last_reply_time desc",
-                    false,
-                    tab
-            );
-        }
+        return DaoHolder.topicDao.page(pageNumber, pageSize, tab);
     }
 
     /**
@@ -58,13 +36,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageAll(Integer pageNumber, Integer pageSize) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select t.* ",
-                "from ehuacui_topic t where t.is_delete = ? order by t.top desc, t.last_reply_time desc",
-                false
-        );
+        return DaoHolder.topicDao.pageAll(pageNumber, pageSize);
     }
 
     /**
@@ -76,14 +48,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageGood(Integer pageNumber, Integer pageSize) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select t.* ",
-                "from ehuacui_topic t where t.is_delete = ? and t.good = ? order by t.top desc, t.last_reply_time desc",
-                false,
-                true
-        );
+        return DaoHolder.topicDao.pageGood(pageNumber, pageSize);
     }
 
     /**
@@ -95,13 +60,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageNoReply(Integer pageNumber, Integer pageSize) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select t.* ",
-                "from ehuacui_topic t where t.is_delete = ? and t.id not in (select r.tid from ehuacui_reply r) order by t.top desc, t.last_reply_time desc",
-                false
-        );
+        return DaoHolder.topicDao.pageNoReply(pageSize, pageSize);
     }
 
     /**
@@ -112,13 +71,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Topic findById(Integer id) {
-        Cache cache = Redis.use();
-        Topic topic = cache.get(CacheEnum.topic.name() + id);
-        if (topic == null) {
-            topic = me.findById(id);
-            cache.set(CacheEnum.topic.name() + id, topic);
-        }
-        return topic;
+        return DaoHolder.topicDao.findById(id);
     }
 
     /**
@@ -131,13 +84,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public List<Topic> findOtherTopicByAuthor(Integer currentTopicId, String author, Integer limit) {
-        return me.find(
-                "select * from ehuacui_topic where is_delete = ? and id <> ? and author = ? order by in_time desc limit ?",
-                false,
-                currentTopicId,
-                author,
-                limit
-        );
+        return DaoHolder.topicDao.findOtherTopicByAuthor(currentTopicId, author, limit);
     }
 
     /**
@@ -150,14 +97,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select * ",
-                "from ehuacui_topic where is_delete = ? and author = ? order by in_time desc",
-                false,
-                author
-        );
+        return DaoHolder.topicDao.pageByAuthor(pageNumber, pageSize, author);
     }
 
     /**
@@ -167,12 +107,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public List<Topic> findAll() {
-        List<Topic> topics = me.find("select * from ehuacui_topic where is_delete = ?", false);
-        for (Topic topic : topics) {
-            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getInt("id"));
-            topic.put("topicAppends", topicAppends);
-        }
-        return topics;
+        return DaoHolder.topicDao.findAll();
     }
 
     /**
@@ -182,7 +117,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void deleteById(Integer id) {
-        Db.update("update ehuacui_topic set is_delete = ? where id = ?", true, id);
+        DaoHolder.topicDao.deleteById(id);
     }
 
     /**
@@ -192,8 +127,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void top(Integer id) {
-        Topic topic = findById(id);
-        topic.set("top", !topic.getBoolean("top")).update();
+        DaoHolder.topicDao.top(id);
     }
 
     /**
@@ -203,8 +137,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void good(Integer id) {
-        Topic topic = findById(id);
-        topic.set("good", !topic.getBoolean("good")).update();
+        DaoHolder.topicDao.good(id);
     }
-    
+
 }

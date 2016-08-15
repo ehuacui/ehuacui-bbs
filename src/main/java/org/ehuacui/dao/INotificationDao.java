@@ -9,6 +9,7 @@ import org.ehuacui.module.Notification;
 public interface INotificationDao {
     /**
      * 查询未读通知数量
+     *
      * @param author
      * @return
      */
@@ -16,6 +17,7 @@ public interface INotificationDao {
 
     /**
      * 查询通知列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -25,12 +27,14 @@ public interface INotificationDao {
 
     /**
      * 将用户的通知都置为已读
+     *
      * @param author
      */
     void makeUnreadToRead(String author);
 
     /**
      * 判断通知是否已读
+     *
      * @param notification
      * @return
      */
@@ -38,6 +42,7 @@ public interface INotificationDao {
 
     /**
      * 启动线程发送通知
+     *
      * @param author
      * @param targetAuthor
      * @param action

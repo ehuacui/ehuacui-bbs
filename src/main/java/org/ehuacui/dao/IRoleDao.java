@@ -14,6 +14,7 @@ public interface IRoleDao {
 
     /**
      * 根据角色名称查询
+     *
      * @param name
      * @return
      */

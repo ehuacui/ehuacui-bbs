@@ -2,7 +2,6 @@ package org.ehuacui.service;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Topic;
-import org.ehuacui.service.impl.TopicService;
 
 import java.util.List;
 
@@ -58,6 +57,7 @@ public interface ITopicService {
 
     /**
      * 查询当前作者其他话题
+     *
      * @param currentTopicId
      * @param author
      * @param limit
@@ -67,6 +67,7 @@ public interface ITopicService {
 
     /**
      * 查询用户
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -76,24 +77,28 @@ public interface ITopicService {
 
     /**
      * 查询所有话题
+     *
      * @return
      */
     List<Topic> findAll();
 
     /**
      * 删除话题
+     *
      * @param id
      */
     void deleteById(Integer id);
 
     /**
      * 话题置顶
+     *
      * @param id
      */
     void top(Integer id);
 
     /**
      * 话题加精
+     *
      * @param id
      */
     void good(Integer id);

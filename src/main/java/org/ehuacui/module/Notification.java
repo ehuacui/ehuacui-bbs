@@ -9,4 +9,12 @@ import org.ehuacui.common.BaseModel;
  */
 public class Notification extends BaseModel<Notification> {
 
+    public String isRead(Notification notification) {
+        if (notification.getBoolean("read")) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
+
 }

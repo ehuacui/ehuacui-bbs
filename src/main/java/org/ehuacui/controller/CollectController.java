@@ -8,7 +8,6 @@ import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Collect;
-import org.ehuacui.module.Notification;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.User;
 

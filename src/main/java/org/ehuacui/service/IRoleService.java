@@ -2,7 +2,6 @@ package org.ehuacui.service;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Role;
-import org.ehuacui.service.impl.RoleService;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ public interface IRoleService {
 
     /**
      * 根据角色名称查询
+     *
      * @param name
      * @return
      */

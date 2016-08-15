@@ -1,13 +1,13 @@
 package org.ehuacui.controller;
 
+import com.jfinal.aop.Before;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Section;
-import org.ehuacui.ext.route.ControllerBind;
-import com.jfinal.aop.Before;
 
 /**
  * Created by ehuacui.
@@ -60,9 +60,9 @@ public class SectionController extends BaseController {
      */
     public void add() {
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             render("section/add.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String name = getPara("name");
             String tab = getPara("tab");
             Integer showStatus = getParaToInt("showStatus");
@@ -84,10 +84,10 @@ public class SectionController extends BaseController {
         String method = getRequest().getMethod();
         Integer id = getParaToInt("id");
         Section section = ServiceHolder.sectionService.findById(id);
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             setAttr("section", section);
             render("section/edit.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String name = getPara("name");
             String tab = getPara("tab");
             Integer showStatus = getParaToInt("showStatus");

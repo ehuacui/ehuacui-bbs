@@ -99,7 +99,8 @@ public class StrUtil extends StrKit {
      * 依赖Gson包
      */
     public static Map<String, Object> parseToMap(String jsonString) {
-        return new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {}.getType());
+        return new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+        }.getType());
     }
 
     public static void main(String[] args) {

@@ -1,18 +1,18 @@
 package org.ehuacui.common;
 
-import org.ehuacui.interceptor.CommonInterceptor;
-import org.ehuacui.template.PyTag;
-import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.plugin.cron.Cron4jPlugin;
-import org.ehuacui.ext.plugin.tablebind.AutoTableBindPlugin;
-import org.ehuacui.ext.plugin.tablebind.ParamNameStyles;
-import org.ehuacui.ext.route.AutoBindRoutes;
 import com.jfinal.config.Constants;
 import com.jfinal.config.*;
 import com.jfinal.core.JFinal;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.redis.RedisPlugin;
 import com.jfinal.render.FreeMarkerRender;
+import org.ehuacui.ext.plugin.cron.Cron4jPlugin;
+import org.ehuacui.ext.plugin.tablebind.AutoTableBindPlugin;
+import org.ehuacui.ext.plugin.tablebind.ParamNameStyles;
+import org.ehuacui.ext.route.AutoBindRoutes;
+import org.ehuacui.interceptor.CommonInterceptor;
+import org.ehuacui.template.PyTag;
+import org.ehuacui.utils.StrUtil;
 
 /**
  * Created by ehuacui.

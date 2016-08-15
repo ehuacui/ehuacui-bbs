@@ -1,13 +1,12 @@
 package org.ehuacui.interceptor;
 
-import org.ehuacui.common.Constants;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.Permission;
-import org.ehuacui.module.User;
-import org.ehuacui.utils.StrUtil;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
+import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.module.User;
+import org.ehuacui.utils.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

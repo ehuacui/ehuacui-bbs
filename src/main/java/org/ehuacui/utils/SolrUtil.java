@@ -1,8 +1,5 @@
 package org.ehuacui.utils;
 
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.Topic;
-import org.ehuacui.module.TopicAppend;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import org.apache.solr.client.solrj.SolrClient;
@@ -13,6 +10,9 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.module.Topic;
+import org.ehuacui.module.TopicAppend;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -83,7 +83,7 @@ public class SolrUtil {
             doc.addField("in_time", topic.getDate("in_time"));
             List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getInt("id"));
             StringBuffer content = new StringBuffer(topic.getStr("content"));
-            for(TopicAppend ta: topicAppends) {
+            for (TopicAppend ta : topicAppends) {
                 content.append("\n")//换行
                         .append(ta.getStr("content"));
             }
@@ -153,6 +153,7 @@ public class SolrUtil {
 
     /**
      * 删除索引
+     *
      * @param id
      */
     public void indexDelete(String id) {

@@ -1,11 +1,9 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.Notification;
 import org.ehuacui.service.INotificationService;
-
-import java.util.Date;
 
 /**
  * Created by ehuacui.
@@ -24,11 +22,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public int findNotReadCount(String author) {
-        return me.find(
-                "select id from ehuacui_notification where `read` = ? and target_author = ?",
-                false,
-                author
-        ).size();
+        return DaoHolder.notificationDao.findNotReadCount(author);
     }
 
     /**
@@ -41,14 +35,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public Page<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return me.paginate(
-                pageNumber,
-                pageSize,
-                "select n.*, t.title ",
-                "from ehuacui_notification n, ehuacui_topic t where n.tid = t.id " +
-                        "and n.target_author = ? order by n.read, n.in_time desc",
-                author
-        );
+        return DaoHolder.notificationDao.pageByAuthor(pageNumber, pageSize, author);
     }
 
     /**
@@ -58,22 +45,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public void makeUnreadToRead(String author) {
-        Db.update("update ehuacui_notification set `read` = ? where `read` = ? and target_author = ?", true, false, author);
-    }
-
-    /**
-     * 判断通知是否已读
-     *
-     * @param notification
-     * @return
-     */
-    @Override
-    public String isRead(Notification notification) {
-        if (notification.getBoolean("read")) {
-            return "true";
-        } else {
-            return "false";
-        }
+        DaoHolder.notificationDao.makeUnreadToRead(author);
     }
 
     /**
@@ -87,16 +59,6 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public void sendNotification(String author, String targetAuthor, String action, Integer tid, String content) {
-        new Thread(() -> {
-            Notification notification = new Notification();
-            notification.set("read", false)
-                    .set("author", author)
-                    .set("target_author", targetAuthor)
-                    .set("in_time", new Date())
-                    .set("action", action)
-                    .set("tid", tid)
-                    .set("content", content)
-                    .save();
-        }).start();
+        DaoHolder.notificationDao.sendNotification(author, targetAuthor, action, tid, content);
     }
 }

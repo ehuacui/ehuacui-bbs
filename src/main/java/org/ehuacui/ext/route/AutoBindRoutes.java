@@ -1,12 +1,12 @@
 package org.ehuacui.ext.route;
 
-import org.ehuacui.ext.kit.ClassSearcher;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.jfinal.config.Routes;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
+import org.ehuacui.ext.kit.ClassSearcher;
 
 import java.util.List;
 

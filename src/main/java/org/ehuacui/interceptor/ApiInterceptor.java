@@ -1,12 +1,12 @@
 package org.ehuacui.interceptor;
 
+import com.jfinal.aop.Interceptor;
+import com.jfinal.aop.Invocation;
+import com.jfinal.core.Controller;
 import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.Result;
 import org.ehuacui.utils.StrUtil;
-import com.jfinal.aop.Interceptor;
-import com.jfinal.aop.Invocation;
-import com.jfinal.core.Controller;
 
 /**
  * Created by ehuacui.

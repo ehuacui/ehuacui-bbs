@@ -1,9 +1,7 @@
 package org.ehuacui.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.redis.Cache;
-import com.jfinal.plugin.redis.Redis;
-import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.Collect;
 import org.ehuacui.service.ICollectService;
 
@@ -14,8 +12,6 @@ import org.ehuacui.service.ICollectService;
  */
 public class CollectService implements ICollectService {
 
-    private Collect me = new Collect();
-
     /**
      * 根据话题id与用户查询收藏记录
      *
@@ -25,17 +21,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Collect findByTidAndUid(Integer tid, Integer uid) {
-        Cache cache = Redis.use();
-        Collect collect = cache.get(CacheEnum.collect.name() + tid + "_" + uid);
-        if (collect == null) {
-            collect = me.findFirst(
-                    "select * from ehuacui_collect where tid = ? and uid = ?",
-                    tid,
-                    uid
-            );
-            cache.set(CacheEnum.collect.name() + tid + "_" + uid, collect);
-        }
-        return collect;
+        return DaoHolder.collectDao.findByTidAndUid(tid, uid);
     }
 
     /**
@@ -46,16 +32,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Long countByTid(Integer tid) {
-        Cache cache = Redis.use();
-        Long count = cache.get(CacheEnum.collectcount.name() + tid);
-        if (count == null) {
-            count = me.findFirst(
-                    "select count(1) as count from ehuacui_collect where tid = ?",
-                    tid
-            ).getLong("count");
-            cache.set(CacheEnum.collectcount.name() + tid, count);
-        }
-        return count;
+        return DaoHolder.collectDao.countByTid(tid);
     }
 
     /**
@@ -68,19 +45,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Page<Collect> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
-        Cache cache = Redis.use();
-        Page<Collect> page = cache.get(CacheEnum.collects.name() + uid);
-        if (page == null) {
-            page = me.paginate(
-                    pageNumber,
-                    pageSize,
-                    "select c.*, t.* ",
-                    " from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id where t.is_delete = ? and c.uid = ?",
-                    false,
-                    uid);
-            cache.set(CacheEnum.collects.name() + uid, page);
-        }
-        return page;
+        return DaoHolder.collectDao.findByUid(pageNumber, pageSize, uid);
     }
 
     /**
@@ -91,16 +56,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Long countByUid(Integer uid) {
-        Cache cache = Redis.use();
-        Long count = cache.get(CacheEnum.usercollectcount.name() + uid);
-        if (count == null) {
-            count = me.findFirst(
-                    "select count(1) as count from ehuacui_collect where uid = ?",
-                    uid
-            ).getLong("count");
-            cache.set(CacheEnum.usercollectcount.name() + uid, count);
-        }
-        return count;
+        return DaoHolder.collectDao.countByUid(uid);
     }
 
 }

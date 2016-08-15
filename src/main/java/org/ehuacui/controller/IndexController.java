@@ -1,22 +1,21 @@
 package org.ehuacui.controller;
 
-import org.ehuacui.common.BaseController;
-import org.ehuacui.common.Constants;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.interceptor.PermissionInterceptor;
-import org.ehuacui.interceptor.UserInterceptor;
-import org.ehuacui.module.Section;
-import org.ehuacui.module.Topic;
-import org.ehuacui.utils.QiniuUpload;
-import org.ehuacui.utils.SolrUtil;
-import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.route.ControllerBind;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.jfinal.upload.UploadFile;
+import org.ehuacui.common.BaseController;
+import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
+import org.ehuacui.interceptor.PermissionInterceptor;
+import org.ehuacui.interceptor.UserInterceptor;
+import org.ehuacui.module.Section;
+import org.ehuacui.utils.QiniuUpload;
+import org.ehuacui.utils.SolrUtil;
+import org.ehuacui.utils.StrUtil;
 
 import java.io.File;
 import java.util.ArrayList;

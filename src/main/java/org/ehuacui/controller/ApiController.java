@@ -1,25 +1,20 @@
 package org.ehuacui.controller;
 
-import org.ehuacui.common.BaseController;
-import org.ehuacui.common.Constants;
-import org.ehuacui.common.Constants.CacheEnum;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.interceptor.ApiInterceptor;
-import org.ehuacui.module.Collect;
-import org.ehuacui.module.Notification;
-import org.ehuacui.module.Reply;
-import org.ehuacui.module.Topic;
-import org.ehuacui.module.TopicAppend;
-import org.ehuacui.module.User;
-import org.ehuacui.utils.SolrUtil;
-import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.route.ControllerBind;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
+import org.ehuacui.common.BaseController;
+import org.ehuacui.common.Constants;
+import org.ehuacui.common.Constants.CacheEnum;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
+import org.ehuacui.interceptor.ApiInterceptor;
+import org.ehuacui.module.*;
+import org.ehuacui.utils.SolrUtil;
+import org.ehuacui.utils.StrUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -55,7 +50,7 @@ public class ApiController extends BaseController {
         }
         Page<Topic> page = ServiceHolder.topicService.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
         //处理数据
-        for(Topic topic: page.getList()) {
+        for (Topic topic : page.getList()) {
             topic.remove("content", "is_delete", "show_status");
         }
         success(page);
@@ -63,6 +58,7 @@ public class ApiController extends BaseController {
 
     /**
      * 话题详情
+     *
      * @throws UnsupportedEncodingException
      */
     public void topic() throws UnsupportedEncodingException {
@@ -93,12 +89,12 @@ public class ApiController extends BaseController {
             long collectCount = ServiceHolder.collectService.countByTid(tid);
 
             //渲染markdown
-            if(mdrender) {
+            if (mdrender) {
                 topic.set("content", topic.marked(topic.getStr("content")));
-                for(TopicAppend ta: topicAppends) {
+                for (TopicAppend ta : topicAppends) {
                     ta.set("content", ta.marked(ta.getStr("content")));
                 }
-                for(Reply reply: replies) {
+                for (Reply reply : replies) {
                     reply.set("content", reply.marked(reply.getStr("content")));
                 }
             }
@@ -115,6 +111,7 @@ public class ApiController extends BaseController {
 
     /**
      * 用户主页
+     *
      * @throws UnsupportedEncodingException
      */
     public void user() throws UnsupportedEncodingException {
@@ -131,12 +128,12 @@ public class ApiController extends BaseController {
             Page<Topic> topicPage = ServiceHolder.topicService.pageByAuthor(1, 7, nickname);
             Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
             //处理数据
-            for(Topic topic: topicPage.getList()) {
+            for (Topic topic : topicPage.getList()) {
                 topic.remove("content", "is_delete", "show_status");
             }
             //渲染markdown
-            if(mdrender) {
-                for(Reply reply: replyPage.getList()) {
+            if (mdrender) {
+                for (Reply reply : replyPage.getList()) {
                     reply.set("content", reply.marked(reply.getStr("content")));
                 }
             }
@@ -148,6 +145,7 @@ public class ApiController extends BaseController {
 
     /**
      * 发布话题
+     *
      * @throws UnsupportedEncodingException
      */
     @Before(ApiInterceptor.class)
@@ -159,7 +157,7 @@ public class ApiController extends BaseController {
         String tab = getPara("tab");
         if (StrUtil.isBlank(Jsoup.clean(title, Whitelist.basic()))) {
             error(Constants.OP_ERROR_MESSAGE);
-        } else if(StrUtil.isBlank(tab)) {
+        } else if (StrUtil.isBlank(tab)) {
             error("请选择板块");
         } else {
             User user = getUserByToken();
@@ -193,17 +191,17 @@ public class ApiController extends BaseController {
     @ActionKey("/api/topic/collect")
     public void collect() {
         Integer tid = getParaToInt("tid");
-        if(tid == null) {
+        if (tid == null) {
             error("话题ID不能为空");
         } else {
             Topic topic = ServiceHolder.topicService.findById(tid);
-            if(topic == null) {
+            if (topic == null) {
                 error("收藏的话题不存在");
             } else {
                 Date now = new Date();
                 User user = getUserByToken();
                 Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
-                if(collect == null) {
+                if (collect == null) {
                     collect = new Collect();
                     collect.set("tid", tid)
                             .set("uid", user.getInt("id"))
@@ -239,7 +237,7 @@ public class ApiController extends BaseController {
         Integer tid = getParaToInt("tid");
         User user = getUserByToken();
         Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
-        if(collect == null) {
+        if (collect == null) {
             error("请先收藏");
         } else {
             collect.delete();
@@ -257,16 +255,16 @@ public class ApiController extends BaseController {
     public void collects() throws UnsupportedEncodingException {
         String nickname = getPara(0);
         Boolean mdrender = getParaToBoolean("mdrender", true);
-        if(StrUtil.isBlank(nickname)) {
+        if (StrUtil.isBlank(nickname)) {
             error("用户昵称不能为空");
         } else {
             User user = ServiceHolder.userService.findByNickname(nickname);
-            if(user == null) {
+            if (user == null) {
                 error("无效用户");
             } else {
                 Page<Collect> page = ServiceHolder.collectService.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getInt("id"));
-                if(mdrender) {
-                    for(Collect collect: page.getList()) {
+                if (mdrender) {
+                    for (Collect collect : page.getList()) {
                         collect.put("content", collect.marked(collect.get("content")));
                     }
                 }
@@ -283,11 +281,11 @@ public class ApiController extends BaseController {
     public void createReply() throws UnsupportedEncodingException {
         Integer tid = getParaToInt("tid");
         String content = getPara("content");
-        if(tid == null || StrUtil.isBlank(content)) {
+        if (tid == null || StrUtil.isBlank(content)) {
             error("话题ID和回复内容都不能为空");
         } else {
             Topic topic = ServiceHolder.topicService.findById(tid);
-            if(topic == null) {
+            if (topic == null) {
                 error("话题不存在");
             } else {
                 Date now = new Date();
@@ -307,7 +305,7 @@ public class ApiController extends BaseController {
 //                user.set("score", user.getInt("score") + 5).update();
                 //发送通知
                 //回复者与话题作者不是一个人的时候发送通知
-                if(!user.getStr("nickname").equals(topic.getStr("author"))) {
+                if (!user.getStr("nickname").equals(topic.getStr("author"))) {
                     ServiceHolder.notificationService.sendNotification(
                             user.getStr("nickname"),
                             topic.getStr("author"),
@@ -318,8 +316,8 @@ public class ApiController extends BaseController {
                 }
                 //检查回复内容里有没有at用户,有就发通知
                 List<String> atUsers = StrUtil.fetchUsers(content);
-                for(String u: atUsers) {
-                    if(!u.equals(topic.getStr("author"))) {
+                for (String u : atUsers) {
+                    if (!u.equals(topic.getStr("author"))) {
                         User _user = ServiceHolder.userService.findByNickname(u);
                         if (_user != null) {
                             ServiceHolder.notificationService.sendNotification(
@@ -361,7 +359,7 @@ public class ApiController extends BaseController {
         Boolean mdrender = getParaToBoolean("mdrender", true);
         User user = getUserByToken();
         Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getStr("nickname"));
-        if(mdrender) {
+        if (mdrender) {
             for (Notification notification : page.getList()) {
                 notification.set("content", notification.marked(notification.get("content")));
             }

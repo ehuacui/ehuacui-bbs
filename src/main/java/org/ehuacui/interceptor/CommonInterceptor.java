@@ -1,14 +1,13 @@
 package org.ehuacui.interceptor;
 
-import org.ehuacui.common.Constants;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.Notification;
-import org.ehuacui.module.User;
-import org.ehuacui.utils.StrUtil;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
+import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.module.User;
+import org.ehuacui.utils.StrUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +25,10 @@ public class CommonInterceptor implements Interceptor {
 
         String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
 
-        if(StrUtil.notBlank(user_cookie)) {
+        if (StrUtil.notBlank(user_cookie)) {
             String user_access_token = StrUtil.getDecryptToken(user_cookie);
             User user = ServiceHolder.userService.findByAccessToken(user_access_token);
-            if(user == null) {
+            if (user == null) {
                 controller.removeCookie(Constants.USER_ACCESS_TOKEN, "/", PropKit.get("cookie.domain"));
             } else {
                 int count = ServiceHolder.notificationService.findNotReadCount(user.getStr("nickname"));
@@ -41,17 +40,17 @@ public class CommonInterceptor implements Interceptor {
         //如果是微博登录的话,要在页面头部添加meta标签
         String loginChannel = PropKit.get("login.channel");
         Map<String, String> loginChannelMap = new HashMap<String, String>();
-        if(loginChannel.equals(Constants.LoginEnum.Weibo.name())) {
+        if (loginChannel.equals(Constants.LoginEnum.Weibo.name())) {
             loginChannelMap.put("loginChannelName", Constants.LoginEnum.Weibo.name());
             loginChannelMap.put("loginChannelUrl", "/oauth/weibologin");
             controller.setAttr("login_channel", loginChannelMap);
             controller.setAttr("weibometa", PropKit.get("weibo.meta"));
-        } else if(StrUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
+        } else if (StrUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
             loginChannelMap.put("loginChannelName", Constants.LoginEnum.Github.name());
             loginChannelMap.put("loginChannelUrl", "/oauth/githublogin");
             controller.setAttr("login_channel", loginChannelMap);
         }
-        controller.setAttr("solrStatus", PropKit.getBoolean("solr.status")?"true":"false");
+        controller.setAttr("solrStatus", PropKit.getBoolean("solr.status") ? "true" : "false");
         controller.setAttr("shareDomain", PropKit.get("share.domain"));
         controller.setAttr("siteTitle", PropKit.get("siteTitle"));
         controller.setAttr("beianName", PropKit.get("beianName"));

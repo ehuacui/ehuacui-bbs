@@ -1,17 +1,17 @@
 package org.ehuacui.controller;
 
-import org.ehuacui.common.BaseController;
-import org.ehuacui.common.Constants;
-import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.Role;
-import org.ehuacui.module.UserRole;
-import org.ehuacui.module.User;
-import org.ehuacui.utils.DateUtil;
-import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.route.ControllerBind;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PropKit;
+import org.ehuacui.common.BaseController;
+import org.ehuacui.common.Constants;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
+import org.ehuacui.module.Role;
+import org.ehuacui.module.User;
+import org.ehuacui.module.UserRole;
+import org.ehuacui.utils.DateUtil;
+import org.ehuacui.utils.StrUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -31,6 +31,7 @@ public class OauthController extends BaseController {
 
     /**
      * github登录
+     *
      * @throws UnsupportedEncodingException
      */
     public void githublogin() throws UnsupportedEncodingException {
@@ -56,6 +57,7 @@ public class OauthController extends BaseController {
 
     /**
      * github登录成功后回调
+     *
      * @throws UnsupportedEncodingException
      */
     public void githubcallback() throws UnsupportedEncodingException {
@@ -111,7 +113,7 @@ public class OauthController extends BaseController {
                 user.save();
                 //新注册的用户角色都是普通用户
                 Role role = ServiceHolder.roleService.findByName("user");
-                if(role != null) {
+                if (role != null) {
                     UserRole userRole = new UserRole();
                     userRole.set("uid", user.getInt("id"))
                             .set("rid", role.getInt("id"))
@@ -163,6 +165,7 @@ public class OauthController extends BaseController {
 
     /**
      * 微博登录成功回调
+     *
      * @throws UnsupportedEncodingException
      */
     public void weibocallback() throws UnsupportedEncodingException {
@@ -223,7 +226,7 @@ public class OauthController extends BaseController {
                 user.save();
                 //新注册的用户角色都是普通用户
                 Role role = ServiceHolder.roleService.findByName("user");
-                if(role != null) {
+                if (role != null) {
                     UserRole userRole = new UserRole();
                     userRole.set("uid", user.getInt("id"))
                             .set("rid", role.getInt("id"))

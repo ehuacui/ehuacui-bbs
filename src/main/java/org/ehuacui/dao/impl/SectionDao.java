@@ -26,7 +26,7 @@ public class SectionDao implements ISectionDao {
     public List<Section> findByShowStatus(boolean isshow) {
         Cache cache = Redis.use();
         List list = cache.get(CacheEnum.sections.name() + isshow);
-        if(list == null) {
+        if (list == null) {
             list = me.find("select * from ehuacui_section where show_status = ? order by display_index", isshow);
             cache.set(CacheEnum.sections.name() + isshow, list);
         }
@@ -42,7 +42,7 @@ public class SectionDao implements ISectionDao {
     public Section findByTab(String tab) {
         Cache cache = Redis.use();
         Section section = cache.get(CacheEnum.section.name() + tab);
-        if(section == null) {
+        if (section == null) {
             section = me.findFirst(
                     "select * from ehuacui_section where tab = ?",
                     tab

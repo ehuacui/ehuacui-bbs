@@ -1,12 +1,12 @@
 package org.ehuacui.common;
 
-import org.ehuacui.module.User;
-import org.ehuacui.utils.Result;
-import org.ehuacui.utils.StrUtil;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
+import org.ehuacui.module.User;
+import org.ehuacui.utils.Result;
+import org.ehuacui.utils.StrUtil;
 
 /**
  * Created by ehuacui.
@@ -38,6 +38,7 @@ public class BaseController extends Controller {
 
     /**
      * 删除redis里的缓存
+     *
      * @param key
      */
     protected void clearCache(String key) {
@@ -48,7 +49,7 @@ public class BaseController extends Controller {
     public User getUser() {
         String user_cookie = getCookie(Constants.USER_ACCESS_TOKEN);
 
-        if(StrUtil.notBlank(user_cookie)) {
+        if (StrUtil.notBlank(user_cookie)) {
             return ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
         }
         return null;
@@ -56,7 +57,7 @@ public class BaseController extends Controller {
 
     public User getUserByToken() {
         String token = getPara("token");
-        if(StrUtil.notBlank(token)) {
+        if (StrUtil.notBlank(token)) {
             return ServiceHolder.userService.findByAccessToken(token);
         }
         return null;

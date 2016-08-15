@@ -1,6 +1,6 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
+import org.ehuacui.common.DaoHolder;
 import org.ehuacui.module.UserRole;
 import org.ehuacui.service.IUserRoleService;
 
@@ -13,26 +13,24 @@ import java.util.List;
  */
 public class UserRoleService implements IUserRoleService {
 
-    private UserRole me = new UserRole();
-
     @Override
     public List<UserRole> findByUserId(Integer userId) {
-        return me.find("select * from ehuacui_user_role where uid = ?", userId);
+        return DaoHolder.userRoleDao.findByUserId(userId);
     }
 
     @Override
     public List<UserRole> findByRoleId(Integer roleId) {
-        return me.find("select * from ehuacui_user_role where rid = ?", roleId);
+        return DaoHolder.userRoleDao.findByRoleId(roleId);
     }
 
     @Override
     public void deleteByUserId(Integer userId) {
-        Db.update("delete from ehuacui_user_role where uid = ?", userId);
+        DaoHolder.userRoleDao.deleteByUserId(userId);
     }
 
     @Override
     public void deleteByRoleId(Integer roleId) {
-        Db.update("delete from ehuacui_user_role where rid = ?", roleId);
+        DaoHolder.userRoleDao.deleteByRoleId(roleId);
     }
 
 }

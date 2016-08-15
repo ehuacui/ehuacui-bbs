@@ -34,7 +34,7 @@ public class QiniuUpload {
     Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
 
     //简单上传，使用默认策略，只需要设置上传的空间名就可以了
-    public String getUpToken(){
+    public String getUpToken() {
         return auth.uploadToken(bucketname);
     }
 
@@ -61,7 +61,7 @@ public class QiniuUpload {
         }
     }
 
-    public static void main(String args[]) throws IOException{
+    public static void main(String args[]) throws IOException {
         new QiniuUpload().upload("");
     }
 }

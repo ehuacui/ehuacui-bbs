@@ -2,7 +2,6 @@ package org.ehuacui.service;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.Reply;
-import org.ehuacui.service.impl.ReplyService;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ public interface IReplyService {
 
     /**
      * 根据话题id查询回复数量
+     *
      * @param tid
      * @return
      */
@@ -20,6 +20,7 @@ public interface IReplyService {
 
     /**
      * 分页查询全部话题
+     *
      * @param pageNumber
      * @param pageSize
      * @return
@@ -28,6 +29,7 @@ public interface IReplyService {
 
     /**
      * 分页查询话题的回复列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param tid
@@ -37,6 +39,7 @@ public interface IReplyService {
 
     /**
      * 根据话题id查询回复列表
+     *
      * @param topicId
      * @return
      */
@@ -44,6 +47,7 @@ public interface IReplyService {
 
     /**
      * 分页查询回复列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param author
@@ -53,6 +57,7 @@ public interface IReplyService {
 
     /**
      * 删除话题回复内容
+     *
      * @param tid
      */
     void deleteByTid(Integer tid);

@@ -1,20 +1,19 @@
 package org.ehuacui.controller;
 
+import com.jfinal.aop.Before;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.Constants.CacheEnum;
 import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.module.Permission;
 import org.ehuacui.module.Role;
-import org.ehuacui.module.RolePermission;
-import org.ehuacui.module.UserRole;
 import org.ehuacui.module.User;
-import org.ehuacui.ext.route.ControllerBind;
-import com.jfinal.aop.Before;
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.tx.Tx;
+import org.ehuacui.module.UserRole;
 
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class ManageController extends BaseController {
      */
     public void permissions() {
         Integer pid = getParaToInt("pid");
-        if(pid == null) {
+        if (pid == null) {
             setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
             setAttr("childPermissions", ServiceHolder.permissionService.findAll());
         } else {
@@ -84,14 +83,14 @@ public class ManageController extends BaseController {
     public void userrole() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             setAttr("user", ServiceHolder.userService.findById(id));
             //查询所有的权限
             setAttr("roles", ServiceHolder.roleService.findAll());
             //当前用户已经存在的角色
             setAttr("_roles", ServiceHolder.userRoleService.findByUserId(id));
             render("system/userrole.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             Integer[] roles = getParaValuesToInt("roles");
             ServiceHolder.userService.correlationRole(id, roles);
             //清除缓存
@@ -117,11 +116,11 @@ public class ManageController extends BaseController {
      */
     public void addrole() {
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             //查询所有的权限
             setAttr("permissions", ServiceHolder.permissionService.findWithChild());
             render("system/addrole.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String name = getPara("name");
             String description = getPara("description");
             Role role = new Role();
@@ -141,11 +140,11 @@ public class ManageController extends BaseController {
     public void addpermission() {
         Integer pid = getParaToInt("pid");
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             setAttr("pid", pid);
             setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
             render("system/addpermission.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String name = getPara("name");
             String url = getPara("url");
             String description = getPara("description");
@@ -156,7 +155,7 @@ public class ManageController extends BaseController {
                     .set("pid", pid)
                     .save();
             String _url = "/manage/permissions?pid=" + pid;
-            if(pid == 0) {
+            if (pid == 0) {
                 _url = "/manage/permissions";
             }
             redirect(_url);
@@ -169,11 +168,11 @@ public class ManageController extends BaseController {
     public void editpermission() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             setAttr("_permission", ServiceHolder.permissionService.findById(id));
             setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
             render("system/editpermission.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             Integer pid = getParaToInt("pid");
             String name = getPara("name");
             String url = getPara("url");
@@ -186,7 +185,7 @@ public class ManageController extends BaseController {
                     .update();
             //清除缓存
             List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
-            for(User u: userpermissions) {
+            for (User u : userpermissions) {
                 clearCache(CacheEnum.userpermissions.name() + u.getInt("id"));
             }
             redirect("/manage/permissions?pid=" + pid);
@@ -200,14 +199,14 @@ public class ManageController extends BaseController {
         Integer roleId = getParaToInt("id");
         String method = getRequest().getMethod();
         Role role = ServiceHolder.roleService.findById(roleId);
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             setAttr("role", role);
             //查询所有的权限
             setAttr("permissions", ServiceHolder.permissionService.findWithChild());
             //查询角色已经配置的权限
             setAttr("_permissions", ServiceHolder.rolePermissionService.findByRoleId(roleId));
             render("system/rolepermission.ftl");
-        } else if(method.equals("POST")) {
+        } else if (method.equals("POST")) {
             String name = getPara("name");
             String description = getPara("description");
             role.set("name", name)
@@ -217,7 +216,7 @@ public class ManageController extends BaseController {
             ServiceHolder.roleService.correlationPermission(roleId, permissions);
             //清除缓存
             List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(roleId);
-            for(UserRole ur: userRoles) {
+            for (UserRole ur : userRoles) {
                 clearCache(CacheEnum.userpermissions.name() + ur.getInt("uid"));
             }
             redirect("/manage/roles");
@@ -230,7 +229,7 @@ public class ManageController extends BaseController {
     @Before(Tx.class)
     public void deleterole() {
         Integer id = getParaToInt("id");
-        if(id == null) {
+        if (id == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             ServiceHolder.userRoleService.deleteByRoleId(id);
@@ -238,7 +237,7 @@ public class ManageController extends BaseController {
             ServiceHolder.roleService.deleteById(id);
             //清除缓存
             List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
-            for(UserRole ur: userRoles) {
+            for (UserRole ur : userRoles) {
                 clearCache(CacheEnum.userpermissions.name() + ur.getInt("uid"));
             }
             redirect("/manage/roles");
@@ -251,14 +250,14 @@ public class ManageController extends BaseController {
     @Before(Tx.class)
     public void deletepermission() {
         Integer id = getParaToInt("id");
-        if(id == null) {
+        if (id == null) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             Permission permission = ServiceHolder.permissionService.findById(id);
             Integer pid = permission.getInt("pid");
             String url = "/manage/permissions?pid=" + pid;
             //如果是父节点，就删除父节点下的所有权限
-            if(pid == 0) {
+            if (pid == 0) {
                 ServiceHolder.permissionService.deleteByPid(id);
                 url = "/manage/permissions";
             }
@@ -267,7 +266,7 @@ public class ManageController extends BaseController {
             ServiceHolder.permissionService.deleteById(id);
             //清除缓存
             List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
-            for(User u: userpermissions) {
+            for (User u : userpermissions) {
                 clearCache(CacheEnum.userpermissions.name() + u.getInt("id"));
             }
             redirect(url);

@@ -2,7 +2,6 @@ package org.ehuacui.service;
 
 import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.module.User;
-import org.ehuacui.service.impl.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;

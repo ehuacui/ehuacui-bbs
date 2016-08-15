@@ -1,8 +1,12 @@
 package org.ehuacui.controller;
 
+import com.jfinal.aop.Before;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Page;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
 import org.ehuacui.module.Collect;
@@ -10,10 +14,6 @@ import org.ehuacui.module.Reply;
 import org.ehuacui.module.Topic;
 import org.ehuacui.module.User;
 import org.ehuacui.utils.StrUtil;
-import org.ehuacui.ext.route.ControllerBind;
-import com.jfinal.aop.Before;
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Page;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -37,7 +37,7 @@ public class UserController extends BaseController {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             User currentUser = ServiceHolder.userService.findByNickname(nickname);
-            if(currentUser != null) {
+            if (currentUser != null) {
                 Long collectCount = ServiceHolder.collectService.countByUid(currentUser.getInt("id"));
                 currentUser.put("collectCount", collectCount);
 
