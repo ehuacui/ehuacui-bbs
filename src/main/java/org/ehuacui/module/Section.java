@@ -9,4 +9,12 @@ import org.ehuacui.common.BaseModel;
  */
 public class Section extends BaseModel<Section> {
 
+    public String showStatus(Section section) {
+        if(section.getBoolean("show_status")) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
+
 }

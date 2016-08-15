@@ -206,35 +206,5 @@ public class TopicService implements ITopic {
         Topic topic = findById(id);
         topic.set("good", !topic.getBoolean("good")).update();
     }
-
-    /**
-     * 转换置顶状态
-     *
-     * @param topic
-     * @return
-     */
-    @Override
-    public String isTop(Topic topic) {
-        if (topic.getBoolean("top")) {
-            return "true";
-        } else {
-            return "false";
-        }
-    }
-
-    /**
-     * 转换精华状态
-     *
-     * @param topic
-     * @return
-     */
-    @Override
-    public String isGood(Topic topic) {
-        if (topic.getBoolean("good")) {
-            return "true";
-        } else {
-            return "false";
-        }
-    }
-
+    
 }

@@ -123,8 +123,7 @@ public class ApiController extends BaseController {
     public void user() throws UnsupportedEncodingException {
         String nickname = getPara(0);
         Boolean mdrender = getParaToBoolean("mdrender", true);
-        IUser userService = new UserService();
-        User currentUser = userService.findByNickname(nickname);
+        User currentUser = ServiceHolder.userService.findByNickname(nickname);
         if (currentUser == null) {
             error("用户不存在");
         } else {

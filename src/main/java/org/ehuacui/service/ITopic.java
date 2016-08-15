@@ -98,17 +98,4 @@ public interface ITopic {
      */
     void good(Integer id);
 
-    /**
-     * 转换置顶状态
-     * @param topic
-     * @return
-     */
-    String isTop(Topic topic);
-
-    /**
-     * 转换精华状态
-     * @param topic
-     * @return
-     */
-    String isGood(Topic topic);
 }

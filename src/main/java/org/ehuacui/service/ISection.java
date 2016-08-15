@@ -18,5 +18,4 @@ public interface ISection {
 
     Section findById(Integer id);
 
-    String showStatus(Section section);
 }

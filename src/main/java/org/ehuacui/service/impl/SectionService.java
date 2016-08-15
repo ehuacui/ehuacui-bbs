@@ -53,13 +53,4 @@ public class SectionService implements ISection {
         return section;
     }
 
-    @Override
-    public String showStatus(Section section) {
-        if(section.getBoolean("show_status")) {
-            return "true";
-        } else {
-            return "false";
-        }
-    }
-
 }
