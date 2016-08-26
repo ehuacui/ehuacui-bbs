@@ -9,6 +9,9 @@ import org.ehuacui.common.BaseModel;
  */
 public class Notification extends BaseModel<Notification> {
 
+    /**
+     * 判断通知是否已读
+     */
     public String isRead(Notification notification) {
         if (notification.getBoolean("read")) {
             return "true";

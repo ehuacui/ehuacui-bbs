@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ehuacui.mapper.RolePermissionMapper">
+
+  <resultMap id="BaseResultMap" type="org.ehuacui.model.RolePermission">
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+  </resultMap>
+
+  <insert id="insert" parameterType="org.ehuacui.model.RolePermission">
+    insert into ehuacui_role_permission (rid, pid)
+    values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="org.ehuacui.model.RolePermission">
+    insert into ehuacui_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    delete from ehuacui_role_permission
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+
+</mapper>

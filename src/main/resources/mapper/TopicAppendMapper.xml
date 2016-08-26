@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ehuacui.mapper.TopicAppendMapper">
+
+    <resultMap id="BaseResultMap" type="org.ehuacui.model.TopicAppend">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+        <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, tid, in_time, is_delete, content
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic_append
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByTid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic_append
+        where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
+        order by in_time
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ehuacui_topic_append
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="org.ehuacui.model.TopicAppend">
+    insert into ehuacui_topic_append (id, tid, in_time, 
+      is_delete, content)
+    values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="org.ehuacui.model.TopicAppend">
+        insert into ehuacui_topic_append
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="inTime != null">
+                in_time,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="deleteByTid" parameterType="java.lang.Integer">
+    update ehuacui_topic_append set is_delete = 1 where tid = #{tid,jdbcType=INTEGER}
+  </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.TopicAppend">
+        update ehuacui_topic_append
+        <set>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                in_time = #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.TopicAppend">
+    update ehuacui_topic_append
+    set tid = #{tid,jdbcType=INTEGER},
+      in_time = #{inTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

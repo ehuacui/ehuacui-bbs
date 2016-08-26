@@ -62,21 +62,6 @@ public class NotificationDao implements INotificationDao {
     }
 
     /**
-     * 判断通知是否已读
-     *
-     * @param notification
-     * @return
-     */
-    @Override
-    public String isRead(Notification notification) {
-        if (notification.getBoolean("read")) {
-            return "true";
-        } else {
-            return "false";
-        }
-    }
-
-    /**
      * 启动线程发送通知
      *
      * @param author

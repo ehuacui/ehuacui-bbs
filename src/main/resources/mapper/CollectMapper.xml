@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ehuacui.mapper.CollectMapper">
+
+    <resultMap id="BaseResultMap" type="org.ehuacui.model.Collect">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, tid, uid, in_time
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_collect
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select c.*, t.*
+        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="selectByTidAndUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_collect
+        where tid = #{tid,jdbcType=INTEGER} and uid = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <select id="countByTid" parameterType="java.lang.Integer" resultType="integer">
+    select count(1) as count from ehuacui_collect where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
+    <select id="countByUid" parameterType="java.lang.Integer" resultType="integer">
+        select count(1) as count from ehuacui_collect where uid = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ehuacui_collect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="org.ehuacui.model.Collect">
+    insert into ehuacui_collect (id, tid, uid, 
+      in_time)
+    values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{inTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Collect">
+        insert into ehuacui_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="inTime != null">
+                in_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                #{inTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Collect">
+        update ehuacui_collect
+        <set>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                in_time = #{inTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Collect">
+    update ehuacui_collect
+    set tid = #{tid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
+      in_time = #{inTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

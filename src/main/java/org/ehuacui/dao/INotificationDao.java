@@ -33,14 +33,6 @@ public interface INotificationDao {
     void makeUnreadToRead(String author);
 
     /**
-     * 判断通知是否已读
-     *
-     * @param notification
-     * @return
-     */
-    String isRead(Notification notification);
-
-    /**
      * 启动线程发送通知
      *
      * @param author
