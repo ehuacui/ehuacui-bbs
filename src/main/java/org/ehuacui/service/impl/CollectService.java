@@ -1,16 +1,24 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Collect;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.CollectMapper;
+import org.ehuacui.model.Collect;
 import org.ehuacui.service.ICollectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class CollectService implements ICollectService {
+
+    @Autowired
+    private CollectMapper collectMapper;
 
     /**
      * 根据话题id与用户查询收藏记录
@@ -21,7 +29,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Collect findByTidAndUid(Integer tid, Integer uid) {
-        return DaoHolder.collectDao.findByTidAndUid(tid, uid);
+        return collectMapper.selectByTidAndUid(tid, uid);
     }
 
     /**
@@ -32,7 +40,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Long countByTid(Integer tid) {
-        return DaoHolder.collectDao.countByTid(tid);
+        return collectMapper.countByTid(tid);
     }
 
     /**
@@ -45,7 +53,9 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Page<Collect> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
-        return DaoHolder.collectDao.findByUid(pageNumber, pageSize, uid);
+        List<Collect> list = collectMapper.selectByUid(uid, pageNumber, pageSize);
+        long total = collectMapper.countByUid(uid);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -56,7 +66,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Long countByUid(Integer uid) {
-        return DaoHolder.collectDao.countByUid(uid);
+        return collectMapper.countByUid(uid);
     }
 
 }

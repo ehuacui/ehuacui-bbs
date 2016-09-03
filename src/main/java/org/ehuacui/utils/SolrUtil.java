@@ -61,9 +61,7 @@ public class SolrUtil {
             client.add(docs);
             client.commit();
             return true;
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SolrServerException | IOException e) {
             e.printStackTrace();
         }
         return false;

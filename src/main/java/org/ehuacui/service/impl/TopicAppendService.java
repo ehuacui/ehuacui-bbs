@@ -1,8 +1,10 @@
 package org.ehuacui.service.impl;
 
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.TopicAppend;
+import org.ehuacui.mapper.TopicAppendMapper;
+import org.ehuacui.model.TopicAppend;
 import org.ehuacui.service.ITopicAppendService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,11 +13,15 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class TopicAppendService implements ITopicAppendService {
+
+    @Autowired
+    private TopicAppendMapper topicAppendMapper;
 
     @Override
     public TopicAppend findById(Integer id) {
-        return DaoHolder.topicAppendDao.findById(id);
+        return topicAppendMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -26,7 +32,7 @@ public class TopicAppendService implements ITopicAppendService {
      */
     @Override
     public List<TopicAppend> findByTid(Integer tid) {
-        return DaoHolder.topicAppendDao.findByTid(tid);
+        return topicAppendMapper.selectByTid(tid);
     }
 
     /**
@@ -36,6 +42,6 @@ public class TopicAppendService implements ITopicAppendService {
      */
     @Override
     public void deleteByTid(Integer tid) {
-        DaoHolder.topicAppendDao.deleteByTid(tid);
+        topicAppendMapper.deleteByTid(tid);
     }
 }

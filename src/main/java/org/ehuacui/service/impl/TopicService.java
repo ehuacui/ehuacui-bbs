@@ -1,9 +1,11 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Topic;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.TopicMapper;
+import org.ehuacui.model.Topic;
 import org.ehuacui.service.ITopicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +14,11 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class TopicService implements ITopicService {
+
+    @Autowired
+    private TopicMapper topicMapper;
 
     /**
      * 根据tab分页查询话题列表
@@ -24,7 +30,17 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> page(Integer pageNumber, Integer pageSize, String tab) {
-        return DaoHolder.topicDao.page(pageNumber, pageSize, tab);
+        if (tab.equals("all")) {
+            return pageAll(pageNumber, pageSize);
+        } else if (tab.equals("good")) {
+            return pageGood(pageNumber, pageSize);
+        } else if (tab.equals("noreply")) {
+            return pageNoReply(pageNumber, pageSize);
+        } else {
+            List<Topic> list = topicMapper.selectByTab(tab, pageNumber, pageSize);
+            int total = topicMapper.countByTab(tab);
+            return new Page<>(list, pageNumber, pageSize, total);
+        }
     }
 
     /**
@@ -36,7 +52,9 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageAll(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.topicDao.pageAll(pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectAll(pageNumber, pageSize);
+        int total = topicMapper.countAll();
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -48,7 +66,9 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageGood(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.topicDao.pageGood(pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectAllGood(pageNumber, pageSize);
+        int total = topicMapper.countAllGood();
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -60,7 +80,9 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageNoReply(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.topicDao.pageNoReply(pageSize, pageSize);
+        List<Topic> list = topicMapper.selectAllNoReply(pageNumber, pageSize);
+        int total = topicMapper.countAllNoReply();
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -71,7 +93,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Topic findById(Integer id) {
-        return DaoHolder.topicDao.findById(id);
+        return topicMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -84,7 +106,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public List<Topic> findOtherTopicByAuthor(Integer currentTopicId, String author, Integer limit) {
-        return DaoHolder.topicDao.findOtherTopicByAuthor(currentTopicId, author, limit);
+        return topicMapper.selectOtherTopicByAuthor(currentTopicId, author, 0, limit);
     }
 
     /**
@@ -97,7 +119,9 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return DaoHolder.topicDao.pageByAuthor(pageNumber, pageSize, author);
+        List<Topic> list = topicMapper.selectByAuthor(author, pageNumber, pageSize);
+        int total = topicMapper.countByAuthor(author);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -107,7 +131,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public List<Topic> findAll() {
-        return DaoHolder.topicDao.findAll();
+        return topicMapper.selectAll();
     }
 
     /**
@@ -117,7 +141,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void deleteById(Integer id) {
-        DaoHolder.topicDao.deleteById(id);
+        topicMapper.deleteById(id);
     }
 
     /**
@@ -127,7 +151,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void top(Integer id) {
-        DaoHolder.topicDao.top(id);
+        topicMapper.updateTopById(id);
     }
 
     /**
@@ -137,7 +161,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void good(Integer id) {
-        DaoHolder.topicDao.good(id);
+        topicMapper.updateGoodById(id);
     }
 
 }

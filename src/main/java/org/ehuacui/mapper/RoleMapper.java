@@ -19,7 +19,9 @@ public interface RoleMapper {
 
     List<Role> selectAll(Integer start, Integer limit);
 
+    List<Role> selectAll();
+
     int countAll();
 
-    List<Role> selectByName(String name);
+    Role selectByName(String name);
 }

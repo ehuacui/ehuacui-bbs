@@ -30,7 +30,7 @@ public interface UserMapper {
 
     List<User> selectUserScores(Integer limit);
 
-    List<User> selectByAccessToken(String accessToken, Date expireTime);
+    User selectByAccessToken(String accessToken, Date expireTime);
 
     int deleteByNickName(String nickname);
 }

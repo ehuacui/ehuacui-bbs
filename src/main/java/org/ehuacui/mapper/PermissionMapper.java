@@ -21,7 +21,7 @@ public interface PermissionMapper {
 
     List<Permission> selectAllChild();
 
-    Permission selectByUid(Integer uid);
+    List<Permission> selectByUid(Integer uid);
 
     int deleteByPid(Integer pid);
 }

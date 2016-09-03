@@ -1,7 +1,7 @@
 package org.ehuacui.service;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.module.Collect;
+import org.ehuacui.common.Page;
+import org.ehuacui.model.Collect;
 
 /**
  * Created by jianwei.zhou on 2016/8/15.

@@ -1,9 +1,12 @@
 package org.ehuacui.service.impl;
 
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Permission;
+import org.ehuacui.mapper.PermissionMapper;
+import org.ehuacui.model.Permission;
 import org.ehuacui.service.IPermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +15,11 @@ import java.util.Map;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class PermissionService implements IPermissionService {
+
+    @Autowired
+    private PermissionMapper permissionMapper;
 
     /**
      * 根据父节点查询权限列表
@@ -22,7 +29,7 @@ public class PermissionService implements IPermissionService {
      */
     @Override
     public List<Permission> findByPid(Integer pid) {
-        return DaoHolder.permissionDao.findByPid(pid);
+        return permissionMapper.selectByPid(pid);
     }
 
     /**
@@ -32,7 +39,7 @@ public class PermissionService implements IPermissionService {
      */
     @Override
     public List<Permission> findAll() {
-        return DaoHolder.permissionDao.findAll();
+        return permissionMapper.selectAllChild();
     }
 
     /**
@@ -42,7 +49,11 @@ public class PermissionService implements IPermissionService {
      */
     @Override
     public List<Permission> findWithChild() {
-        return DaoHolder.permissionDao.findWithChild();
+        List<Permission> permissions = permissionMapper.selectByPid(0);
+        for (Permission p : permissions) {
+            p.setChildPermissions(permissionMapper.selectByPid(p.getId()));
+        }
+        return permissions;
     }
 
     /**
@@ -52,7 +63,7 @@ public class PermissionService implements IPermissionService {
      */
     @Override
     public void deleteByPid(Integer pid) {
-        DaoHolder.permissionDao.deleteByPid(pid);
+        permissionMapper.deleteByPid(pid);
     }
 
     /**
@@ -63,16 +74,22 @@ public class PermissionService implements IPermissionService {
      */
     @Override
     public Map<String, String> findPermissions(Integer userId) {
-        return DaoHolder.permissionDao.findPermissions(userId);
+        Map<String, String> map = new HashMap<>();
+        if (userId == null) return map;
+        List<Permission> permissions = permissionMapper.selectByUid(userId);
+        for (Permission p : permissions) {
+            map.put(p.getName(), p.getUrl());
+        }
+        return map;
     }
 
     @Override
     public Permission findById(Integer id) {
-        return DaoHolder.permissionDao.findById(id);
+        return permissionMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public void deleteById(Integer id) {
-        DaoHolder.permissionDao.deleteById(id);
+        permissionMapper.deleteByPrimaryKey(id);
     }
 }

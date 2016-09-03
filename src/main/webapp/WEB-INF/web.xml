@@ -5,6 +5,15 @@
 
     <display-name>ehuacui bbs V1.0.0</display-name>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <description>Spring Listener</description>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <filter>
         <filter-name>jfinal</filter-name>
         <filter-class>com.jfinal.core.JFinalFilter</filter-class>

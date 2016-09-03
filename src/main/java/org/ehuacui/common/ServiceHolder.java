@@ -9,25 +9,25 @@ import org.ehuacui.service.impl.*;
  */
 public class ServiceHolder {
 
-    public final static ICollectService collectService = new CollectService();
+    public final static ICollectService collectService = SpringContextHolder.getBean(CollectService.class);
 
-    public final static INotificationService notificationService = new NotificationService();
+    public final static INotificationService notificationService = SpringContextHolder.getBean(NotificationService.class);
 
-    public final static IPermissionService permissionService = new PermissionService();
+    public final static IPermissionService permissionService = SpringContextHolder.getBean(PermissionService.class);
 
-    public final static IReplyService replyService = new ReplyService();
+    public final static IReplyService replyService = SpringContextHolder.getBean(ReplyService.class);
 
-    public final static IRoleService roleService = new RoleService();
+    public final static IRoleService roleService = SpringContextHolder.getBean(RoleService.class);
 
-    public final static IRolePermissionService rolePermissionService = new RolePermissionService();
+    public final static IRolePermissionService rolePermissionService = SpringContextHolder.getBean(RolePermissionService.class);
 
-    public final static ISectionService sectionService = new SectionService();
+    public final static ISectionService sectionService = SpringContextHolder.getBean(SectionService.class);
 
-    public final static ITopicService topicService = new TopicService();
+    public final static ITopicService topicService = SpringContextHolder.getBean(TopicService.class);
 
-    public final static ITopicAppendService topicAppendService = new TopicAppendService();
+    public final static ITopicAppendService topicAppendService = SpringContextHolder.getBean(TopicAppendService.class);
 
-    public final static IUserService userService = new UserService();
+    public final static IUserService userService = SpringContextHolder.getBean(UserService.class);
 
-    public final static IUserRoleService userRoleService = new UserRoleService();
+    public final static IUserRoleService userRoleService = SpringContextHolder.getBean(UserRoleService.class);
 }

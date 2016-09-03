@@ -25,6 +25,12 @@
     select
     <include refid="Base_Column_List" />
     from ehuacui_reply where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
+    <if test="start != null">
+      limit #{start,jdbcType=INTEGER}
+      <if test="limit != null">
+        ,#{limit,jdbcType=INTEGER}
+      </if>
+    </if>
   </select>
 
   <select id="countByTid" parameterType="java.lang.Integer" resultType="java.lang.Integer">

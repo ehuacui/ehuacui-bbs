@@ -1,8 +1,10 @@
 package org.ehuacui.service.impl;
 
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Section;
+import org.ehuacui.mapper.SectionMapper;
+import org.ehuacui.model.Section;
 import org.ehuacui.service.ISectionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,26 +13,30 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class SectionService implements ISectionService {
+
+    @Autowired
+    private SectionMapper sectionMapper;
 
     @Override
     public List<Section> findAll() {
-        return DaoHolder.sectionDao.findAll();
+        return sectionMapper.selectAll();
     }
 
     @Override
     public List<Section> findByShowStatus(boolean isshow) {
-        return DaoHolder.sectionDao.findByShowStatus(isshow);
+        return sectionMapper.selectByShowStatus(isshow);
     }
 
     @Override
     public Section findById(Integer id) {
-        return DaoHolder.sectionDao.findById(id);
+        return sectionMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public Section findByTab(String tab) {
-        return DaoHolder.sectionDao.findByTab(tab);
+        return sectionMapper.selectByShowTab(tab);
     }
 
 }

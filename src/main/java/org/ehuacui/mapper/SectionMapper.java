@@ -19,7 +19,7 @@ public interface SectionMapper {
 
     List<Section> selectAll();
 
-    List<Section> selectByShowStatus(Integer showStatus);
+    List<Section> selectByShowStatus(boolean showStatus);
 
-    List<Section> selectByShowTab(String tab);
+    Section selectByShowTab(String tab);
 }

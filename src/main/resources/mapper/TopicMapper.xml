@@ -48,10 +48,30 @@
         </if>
     </select>
 
-    <select id="countAll" resultMap="java.lang.Integer">
+    <select id="countAll" resultType="java.lang.Integer">
         select count(id)
         from ehuacui_topic t
         where t.is_delete = 0
+    </select>
+
+    <select id="selectByTab" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.tab = #{tab,jdbcType=VARCHAR}
+        order by t.top desc, t.last_reply_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByTab" resultType="java.lang.Integer">
+        select count(id)
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.tab = #{tab,jdbcType=VARCHAR}
     </select>
 
     <select id="selectAllGood" resultMap="BaseResultMap">
@@ -68,7 +88,7 @@
         </if>
     </select>
 
-    <select id="countAllGood" resultMap="java.lang.Integer">
+    <select id="countAllGood" resultType="java.lang.Integer">
         select count(id)
         from ehuacui_topic t
         where t.is_delete = 0 and t.good = 1
@@ -88,7 +108,7 @@
         </if>
     </select>
 
-    <select id="countAllNoReply" resultMap="java.lang.Integer">
+    <select id="countAllNoReply" resultType="java.lang.Integer">
         select count(id)
         from ehuacui_topic t
         where t.is_delete = 0 and t.id not in (select r.tid from ehuacui_reply r)
@@ -124,7 +144,7 @@
         </if>
     </select>
 
-    <select id="countByAuthor" resultMap="java.lang.Integer">
+    <select id="countByAuthor" resultType="java.lang.Integer">
         select count(id) from ehuacui_topic
         where is_delete = 0 and author = #{author,jdbcType=VARCHAR}
     </select>

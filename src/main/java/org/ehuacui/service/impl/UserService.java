@@ -1,12 +1,15 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.UserMapper;
+import org.ehuacui.mapper.UserRoleMapper;
+import org.ehuacui.model.User;
+import org.ehuacui.model.UserRole;
 import org.ehuacui.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,11 +17,17 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class UserService implements IUserService {
+
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public User findById(Integer id) {
-        return DaoHolder.userDao.findById(id);
+        return userMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -29,7 +38,7 @@ public class UserService implements IUserService {
      */
     @Override
     public User findByThirdId(String thirdId) {
-        return DaoHolder.userDao.findByThirdId(thirdId);
+        return userMapper.selectByThirdId(thirdId);
     }
 
     /**
@@ -40,7 +49,7 @@ public class UserService implements IUserService {
      */
     @Override
     public User findByAccessToken(String accessToken) {
-        return DaoHolder.userDao.findByAccessToken(accessToken);
+        return userMapper.selectByAccessToken(accessToken, new Date());
     }
 
     /**
@@ -50,8 +59,8 @@ public class UserService implements IUserService {
      * @return
      */
     @Override
-    public User findByNickname(String nickname) throws UnsupportedEncodingException {
-        return DaoHolder.userDao.findByNickname(nickname);
+    public User findByNickname(String nickname) {
+        return userMapper.selectByNickName(nickname);
     }
 
     /**
@@ -63,7 +72,9 @@ public class UserService implements IUserService {
      */
     @Override
     public Page<User> page(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.userDao.page(pageNumber, pageSize);
+        List<User> list = userMapper.selectAll(pageNumber, pageSize);
+        int total = userMapper.countAll();
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -73,12 +84,12 @@ public class UserService implements IUserService {
      */
     @Override
     public void deleteByNickname(String nickname) {
-        Db.update("delete from ehuacui_user where nickname = ?", nickname);
+        userMapper.deleteByNickName(nickname);
     }
 
     @Override
     public void deleteById(Integer id) {
-        DaoHolder.userDao.deleteById(id);
+        userMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -89,18 +100,28 @@ public class UserService implements IUserService {
      */
     @Override
     public void correlationRole(Integer userId, Integer[] roles) {
-        DaoHolder.userDao.correlationRole(userId, roles);
+        //先删除已经存在的关联
+        userRoleMapper.deleteByUserId(userId);
+        //建立新的关联关系
+        if (roles != null) {
+            for (Integer rid : roles) {
+                UserRole userRole = new UserRole();
+                userRole.setUid(userId);
+                userRole.setRid(rid);
+                userRoleMapper.insert(userRole);
+            }
+        }
     }
 
     /**
      * 根据权限id查询拥有这个权限的用户列表
      *
-     * @param id
+     * @param pid
      * @return
      */
     @Override
-    public List<User> findByPermissionId(Integer id) {
-        return DaoHolder.userDao.findByPermissionId(id);
+    public List<User> findByPermissionId(Integer pid) {
+        return userMapper.selectByPermissionId(pid);
     }
 
     /**
@@ -110,7 +131,7 @@ public class UserService implements IUserService {
      */
     @Override
     public List<User> scores(Integer limit) {
-        return DaoHolder.userDao.scores(limit);
+        return userMapper.selectUserScores(limit);
     }
 
 }

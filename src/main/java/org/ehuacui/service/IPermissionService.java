@@ -1,6 +1,6 @@
 package org.ehuacui.service;
 
-import org.ehuacui.module.Permission;
+import org.ehuacui.model.Permission;
 
 import java.util.List;
 import java.util.Map;

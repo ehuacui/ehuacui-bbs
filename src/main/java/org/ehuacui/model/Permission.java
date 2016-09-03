@@ -1,44 +1,54 @@
 package org.ehuacui.model;
 
+import java.util.List;
+
 /**
  * [STRATO MyBatis Generator]
  * Table: ehuacui_permission
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
+ *
+ * @mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class Permission {
     /**
      * Column: ehuacui_permission.id
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
-     *   权限名称
+     * 权限名称
      * Column: ehuacui_permission.name
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String name;
 
     /**
-     *   授权路径
+     * 授权路径
      * Column: ehuacui_permission.url
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String url;
 
     /**
-     *   权限描述
+     * 权限描述
      * Column: ehuacui_permission.description
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String description;
 
     /**
-     *   父节点0
+     * 父节点0
      * Column: ehuacui_permission.pid
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer pid;
+
+    private List<Permission> childPermissions;
 
     public Integer getId() {
         return id;
@@ -78,5 +88,13 @@ public class Permission {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public List<Permission> getChildPermissions() {
+        return childPermissions;
+    }
+
+    public void setChildPermissions(List<Permission> childPermissions) {
+        this.childPermissions = childPermissions;
     }
 }

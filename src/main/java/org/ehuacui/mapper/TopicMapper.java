@@ -19,9 +19,15 @@ public interface TopicMapper {
 
     int updateByPrimaryKey(Topic record);
 
+    List<Topic> selectAll();
+
     List<Topic> selectAll(Integer start, Integer limit);
 
     int countAll();
+
+    List<Topic> selectByTab(String tab, Integer start, Integer limit);
+
+    int countByTab(String tab);
 
     List<Topic> selectAllGood(Integer start, Integer limit);
 

@@ -20,9 +20,9 @@ public interface CollectMapper {
 
     List<Collect> selectByUid(Integer uid, Integer start, Integer limit);
 
-    List<Collect> selectByTidAndUid(Integer tid, Integer uid);
+    Collect selectByTidAndUid(Integer tid, Integer uid);
 
-    int countByTid(Integer tid);
+    long countByTid(Integer tid);
 
-    int countByUid(Integer uid);
+    long countByUid(Integer uid);
 }

@@ -1,9 +1,8 @@
 package org.ehuacui.service;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.module.User;
 
-import java.io.UnsupportedEncodingException;
+import org.ehuacui.common.Page;
+import org.ehuacui.model.User;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public interface IUserService {
      * @param nickname
      * @return
      */
-    User findByNickname(String nickname) throws UnsupportedEncodingException;
+    User findByNickname(String nickname);
 
     /**
      * 分页查询所有用户，倒序

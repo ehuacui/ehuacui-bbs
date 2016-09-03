@@ -1,6 +1,6 @@
 package org.ehuacui.service;
 
-import org.ehuacui.module.TopicAppend;
+import org.ehuacui.model.TopicAppend;
 
 import java.util.List;
 

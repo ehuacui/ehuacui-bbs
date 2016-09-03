@@ -109,4 +109,12 @@ public class Section {
     public void setPid(Integer pid) {
         this.pid = pid;
     }
+
+    public String showStatus(Section section) {
+        if (showStatus) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
 }

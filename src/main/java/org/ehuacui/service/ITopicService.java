@@ -1,7 +1,7 @@
 package org.ehuacui.service;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.module.Topic;
+import org.ehuacui.common.Page;
+import org.ehuacui.model.Topic;
 
 import java.util.List;
 

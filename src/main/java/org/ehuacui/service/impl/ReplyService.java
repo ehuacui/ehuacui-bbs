@@ -1,9 +1,11 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Reply;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.ReplyMapper;
+import org.ehuacui.model.Reply;
 import org.ehuacui.service.IReplyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +14,11 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class ReplyService implements IReplyService {
+
+    @Autowired
+    private ReplyMapper replyMapper;
 
     /**
      * 根据话题id查询回复数量
@@ -22,7 +28,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public int findCountByTid(Integer tid) {
-        return DaoHolder.replyDao.findCountByTid(tid);
+        return replyMapper.countByTid(tid);
     }
 
     /**
@@ -34,7 +40,9 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> findAll(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.replyDao.findAll(pageNumber, pageSize);
+        int total = replyMapper.countAll();
+        List<Reply> list = replyMapper.selectAll(pageNumber, pageSize);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -47,7 +55,9 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> page(Integer pageNumber, Integer pageSize, Integer tid) {
-        return DaoHolder.replyDao.page(pageNumber, pageSize, tid);
+        int total = replyMapper.countByTid(tid);
+        List<Reply> list = replyMapper.selectByTid(tid, pageNumber, pageSize);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -58,7 +68,7 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public List<Reply> findByTopicId(Integer topicId) {
-        return DaoHolder.replyDao.findByTopicId(topicId);
+        return replyMapper.selectByTid(topicId);
     }
 
     /**
@@ -71,7 +81,9 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public Page<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return DaoHolder.replyDao.pageByAuthor(pageNumber, pageSize, author);
+        int total = replyMapper.countByAuthor(author);
+        List<Reply> list = replyMapper.selectByAuthor(author, pageNumber, pageSize);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -81,16 +93,16 @@ public class ReplyService implements IReplyService {
      */
     @Override
     public void deleteByTid(Integer tid) {
-        DaoHolder.replyDao.deleteByTid(tid);
+        replyMapper.deleteByTid(tid);
     }
 
     @Override
     public void deleteById(Integer id) {
-        DaoHolder.replyDao.deleteById(id);
+        replyMapper.deleteById(id);
     }
 
     @Override
     public Reply findById(Integer id) {
-        return DaoHolder.replyDao.findById(id);
+        return replyMapper.selectByPrimaryKey(id);
     }
 }

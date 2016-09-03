@@ -1,18 +1,24 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Notification;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.NotificationMapper;
+import org.ehuacui.model.Notification;
 import org.ehuacui.service.INotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class NotificationService implements INotificationService {
 
-    private static final Notification me = new Notification();
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     /**
      * 查询未读通知数量
@@ -22,7 +28,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public int findNotReadCount(String author) {
-        return DaoHolder.notificationDao.findNotReadCount(author);
+        return notificationMapper.countNotReadByAuthor(author);
     }
 
     /**
@@ -35,7 +41,9 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public Page<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        return DaoHolder.notificationDao.pageByAuthor(pageNumber, pageSize, author);
+        List<Notification> list = notificationMapper.selectByAuthor(author, pageNumber, pageSize);
+        long total = notificationMapper.countByAuthor(author);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -45,7 +53,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public void makeUnreadToRead(String author) {
-        DaoHolder.notificationDao.makeUnreadToRead(author);
+        notificationMapper.updateUnreadToRead(author);
     }
 
     /**
@@ -59,6 +67,12 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public void sendNotification(String author, String targetAuthor, String action, Integer tid, String content) {
-        DaoHolder.notificationDao.sendNotification(author, targetAuthor, action, tid, content);
+        Notification notification = new Notification();
+        notification.setAuthor(author);
+        notification.setTargetAuthor(targetAuthor);
+        notification.setAction(action);
+        notification.setTid(tid);
+        notification.setContent(content);
+        notificationMapper.insert(notification);
     }
 }

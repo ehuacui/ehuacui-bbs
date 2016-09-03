@@ -1,9 +1,13 @@
 package org.ehuacui.service.impl;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.Role;
+import org.ehuacui.common.Page;
+import org.ehuacui.mapper.RoleMapper;
+import org.ehuacui.mapper.RolePermissionMapper;
+import org.ehuacui.model.Role;
+import org.ehuacui.model.RolePermission;
 import org.ehuacui.service.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,11 +16,19 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class RoleService implements IRoleService {
+
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
 
     @Override
     public Page<Role> page(Integer pageNumber, Integer pageSize) {
-        return DaoHolder.roleDao.page(pageNumber, pageSize);
+        int total = roleMapper.countAll();
+        List<Role> list = roleMapper.selectAll(pageNumber, pageSize);
+        return new Page<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -27,26 +39,36 @@ public class RoleService implements IRoleService {
      */
     @Override
     public Role findByName(String name) {
-        return DaoHolder.roleDao.findByName(name);
+        return roleMapper.selectByName(name);
     }
 
     @Override
     public List<Role> findAll() {
-        return DaoHolder.roleDao.findAll();
+        return roleMapper.selectAll();
     }
 
     @Override
     public void correlationPermission(Integer roleId, Integer[] permissionIds) {
-        DaoHolder.roleDao.correlationPermission(roleId, permissionIds);
+        //先删除已经存在的关联
+        rolePermissionMapper.deleteByRoleId(roleId);
+        //建立新的关联关系
+        if (permissionIds != null) {
+            for (Integer pid : permissionIds) {
+                RolePermission rolePermission = new RolePermission();
+                rolePermission.setPid(pid);
+                rolePermission.setRid(roleId);
+                rolePermissionMapper.insert(rolePermission);
+            }
+        }
     }
 
     @Override
     public void deleteById(Integer id) {
-        DaoHolder.roleDao.deleteById(id);
+        roleMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public Role findById(Integer id) {
-        return DaoHolder.roleDao.findById(id);
+        return roleMapper.selectByPrimaryKey(id);
     }
 }

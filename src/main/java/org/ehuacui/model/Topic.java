@@ -261,4 +261,32 @@ public class Topic {
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
     }
+
+    /**
+     * 转换置顶状态
+     *
+     * @param topic
+     * @return
+     */
+    public String isTop(Topic topic) {
+        if (top) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
+
+    /**
+     * 转换精华状态
+     *
+     * @param topic
+     * @return
+     */
+    public String isGood(Topic topic) {
+        if (good) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
 }

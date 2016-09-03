@@ -21,6 +21,8 @@ public interface ReplyMapper {
 
     List<Reply> selectByTid(Integer tid);
 
+    List<Reply> selectByTid(Integer tid, Integer start, Integer limit);
+
     int countByTid(Integer tid);
 
     List<Reply> selectAll(Integer start, Integer limit);

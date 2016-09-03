@@ -1,7 +1,7 @@
 package org.ehuacui.service;
 
-import com.jfinal.plugin.activerecord.Page;
-import org.ehuacui.module.Notification;
+import org.ehuacui.common.Page;
+import org.ehuacui.model.Notification;
 
 /**
  * Created by jianwei.zhou on 2016/8/15.

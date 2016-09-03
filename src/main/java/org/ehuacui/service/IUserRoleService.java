@@ -1,6 +1,6 @@
 package org.ehuacui.service;
 
-import org.ehuacui.module.UserRole;
+import org.ehuacui.model.UserRole;
 
 import java.util.List;
 

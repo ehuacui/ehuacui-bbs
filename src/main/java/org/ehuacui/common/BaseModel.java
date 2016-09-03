@@ -2,8 +2,8 @@ package org.ehuacui.common;
 
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Model;
-import org.ehuacui.module.Section;
-import org.ehuacui.module.User;
+import org.ehuacui.model.Section;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.MarkdownUtil;
 import org.ehuacui.utils.StrUtil;
 import org.jsoup.Jsoup;
@@ -50,7 +50,7 @@ public class BaseModel<T extends Model> extends Model<T> {
     public String getNameByTab(String tab) {
         Section section = ServiceHolder.sectionService.findByTab(tab);
         if (section != null) {
-            return section.getStr("name");
+            return section.getName();
         }
         return null;
     }
@@ -64,7 +64,7 @@ public class BaseModel<T extends Model> extends Model<T> {
     public String getAvatarByNickname(String nickname) throws UnsupportedEncodingException {
         User user = ServiceHolder.userService.findByNickname(nickname);
         if (user != null) {
-            return user.getStr("avatar");
+            return user.getAvatar();
         }
         return null;
     }

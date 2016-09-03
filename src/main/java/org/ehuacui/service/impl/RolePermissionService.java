@@ -1,8 +1,10 @@
 package org.ehuacui.service.impl;
 
-import org.ehuacui.common.DaoHolder;
-import org.ehuacui.module.RolePermission;
+import org.ehuacui.mapper.RolePermissionMapper;
+import org.ehuacui.model.RolePermission;
 import org.ehuacui.service.IRolePermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,20 +13,24 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Service
 public class RolePermissionService implements IRolePermissionService {
+
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
 
     @Override
     public List<RolePermission> findByRoleId(Integer roleId) {
-        return DaoHolder.rolePermissionDao.findByRoleId(roleId);
+        return rolePermissionMapper.selectByRoleId(roleId);
     }
 
     @Override
     public void deleteByPermissionId(Integer permissionId) {
-        DaoHolder.rolePermissionDao.deleteByPermissionId(permissionId);
+        rolePermissionMapper.deleteByPermissionId(permissionId);
     }
 
     @Override
     public void deleteByRoleId(Integer roleId) {
-        DaoHolder.rolePermissionDao.deleteByRoleId(roleId);
+        rolePermissionMapper.deleteByRoleId(roleId);
     }
 }

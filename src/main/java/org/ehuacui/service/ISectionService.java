@@ -1,6 +1,6 @@
 package org.ehuacui.service;
 
-import org.ehuacui.module.Section;
+import org.ehuacui.model.Section;
 
 import java.util.List;
 
