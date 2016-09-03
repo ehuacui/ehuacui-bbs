@@ -2,6 +2,8 @@ package org.ehuacui.mapper;
 
 import org.ehuacui.model.TopicAppend;
 
+import java.util.List;
+
 public interface TopicAppendMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,8 @@ public interface TopicAppendMapper {
     int updateByPrimaryKeyWithBLOBs(TopicAppend record);
 
     int updateByPrimaryKey(TopicAppend record);
+
+    List<TopicAppend> selectByTid(Integer tid);
+
+    int deleteByTid(Integer tid);
 }

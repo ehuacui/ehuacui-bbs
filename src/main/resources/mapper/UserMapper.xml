@@ -2,84 +2,99 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ehuacui.mapper.UserMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.model.User">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
-    <result column="score" jdbcType="INTEGER" property="score" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="signature" jdbcType="VARCHAR" property="signature" />
-    <result column="third_id" jdbcType="VARCHAR" property="thirdId" />
-    <result column="access_token" jdbcType="VARCHAR" property="accessToken" />
-    <result column="receive_msg" jdbcType="BIT" property="receiveMsg" />
-    <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
-    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
-    <result column="channel" jdbcType="VARCHAR" property="channel" />
-    <result column="is_block" jdbcType="BIT" property="isBlock" />
-    <result column="third_access_token" jdbcType="VARCHAR" property="thirdAccessToken" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="org.ehuacui.model.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="signature" jdbcType="VARCHAR" property="signature"/>
+        <result column="third_id" jdbcType="VARCHAR" property="thirdId"/>
+        <result column="access_token" jdbcType="VARCHAR" property="accessToken"/>
+        <result column="receive_msg" jdbcType="BIT" property="receiveMsg"/>
+        <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
+        <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
+        <result column="channel" jdbcType="VARCHAR" property="channel"/>
+        <result column="is_block" jdbcType="BIT" property="isBlock"/>
+        <result column="third_access_token" jdbcType="VARCHAR" property="thirdAccessToken"/>
+    </resultMap>
 
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     id, nickname, score, avatar, email, url, signature, third_id, access_token, receive_msg, 
     in_time, expire_time, channel, is_block, third_access_token
   </sql>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_user
-    <if test="start != null">
-      limit #{start,jdbcType=INTEGER}
-      <if test="limit != null">
-        ,#{limit,jdbcType=INTEGER}
-      </if>
-    </if>
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_user
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
 
-  <select id="countAll" resultType="java.lang.Integer">
+    <select id="countAll" resultType="java.lang.Integer">
     select count(id) from ehuacui_user
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from ehuacui_user
-    where id = #{id,jdbcType=INTEGER}
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByThirdId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_user
+        where third_id = #{thirdId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByNickName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_user
+        where nickname = #{nickname,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPermissionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select u.* from ehuacui_user u, ehuacui_user_role ur, ehuacui_role r, ehuacui_role_permission rp,
+     ehuacui_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
+    and p.id = #{pid,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByThirdId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_user
-    where third_id = #{thirdId,jdbcType=VARCHAR}
-  </select>
+    <select id="selectUserScores" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select user.*, role.description from ehuacui_user user, ehuacui_role role, ehuacui_user_role ur
+        where user.id = ur.uid and ur.rid = role.id
+        order by score desc, in_time desc
+        <if test="limit != null">
+            limit #{limit,jdbcType=INTEGER}
+        </if>
+    </select>
 
-  <select id="selectByNickName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_user
-    where nickname = #{nickname,jdbcType=VARCHAR}
-  </select>
+    <select id="selectByAccessToken" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_user
+        where access_token = #{accessToken,jdbcType=VARCHAR} and expire_time &gt; #{expireTime,jdbcType=TIMESTAMP}
+    </select>
 
-  <select id="selectByAccessToken" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_user
-    where access_token = #{accessToken,jdbcType=VARCHAR} and expire_time &gt; #{expireTime,jdbcType=TIMESTAMP}
-  </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ehuacui_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <delete id="deleteByNickName" parameterType="java.lang.String">
+    <delete id="deleteByNickName" parameterType="java.lang.String">
     delete from ehuacui_user
     where nickname = #{nickname,jdbcType=VARCHAR}
   </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.model.User">
+    <insert id="insert" parameterType="org.ehuacui.model.User">
     insert into ehuacui_user (id, nickname, score, 
       avatar, email, url, 
       signature, third_id, access_token, 
@@ -94,154 +109,154 @@
       )
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.User">
-    insert into ehuacui_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="nickname != null">
-        nickname,
-      </if>
-      <if test="score != null">
-        score,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="url != null">
-        url,
-      </if>
-      <if test="signature != null">
-        signature,
-      </if>
-      <if test="thirdId != null">
-        third_id,
-      </if>
-      <if test="accessToken != null">
-        access_token,
-      </if>
-      <if test="receiveMsg != null">
-        receive_msg,
-      </if>
-      <if test="inTime != null">
-        in_time,
-      </if>
-      <if test="expireTime != null">
-        expire_time,
-      </if>
-      <if test="channel != null">
-        channel,
-      </if>
-      <if test="isBlock != null">
-        is_block,
-      </if>
-      <if test="thirdAccessToken != null">
-        third_access_token,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="score != null">
-        #{score,jdbcType=INTEGER},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="signature != null">
-        #{signature,jdbcType=VARCHAR},
-      </if>
-      <if test="thirdId != null">
-        #{thirdId,jdbcType=VARCHAR},
-      </if>
-      <if test="accessToken != null">
-        #{accessToken,jdbcType=VARCHAR},
-      </if>
-      <if test="receiveMsg != null">
-        #{receiveMsg,jdbcType=BIT},
-      </if>
-      <if test="inTime != null">
-        #{inTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expireTime != null">
-        #{expireTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="channel != null">
-        #{channel,jdbcType=VARCHAR},
-      </if>
-      <if test="isBlock != null">
-        #{isBlock,jdbcType=BIT},
-      </if>
-      <if test="thirdAccessToken != null">
-        #{thirdAccessToken,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="org.ehuacui.model.User">
+        insert into ehuacui_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="signature != null">
+                signature,
+            </if>
+            <if test="thirdId != null">
+                third_id,
+            </if>
+            <if test="accessToken != null">
+                access_token,
+            </if>
+            <if test="receiveMsg != null">
+                receive_msg,
+            </if>
+            <if test="inTime != null">
+                in_time,
+            </if>
+            <if test="expireTime != null">
+                expire_time,
+            </if>
+            <if test="channel != null">
+                channel,
+            </if>
+            <if test="isBlock != null">
+                is_block,
+            </if>
+            <if test="thirdAccessToken != null">
+                third_access_token,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdId != null">
+                #{thirdId,jdbcType=VARCHAR},
+            </if>
+            <if test="accessToken != null">
+                #{accessToken,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveMsg != null">
+                #{receiveMsg,jdbcType=BIT},
+            </if>
+            <if test="inTime != null">
+                #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="isBlock != null">
+                #{isBlock,jdbcType=BIT},
+            </if>
+            <if test="thirdAccessToken != null">
+                #{thirdAccessToken,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.User">
-    update ehuacui_user
-    <set>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="score != null">
-        score = #{score,jdbcType=INTEGER},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="signature != null">
-        signature = #{signature,jdbcType=VARCHAR},
-      </if>
-      <if test="thirdId != null">
-        third_id = #{thirdId,jdbcType=VARCHAR},
-      </if>
-      <if test="accessToken != null">
-        access_token = #{accessToken,jdbcType=VARCHAR},
-      </if>
-      <if test="receiveMsg != null">
-        receive_msg = #{receiveMsg,jdbcType=BIT},
-      </if>
-      <if test="inTime != null">
-        in_time = #{inTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expireTime != null">
-        expire_time = #{expireTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="channel != null">
-        channel = #{channel,jdbcType=VARCHAR},
-      </if>
-      <if test="isBlock != null">
-        is_block = #{isBlock,jdbcType=BIT},
-      </if>
-      <if test="thirdAccessToken != null">
-        third_access_token = #{thirdAccessToken,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.User">
+        update ehuacui_user
+        <set>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                signature = #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdId != null">
+                third_id = #{thirdId,jdbcType=VARCHAR},
+            </if>
+            <if test="accessToken != null">
+                access_token = #{accessToken,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveMsg != null">
+                receive_msg = #{receiveMsg,jdbcType=BIT},
+            </if>
+            <if test="inTime != null">
+                in_time = #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="channel != null">
+                channel = #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="isBlock != null">
+                is_block = #{isBlock,jdbcType=BIT},
+            </if>
+            <if test="thirdAccessToken != null">
+                third_access_token = #{thirdAccessToken,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.User">
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.User">
     update ehuacui_user
     set nickname = #{nickname,jdbcType=VARCHAR},
       score = #{score,jdbcType=INTEGER},

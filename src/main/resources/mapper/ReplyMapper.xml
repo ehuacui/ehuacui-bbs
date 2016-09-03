@@ -124,12 +124,12 @@
   </insert>
 
   <update id="deleteById">
-    update ehuacui_reply set is_delete = #{isDelete,jdbcType=BIT}
+    update ehuacui_reply set is_delete = 1
     where id = #{id,jdbcType=INTEGER}
   </update>
 
   <update id="deleteByTid">
-    update ehuacui_reply set is_delete = #{isDelete,jdbcType=BIT}
+    update ehuacui_reply set is_delete = 1
     where tid = #{tid,jdbcType=INTEGER}
   </update>
 

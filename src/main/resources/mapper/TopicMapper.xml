@@ -1,75 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ehuacui.mapper.TopicMapper">
-  <resultMap id="BaseResultMap" type="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tab" jdbcType="VARCHAR" property="tab" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="tag" jdbcType="VARCHAR" property="tag" />
-    <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="last_reply_time" jdbcType="TIMESTAMP" property="lastReplyTime" />
-    <result column="last_reply_author" jdbcType="VARCHAR" property="lastReplyAuthor" />
-    <result column="view" jdbcType="INTEGER" property="view" />
-    <result column="author" jdbcType="VARCHAR" property="author" />
-    <result column="top" jdbcType="BIT" property="top" />
-    <result column="good" jdbcType="BIT" property="good" />
-    <result column="show_status" jdbcType="BIT" property="showStatus" />
-    <result column="reply_count" jdbcType="INTEGER" property="replyCount" />
-    <result column="is_delete" jdbcType="BIT" property="isDelete" />
-    <result column="tag_is_count" jdbcType="BIT" property="tagIsCount" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
+
+    <resultMap id="BaseResultMap" type="org.ehuacui.model.Topic">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tab" jdbcType="VARCHAR" property="tab"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="tag" jdbcType="VARCHAR" property="tag"/>
+        <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="last_reply_time" jdbcType="TIMESTAMP" property="lastReplyTime"/>
+        <result column="last_reply_author" jdbcType="VARCHAR" property="lastReplyAuthor"/>
+        <result column="view" jdbcType="INTEGER" property="view"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="top" jdbcType="BIT" property="top"/>
+        <result column="good" jdbcType="BIT" property="good"/>
+        <result column="show_status" jdbcType="BIT" property="showStatus"/>
+        <result column="reply_count" jdbcType="INTEGER" property="replyCount"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="tag_is_count" jdbcType="BIT" property="tagIsCount"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
     id, tab, title, tag, in_time, modify_time, last_reply_time, last_reply_author, view, 
-    author, top, good, show_status, reply_count, is_delete, tag_is_count
+    author, top, good, show_status, reply_count, is_delete, tag_is_count, content
   </sql>
-  <sql id="Blob_Column_List">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    content
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from ehuacui_topic
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic t
+        where t.is_delete = 0
+        order by t.top desc, t.last_reply_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countAll" resultMap="java.lang.Integer">
+        select count(id)
+        from ehuacui_topic t
+        where t.is_delete = 0
+    </select>
+
+    <select id="selectAllGood" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.good = 1
+        order by t.top desc, t.last_reply_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countAllGood" resultMap="java.lang.Integer">
+        select count(id)
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.good = 1
+    </select>
+
+    <select id="selectAllNoReply" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.id not in (select r.tid from ehuacui_reply r)
+        order by t.top desc, t.last_reply_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countAllNoReply" resultMap="java.lang.Integer">
+        select count(id)
+        from ehuacui_topic t
+        where t.is_delete = 0 and t.id not in (select r.tid from ehuacui_reply r)
+    </select>
+
+    <select id="selectOtherTopicByAuthor" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic
+        where is_delete = 0
+        and id != #{id,jdbcType=INTEGER}
+        and author = #{author,jdbcType=VARCHAR}
+        order by in_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="selectByAuthor" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_topic
+        where is_delete = 0 and author = #{author,jdbcType=VARCHAR}
+        order by in_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByAuthor" resultMap="java.lang.Integer">
+        select count(id) from ehuacui_topic
+        where is_delete = 0 and author = #{author,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ehuacui_topic
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
+
+    <insert id="insert" parameterType="org.ehuacui.model.Topic">
     insert into ehuacui_topic (id, tab, title, 
       tag, in_time, modify_time, 
       last_reply_time, last_reply_author, view, 
@@ -83,182 +148,173 @@
       #{replyCount,jdbcType=INTEGER}, #{isDelete,jdbcType=BIT}, #{tagIsCount,jdbcType=BIT}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    insert into ehuacui_topic
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="tab != null">
-        tab,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="tag != null">
-        tag,
-      </if>
-      <if test="inTime != null">
-        in_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-      <if test="lastReplyTime != null">
-        last_reply_time,
-      </if>
-      <if test="lastReplyAuthor != null">
-        last_reply_author,
-      </if>
-      <if test="view != null">
-        view,
-      </if>
-      <if test="author != null">
-        author,
-      </if>
-      <if test="top != null">
-        top,
-      </if>
-      <if test="good != null">
-        good,
-      </if>
-      <if test="showStatus != null">
-        show_status,
-      </if>
-      <if test="replyCount != null">
-        reply_count,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-      <if test="tagIsCount != null">
-        tag_is_count,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="tab != null">
-        #{tab,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="tag != null">
-        #{tag,jdbcType=VARCHAR},
-      </if>
-      <if test="inTime != null">
-        #{inTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastReplyTime != null">
-        #{lastReplyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastReplyAuthor != null">
-        #{lastReplyAuthor,jdbcType=VARCHAR},
-      </if>
-      <if test="view != null">
-        #{view,jdbcType=INTEGER},
-      </if>
-      <if test="author != null">
-        #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="top != null">
-        #{top,jdbcType=BIT},
-      </if>
-      <if test="good != null">
-        #{good,jdbcType=BIT},
-      </if>
-      <if test="showStatus != null">
-        #{showStatus,jdbcType=BIT},
-      </if>
-      <if test="replyCount != null">
-        #{replyCount,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=BIT},
-      </if>
-      <if test="tagIsCount != null">
-        #{tagIsCount,jdbcType=BIT},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    update ehuacui_topic
-    <set>
-      <if test="tab != null">
-        tab = #{tab,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="tag != null">
-        tag = #{tag,jdbcType=VARCHAR},
-      </if>
-      <if test="inTime != null">
-        in_time = #{inTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastReplyTime != null">
-        last_reply_time = #{lastReplyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastReplyAuthor != null">
-        last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
-      </if>
-      <if test="view != null">
-        view = #{view,jdbcType=INTEGER},
-      </if>
-      <if test="author != null">
-        author = #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="top != null">
-        top = #{top,jdbcType=BIT},
-      </if>
-      <if test="good != null">
-        good = #{good,jdbcType=BIT},
-      </if>
-      <if test="showStatus != null">
-        show_status = #{showStatus,jdbcType=BIT},
-      </if>
-      <if test="replyCount != null">
-        reply_count = #{replyCount,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=BIT},
-      </if>
-      <if test="tagIsCount != null">
-        tag_is_count = #{tagIsCount,jdbcType=BIT},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
+
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Topic">
+        insert into ehuacui_topic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tab != null">
+                tab,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="tag != null">
+                tag,
+            </if>
+            <if test="inTime != null">
+                in_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="lastReplyTime != null">
+                last_reply_time,
+            </if>
+            <if test="lastReplyAuthor != null">
+                last_reply_author,
+            </if>
+            <if test="view != null">
+                view,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="top != null">
+                top,
+            </if>
+            <if test="good != null">
+                good,
+            </if>
+            <if test="showStatus != null">
+                show_status,
+            </if>
+            <if test="replyCount != null">
+                reply_count,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="tagIsCount != null">
+                tag_is_count,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tab != null">
+                #{tab,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="tag != null">
+                #{tag,jdbcType=VARCHAR},
+            </if>
+            <if test="inTime != null">
+                #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastReplyTime != null">
+                #{lastReplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastReplyAuthor != null">
+                #{lastReplyAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="view != null">
+                #{view,jdbcType=INTEGER},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="top != null">
+                #{top,jdbcType=BIT},
+            </if>
+            <if test="good != null">
+                #{good,jdbcType=BIT},
+            </if>
+            <if test="showStatus != null">
+                #{showStatus,jdbcType=BIT},
+            </if>
+            <if test="replyCount != null">
+                #{replyCount,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="tagIsCount != null">
+                #{tagIsCount,jdbcType=BIT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Topic">
+        update ehuacui_topic
+        <set>
+            <if test="tab != null">
+                tab = #{tab,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="tag != null">
+                tag = #{tag,jdbcType=VARCHAR},
+            </if>
+            <if test="inTime != null">
+                in_time = #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastReplyTime != null">
+                last_reply_time = #{lastReplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastReplyAuthor != null">
+                last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="view != null">
+                view = #{view,jdbcType=INTEGER},
+            </if>
+            <if test="author != null">
+                author = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="top != null">
+                top = #{top,jdbcType=BIT},
+            </if>
+            <if test="good != null">
+                good = #{good,jdbcType=BIT},
+            </if>
+            <if test="showStatus != null">
+                show_status = #{showStatus,jdbcType=BIT},
+            </if>
+            <if test="replyCount != null">
+                reply_count = #{replyCount,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="tagIsCount != null">
+                tag_is_count = #{tagIsCount,jdbcType=BIT},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Topic">
     update ehuacui_topic
     set tab = #{tab,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -278,27 +334,22 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Topic">
-    <!--
-      WARNING - @mbggenerated
-      Generated on 2016-08-16 13:07:45.
-    -->
-    update ehuacui_topic
-    set tab = #{tab,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      tag = #{tag,jdbcType=VARCHAR},
-      in_time = #{inTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      last_reply_time = #{lastReplyTime,jdbcType=TIMESTAMP},
-      last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
-      view = #{view,jdbcType=INTEGER},
-      author = #{author,jdbcType=VARCHAR},
-      top = #{top,jdbcType=BIT},
-      good = #{good,jdbcType=BIT},
-      show_status = #{showStatus,jdbcType=BIT},
-      reply_count = #{replyCount,jdbcType=INTEGER},
-      is_delete = #{isDelete,jdbcType=BIT},
-      tag_is_count = #{tagIsCount,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+    <update id="deleteById" parameterType="java.lang.Integer">
+        update ehuacui_topic
+        set is_delete = 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateTopById" parameterType="java.lang.Integer">
+        update ehuacui_topic
+        set top = 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateGoodById" parameterType="java.lang.Integer">
+        update ehuacui_topic
+        set good = 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

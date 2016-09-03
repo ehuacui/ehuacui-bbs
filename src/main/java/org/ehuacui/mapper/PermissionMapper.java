@@ -2,6 +2,8 @@ package org.ehuacui.mapper;
 
 import org.ehuacui.model.Permission;
 
+import java.util.List;
+
 public interface PermissionMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,12 @@ public interface PermissionMapper {
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
+
+    List<Permission> selectByPid(Integer pid);
+
+    List<Permission> selectAllChild();
+
+    Permission selectByUid(Integer uid);
+
+    int deleteByPid(Integer pid);
 }

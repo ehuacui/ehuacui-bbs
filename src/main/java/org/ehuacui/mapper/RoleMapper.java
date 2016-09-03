@@ -2,6 +2,8 @@ package org.ehuacui.mapper;
 
 import org.ehuacui.model.Role;
 
+import java.util.List;
+
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,10 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    List<Role> selectAll(Integer start, Integer limit);
+
+    int countAll();
+
+    List<Role> selectByName(String name);
 }
