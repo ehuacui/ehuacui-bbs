@@ -41,4 +41,8 @@ public interface ICollectService {
      * @return
      */
     Long countByUid(Integer uid);
+
+    void save(Collect collect);
+
+    void delete(Integer id);
 }

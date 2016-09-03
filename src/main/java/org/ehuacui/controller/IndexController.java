@@ -2,17 +2,18 @@ package org.ehuacui.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.jfinal.upload.UploadFile;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.Page;
 import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
-import org.ehuacui.module.Section;
+import org.ehuacui.model.Section;
+import org.ehuacui.model.Topic;
 import org.ehuacui.utils.QiniuUpload;
 import org.ehuacui.utils.SolrUtil;
 import org.ehuacui.utils.StrUtil;
@@ -40,11 +41,11 @@ public class IndexController extends BaseController {
         }
         if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
             Section section = ServiceHolder.sectionService.findByTab(tab);
-            setAttr("sectionName", section.getStr("name"));
+            setAttr("sectionName", section.getName());
         } else {
             setAttr("sectionName", "版块");
         }
-        Page page = ServiceHolder.topicService.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
+        Page<Topic> page = ServiceHolder.topicService.page(getParaToInt("p", 1), PropKit.getInt("pageSize", 20), tab);
         setAttr("tab", tab);
         setAttr("sections", ServiceHolder.sectionService.findByShowStatus(true));
         setAttr("page", page);

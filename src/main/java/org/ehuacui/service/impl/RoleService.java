@@ -71,4 +71,14 @@ public class RoleService implements IRoleService {
     public Role findById(Integer id) {
         return roleMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void save(Role role) {
+        roleMapper.insert(role);
+    }
+
+    @Override
+    public void update(Role role) {
+        roleMapper.updateByPrimaryKey(role);
+    }
 }

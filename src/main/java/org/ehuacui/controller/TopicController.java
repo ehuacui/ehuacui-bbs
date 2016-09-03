@@ -2,18 +2,18 @@ package org.ehuacui.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
+import org.ehuacui.common.Page;
 import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
-import org.ehuacui.module.*;
+import org.ehuacui.model.*;
 import org.ehuacui.utils.SolrUtil;
 import org.ehuacui.utils.StrUtil;
 import org.jsoup.Jsoup;
@@ -42,25 +42,26 @@ public class TopicController extends BaseController {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             //处理一下置顶，精华
-            topic.put("_top", topic.getBoolean("top") ? "取消置顶" : "置顶");
-            topic.put("_good", topic.getBoolean("good") ? "取消精华" : "精华");
+            topic.set_top(topic.getTop() ? "取消置顶" : "置顶");
+            topic.set_good(topic.getGood() ? "取消精华" : "精华");
             //查询追加内容
             List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
             //话题浏览次数+1
-            topic.set("view", topic.getInt("view") + 1).update();
+            topic.setView(topic.getView() + 1);
+            ServiceHolder.topicService.update(topic);
             //更新redis里的topic数据
             Cache cache = Redis.use();
             Topic _topic = cache.get(Constants.CacheEnum.topic.name() + tid);
             if (_topic != null) {
-                _topic.set("view", _topic.getInt("view") + 1);
+                _topic.setView(_topic.getView() + 1);
                 cache.set(Constants.CacheEnum.topic.name() + tid, _topic);
             }
             //查询版块名称
-            Section section = ServiceHolder.sectionService.findByTab(topic.getStr("tab"));
+            Section section = ServiceHolder.sectionService.findByTab(topic.getTab());
             //查询话题作者信息
-            User authorinfo = ServiceHolder.userService.findByNickname(topic.getStr("author"));
+            User authorinfo = ServiceHolder.userService.findByNickname(topic.getAuthor());
             //查询作者其他话题
-            List<Topic> otherTopics = ServiceHolder.topicService.findOtherTopicByAuthor(tid, topic.getStr("author"), 7);
+            List<Topic> otherTopics = ServiceHolder.topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
             //查询回复
             Page<Reply> page = ServiceHolder.replyService.page(getParaToInt("p"), PropKit.getInt("replyPageSize"), tid);
             //查询收藏数量
@@ -68,7 +69,7 @@ public class TopicController extends BaseController {
             //查询当前用户是否收藏了该话题
             User user = getUser();
             if (user != null) {
-                Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
+                Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getId());
                 setAttr("collect", collect);
             }
             setAttr("topic", topic);
@@ -104,19 +105,20 @@ public class TopicController extends BaseController {
                 String tab = getPara("tab");
                 User user = getUser();
                 Topic topic = new Topic();
-                topic.set("title", Jsoup.clean(title, Whitelist.basic()))
-                        .set("content", content)
-                        .set("tab", tab)
-                        .set("in_time", now)
-                        .set("last_reply_time", now)
-                        .set("view", 0)
-                        .set("author", user.get("nickname"))
-                        .set("top", false)
-                        .set("good", false)
-                        .set("show_status", true)
-                        .set("reply_count", 0)
-                        .set("is_delete", false)
-                        .save();
+                topic.setTitle(Jsoup.clean(title, Whitelist.basic()));
+                topic.setContent(content);
+                topic.setTab(tab);
+                topic.setInTime(now);
+                topic.setLastReplyTime(now);
+                topic.setView(0);
+                topic.setAuthor(user.getNickname());
+                topic.setTop(false);
+                topic.setGood(false);
+                topic.setShowStatus(true);
+                topic.setReplyCount(0);
+                topic.setIsDelete(false);
+                ServiceHolder.topicService.save(topic);
+
                 //索引话题
                 if (PropKit.getBoolean("solr.status")) {
                     SolrUtil solrUtil = new SolrUtil();
@@ -125,9 +127,9 @@ public class TopicController extends BaseController {
                 //给用户加分
 //                user.set("score", user.getInt("score") + 5).update();
                 //清理用户缓存
-                clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
-                clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-                redirect("/topic/" + topic.getInt("id"));
+                clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
+                clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
+                redirect("/topic/" + topic.getId());
             }
         }
     }
@@ -152,19 +154,19 @@ public class TopicController extends BaseController {
             String tab = getPara("tab");
             String title = getPara("title");
             String content = getPara("content");
-            topic.set("tab", tab)
-                    .set("title", Jsoup.clean(title, Whitelist.basic()))
-                    .set("content", content)
-                    .update();
+            topic.setTab(tab);
+            topic.setTitle(Jsoup.clean(title, Whitelist.basic()));
+            topic.setContent(content);
+            ServiceHolder.topicService.update(topic);
             //索引话题
             if (PropKit.getBoolean("solr.status")) {
                 SolrUtil solrUtil = new SolrUtil();
                 solrUtil.indexTopic(topic);
             }
             //清理缓存
-            clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(topic.getStr("author"), "utf-8"));
+            clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(topic.getAuthor(), "utf-8"));
             clearCache(Constants.CacheEnum.topic.name() + id);
-            redirect("/topic/" + topic.getInt("id"));
+            redirect("/topic/" + topic.getId());
         }
     }
 
@@ -180,7 +182,7 @@ public class TopicController extends BaseController {
         Integer tid = getParaToInt(0);
         Topic topic = ServiceHolder.topicService.findById(tid);
         User user = getUser();
-        if (topic.getStr("author").equals(user.getStr("nickname"))) {
+        if (topic.getAuthor().equals(user.getNickname())) {
             if (method.equals("GET")) {
                 setAttr("topic", topic);
                 render("topic/append.ftl");
@@ -188,14 +190,14 @@ public class TopicController extends BaseController {
                 Date now = new Date();
                 String content = getPara("content");
                 TopicAppend topicAppend = new TopicAppend();
-                topicAppend.set("tid", tid)
-                        .set("content", content)
-                        .set("in_time", now)
-                        .set("is_delete", false)
-                        .save();
+                topicAppend.setTid(tid);
+                topicAppend.setContent(content);
+                topicAppend.setInTime(now);
+                topicAppend.setIsDelete(false);
+                ServiceHolder.topicAppendService.save(topicAppend);
                 //索引话题
                 if (PropKit.getBoolean("solr.status")) {
-                    topic.set("content", topic.getStr("content") + "\n" + content);
+                    topic.setContent(topic.getContent() + "\n" + content);
                     SolrUtil solrUtil = new SolrUtil();
                     solrUtil.indexTopic(topic);
                 }
@@ -220,24 +222,24 @@ public class TopicController extends BaseController {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
         TopicAppend topicAppend = ServiceHolder.topicAppendService.findById(id);
-        Topic topic = ServiceHolder.topicService.findById(topicAppend.getInt("tid"));
+        Topic topic = ServiceHolder.topicService.findById(topicAppend.getTid());
         if (method.equals("GET")) {
             setAttr("topicAppend", topicAppend);
             setAttr("topic", topic);
             render("topic/appendedit.ftl");
         } else if (method.equals("POST")) {
             String content = getPara("content");
-            topicAppend.set("content", content)
-                    .update();
+            topicAppend.setContent(content);
+            ServiceHolder.topicAppendService.update(topicAppend);
             //索引话题
             if (PropKit.getBoolean("solr.status")) {
-                topic.set("content", topic.getStr("content") + "\n" + content);
+                topic.setContent(topic.getContent() + "\n" + content);
                 SolrUtil solrUtil = new SolrUtil();
                 solrUtil.indexTopic(topic);
             }
             //清理缓存
-            clearCache(Constants.CacheEnum.topicappends.name() + topic.getInt("id"));
-            redirect("/topic/" + topic.getInt("id"));
+            clearCache(Constants.CacheEnum.topicappends.name() + topic.getId());
+            redirect("/topic/" + topic.getId());
         }
     }
 

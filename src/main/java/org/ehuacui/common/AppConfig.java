@@ -6,9 +6,7 @@ import com.jfinal.core.JFinal;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.redis.RedisPlugin;
 import com.jfinal.render.FreeMarkerRender;
-import org.ehuacui.ext.plugin.cron.Cron4jPlugin;
-import org.ehuacui.ext.plugin.tablebind.AutoTableBindPlugin;
-import org.ehuacui.ext.plugin.tablebind.ParamNameStyles;
+import org.ehuacui.ext.cron.Cron4jPlugin;
 import org.ehuacui.ext.route.AutoBindRoutes;
 import org.ehuacui.interceptor.CommonInterceptor;
 import org.ehuacui.template.PyTag;
@@ -74,14 +72,6 @@ public class AppConfig extends JFinalConfig {
         ));
 
         me.add(new Cron4jPlugin().config("cronjob.properties"));
-
-        AutoTableBindPlugin atbp = new AutoTableBindPlugin(
-                druidPlugin,
-                ParamNameStyles.lowerUnderlineModule("ehuacui")
-        );
-        atbp.addExcludeClasses(BaseModel.class);
-        atbp.setShowSql(getPropertyToBoolean("showSql", true));
-        me.add(atbp);
 
     }
 

@@ -27,4 +27,8 @@ public interface IRoleService {
     void deleteById(Integer id);
 
     Role findById(Integer id);
+
+    void save(Role role);
+
+    void update(Role role);
 }

@@ -5,109 +5,127 @@ import java.util.Date;
 /**
  * [STRATO MyBatis Generator]
  * Table: ehuacui_user
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
+ *
+ * @mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class User {
     /**
      * Column: ehuacui_user.id
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
-     *   昵称
+     * 昵称
      * Column: ehuacui_user.nickname
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String nickname;
 
     /**
-     *   积分
+     * 积分
      * Column: ehuacui_user.score
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer score;
 
     /**
-     *   头像
+     * 头像
      * Column: ehuacui_user.avatar
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String avatar;
 
     /**
-     *   邮箱
+     * 邮箱
      * Column: ehuacui_user.email
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String email;
 
     /**
-     *   个人主页
+     * 个人主页
      * Column: ehuacui_user.url
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String url;
 
     /**
-     *   个性签名
+     * 个性签名
      * Column: ehuacui_user.signature
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String signature;
 
     /**
-     *   第三方账户id
+     * 第三方账户id
      * Column: ehuacui_user.third_id
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String thirdId;
 
     /**
      * Column: ehuacui_user.access_token
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String accessToken;
 
     /**
-     *   邮箱是否接收社区消息
+     * 邮箱是否接收社区消息
      * Column: ehuacui_user.receive_msg
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean receiveMsg;
 
     /**
-     *   录入时间
+     * 录入时间
      * Column: ehuacui_user.in_time
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Date inTime;
 
     /**
      * Column: ehuacui_user.expire_time
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Date expireTime;
 
     /**
      * Column: ehuacui_user.channel
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String channel;
 
     /**
-     *   禁用0默认 1禁用
+     * 禁用0默认 1禁用
      * Column: ehuacui_user.is_block
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean isBlock;
 
     /**
-     *   第三方登录获取的access_token
+     * 第三方登录获取的access_token
      * Column: ehuacui_user.third_access_token
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String thirdAccessToken;
+
+    private Long collectCount;
 
     public Integer getId() {
         return id;
@@ -227,5 +245,13 @@ public class User {
 
     public void setThirdAccessToken(String thirdAccessToken) {
         this.thirdAccessToken = thirdAccessToken == null ? null : thirdAccessToken.trim();
+    }
+
+    public Long getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(Long collectCount) {
+        this.collectCount = collectCount;
     }
 }

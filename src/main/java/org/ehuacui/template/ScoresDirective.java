@@ -3,7 +3,7 @@ package org.ehuacui.template;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;

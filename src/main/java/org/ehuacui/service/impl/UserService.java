@@ -30,6 +30,16 @@ public class UserService implements IUserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public void update(User user) {
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public void save(User user) {
+        userMapper.insert(user);
+    }
+
     /**
      * 根据Github_access_token查询用户信息
      *

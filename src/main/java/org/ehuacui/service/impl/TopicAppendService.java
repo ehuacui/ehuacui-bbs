@@ -44,4 +44,14 @@ public class TopicAppendService implements ITopicAppendService {
     public void deleteByTid(Integer tid) {
         topicAppendMapper.deleteByTid(tid);
     }
+
+    @Override
+    public void save(TopicAppend topicAppend) {
+        topicAppendMapper.insert(topicAppend);
+    }
+
+    @Override
+    public void update(TopicAppend topicAppend) {
+        topicAppendMapper.updateByPrimaryKey(topicAppend);
+    }
 }

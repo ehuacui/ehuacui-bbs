@@ -39,4 +39,9 @@ public class UserRoleService implements IUserRoleService {
         userRoleMapper.deleteByRoleId(roleId);
     }
 
+    @Override
+    public void save(UserRole userRole) {
+        userRoleMapper.insert(userRole);
+    }
+
 }

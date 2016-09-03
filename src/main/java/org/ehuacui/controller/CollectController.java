@@ -7,9 +7,9 @@ import org.ehuacui.common.Constants.CacheEnum;
 import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.UserInterceptor;
-import org.ehuacui.module.Collect;
-import org.ehuacui.module.Topic;
-import org.ehuacui.module.User;
+import org.ehuacui.model.Collect;
+import org.ehuacui.model.Topic;
+import org.ehuacui.model.User;
 
 import java.util.Date;
 
@@ -30,24 +30,19 @@ public class CollectController extends BaseController {
         Date now = new Date();
         User user = getUser();
         Collect collect = new Collect();
-        collect.set("tid", tid)
-                .set("uid", user.getInt("id"))
-                .set("in_time", now)
-                .save();
+        collect.setTid(tid);
+        collect.setUid(user.getId());
+        collect.setInTime(now);
+        ServiceHolder.collectService.save(collect);
         Topic topic = ServiceHolder.topicService.findById(tid);
         //创建通知
-        ServiceHolder.notificationService.sendNotification(
-                user.getStr("nickname"),
-                topic.getStr("author"),
-                Constants.NotificationEnum.COLLECT.name(),
-                tid,
-                ""
-        );
+        ServiceHolder.notificationService.sendNotification(user.getNickname(),
+                topic.getAuthor(), Constants.NotificationEnum.COLLECT.name(), tid, "");
         //清理缓存
-        clearCache(CacheEnum.usercollectcount.name() + user.getInt("id"));
-        clearCache(CacheEnum.collects.name() + user.getInt("id"));
+        clearCache(CacheEnum.usercollectcount.name() + user.getId());
+        clearCache(CacheEnum.collects.name() + user.getId());
         clearCache(CacheEnum.collectcount.name() + tid);
-        clearCache(CacheEnum.collect.name() + tid + "_" + user.getInt("id"));
+        clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
         redirect("/topic/" + tid);
     }
 
@@ -58,15 +53,15 @@ public class CollectController extends BaseController {
     public void delete() {
         Integer tid = getParaToInt("tid");
         User user = getUser();
-        Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getInt("id"));
+        Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getId());
         if (collect == null) {
             renderText("请先收藏");
         } else {
-            collect.delete();
-            clearCache(CacheEnum.usercollectcount.name() + user.getInt("id"));
-            clearCache(CacheEnum.collects.name() + user.getInt("id"));
+            ServiceHolder.collectService.delete(collect.getId());
+            clearCache(CacheEnum.usercollectcount.name() + user.getId());
+            clearCache(CacheEnum.collects.name() + user.getId());
             clearCache(CacheEnum.collectcount.name() + tid);
-            clearCache(CacheEnum.collect.name() + tid + "_" + user.getInt("id"));
+            clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
             redirect("/topic/" + tid);
         }
     }

@@ -16,4 +16,7 @@ public interface IUserRoleService {
     void deleteByUserId(Integer userId);
 
     void deleteByRoleId(Integer roleId);
+
+    void save(UserRole userRole);
+
 }

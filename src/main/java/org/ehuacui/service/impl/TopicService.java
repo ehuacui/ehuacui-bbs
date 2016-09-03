@@ -1,8 +1,11 @@
 package org.ehuacui.service.impl;
 
 import org.ehuacui.common.Page;
+import org.ehuacui.common.ServiceHolder;
+import org.ehuacui.mapper.TopicAppendMapper;
 import org.ehuacui.mapper.TopicMapper;
 import org.ehuacui.model.Topic;
+import org.ehuacui.model.TopicAppend;
 import org.ehuacui.service.ITopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ public class TopicService implements ITopicService {
 
     @Autowired
     private TopicMapper topicMapper;
+    @Autowired
+    private TopicAppendMapper topicAppendMapper;
 
     /**
      * 根据tab分页查询话题列表
@@ -131,7 +136,12 @@ public class TopicService implements ITopicService {
      */
     @Override
     public List<Topic> findAll() {
-        return topicMapper.selectAll();
+        List<Topic> topics = topicMapper.selectAll();
+        for (Topic topic : topics) {
+            List<TopicAppend> topicAppends = topicAppendMapper.selectByTid(topic.getId());
+            topic.setTopicAppends(topicAppends);
+        }
+        return topics;
     }
 
     /**
@@ -164,4 +174,13 @@ public class TopicService implements ITopicService {
         topicMapper.updateGoodById(id);
     }
 
+    @Override
+    public void save(Topic topic) {
+        topicMapper.insert(topic);
+    }
+
+    @Override
+    public void update(Topic topic) {
+        topicMapper.updateByPrimaryKey(topic);
+    }
 }

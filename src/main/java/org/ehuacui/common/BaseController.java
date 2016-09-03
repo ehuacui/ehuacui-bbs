@@ -4,7 +4,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.Result;
 import org.ehuacui.utils.StrUtil;
 

@@ -105,4 +105,14 @@ public class ReplyService implements IReplyService {
     public Reply findById(Integer id) {
         return replyMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void save(Reply reply) {
+        replyMapper.insert(reply);
+    }
+
+    @Override
+    public void update(Reply reply) {
+        replyMapper.updateByPrimaryKey(reply);
+    }
 }

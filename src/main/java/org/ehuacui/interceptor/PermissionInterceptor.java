@@ -5,7 +5,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class PermissionInterceptor implements Interceptor {
         User user = ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
 
         //处理权限部分
-        Map<String, String> permissions = ServiceHolder.permissionService.findPermissions(user.getInt("id"));
+        Map<String, String> permissions = ServiceHolder.permissionService.findPermissions(user.getId());
         //String path = request.getRequestURI();
         String path = request.getServletPath();
         if (permissions.containsValue(path)) {

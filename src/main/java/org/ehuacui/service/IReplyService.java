@@ -65,4 +65,8 @@ public interface IReplyService {
     void deleteById(Integer id);
 
     Reply findById(Integer id);
+
+    void save(Reply reply);
+
+    void update(Reply reply);
 }

@@ -25,4 +25,8 @@ public interface ITopicAppendService {
      * @param tid
      */
     void deleteByTid(Integer tid);
+
+    void save(TopicAppend topicAppend);
+
+    void update(TopicAppend topicAppend);
 }

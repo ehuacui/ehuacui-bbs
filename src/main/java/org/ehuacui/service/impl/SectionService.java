@@ -35,6 +35,21 @@ public class SectionService implements ISectionService {
     }
 
     @Override
+    public void save(Section section) {
+        sectionMapper.insert(section);
+    }
+
+    @Override
+    public void update(Section section) {
+        sectionMapper.updateByPrimaryKey(section);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        sectionMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
     public Section findByTab(String tab) {
         return sectionMapper.selectByShowTab(tab);
     }

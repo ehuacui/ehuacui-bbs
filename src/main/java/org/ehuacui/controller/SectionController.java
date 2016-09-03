@@ -7,7 +7,7 @@ import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
-import org.ehuacui.module.Section;
+import org.ehuacui.model.Section;
 
 /**
  * Created by ehuacui.
@@ -35,10 +35,11 @@ public class SectionController extends BaseController {
     public void changeshowstatus() {
         Integer id = getParaToInt("id");
         Section section = ServiceHolder.sectionService.findById(id);
-        section.set("show_status", !section.getBoolean("show_status")).update();
+        section.setShowStatus(!section.getShowStatus());
+        ServiceHolder.sectionService.update(section);
         clearCache(Constants.CacheEnum.sections.name() + true);
         clearCache(Constants.CacheEnum.sections.name() + false);
-        clearCache(Constants.CacheEnum.section.name() + section.getStr("tab"));
+        clearCache(Constants.CacheEnum.section.name() + section.getTab());
         redirect("/section/list");
     }
 
@@ -48,10 +49,10 @@ public class SectionController extends BaseController {
     public void delete() {
         Integer id = getParaToInt("id");
         Section section = ServiceHolder.sectionService.findById(id);
-        section.delete();
+        ServiceHolder.sectionService.deleteById(id);
         clearCache(Constants.CacheEnum.sections.name() + true);
         clearCache(Constants.CacheEnum.sections.name() + false);
-        clearCache(Constants.CacheEnum.section.name() + section.getStr("tab"));
+        clearCache(Constants.CacheEnum.section.name() + section.getTab());
         redirect("/section/list");
     }
 
@@ -67,12 +68,12 @@ public class SectionController extends BaseController {
             String tab = getPara("tab");
             Integer showStatus = getParaToInt("showStatus");
             Section section = new Section();
-            section.set("name", name)
-                    .set("tab", tab)
-                    .set("show_status", showStatus == 1)
-                    .set("display_index", 99)
-                    .set("default_show", 0)
-                    .save();
+            section.setName(name);
+            section.setTab(tab);
+            section.setShowStatus(showStatus == 1);
+            section.setDisplayIndex(99);
+            section.setDefaultShow(false);
+            ServiceHolder.sectionService.save(section);
             redirect("/section/list");
         }
     }
@@ -91,11 +92,11 @@ public class SectionController extends BaseController {
             String name = getPara("name");
             String tab = getPara("tab");
             Integer showStatus = getParaToInt("showStatus");
-            section.set("id", id)
-                    .set("name", name)
-                    .set("tab", tab)
-                    .set("show_status", showStatus == 1)
-                    .update();
+            section.setId(id);
+            section.setName(name);
+            section.setTab(tab);
+            section.setShowStatus(showStatus == 1);
+            ServiceHolder.sectionService.update(section);
             redirect("/section/list");
         }
     }

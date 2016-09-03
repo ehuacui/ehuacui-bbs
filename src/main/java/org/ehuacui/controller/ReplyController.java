@@ -11,9 +11,9 @@ import org.ehuacui.ext.route.ControllerBind;
 import org.ehuacui.interceptor.PermissionInterceptor;
 import org.ehuacui.interceptor.UserInterceptor;
 import org.ehuacui.interceptor.UserStatusInterceptor;
-import org.ehuacui.module.Reply;
-import org.ehuacui.module.Topic;
-import org.ehuacui.module.User;
+import org.ehuacui.model.Reply;
+import org.ehuacui.model.Topic;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.StrUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -46,25 +46,25 @@ public class ReplyController extends BaseController {
                 Date now = new Date();
                 User user = getUser();
                 Reply reply = new Reply();
-                reply.set("tid", tid)
-                        .set("content", content)
-                        .set("in_time", now)
-                        .set("author", user.getStr("nickname"))
-                        .set("is_delete", false)
-                        .save();
+                reply.setTid(tid);
+                reply.setContent(content);
+                reply.setInTime(now);
+                reply.setAuthor(user.getNickname());
+                reply.setIsDelete(false);
+                ServiceHolder.replyService.save(reply);
                 //topic reply_count++
                 Topic topic = ServiceHolder.topicService.findById(tid);
-                topic.set("reply_count", topic.getInt("reply_count") + 1)
-                        .set("last_reply_time", now)
-                        .set("last_reply_author", user.getStr("nickname"))
-                        .update();
+                topic.setReplyCount(topic.getReplyCount() + 1);
+                topic.setLastReplyTime(now);
+                topic.setLastReplyAuthor(user.getNickname());
+                ServiceHolder.topicService.update(topic);
 //                user.set("score", user.getInt("score") + 5).update();
                 //发送通知
                 //回复者与话题作者不是一个人的时候发送通知
-                if (!user.getStr("nickname").equals(topic.getStr("author"))) {
+                if (!user.getNickname().equals(topic.getAuthor())) {
                     ServiceHolder.notificationService.sendNotification(
-                            user.getStr("nickname"),
-                            topic.getStr("author"),
+                            user.getNickname(),
+                            topic.getAuthor(),
                             Constants.NotificationEnum.REPLY.name(),
                             tid,
                             content
@@ -73,12 +73,12 @@ public class ReplyController extends BaseController {
                 //检查回复内容里有没有at用户,有就发通知
                 List<String> atUsers = StrUtil.fetchUsers(content);
                 for (String u : atUsers) {
-                    if (!u.equals(topic.getStr("author"))) {
+                    if (!u.equals(topic.getAuthor())) {
                         User _user = ServiceHolder.userService.findByNickname(u);
                         if (_user != null) {
                             ServiceHolder.notificationService.sendNotification(
-                                    user.getStr("nickname"),
-                                    _user.getStr("nickname"),
+                                    user.getNickname(),
+                                    _user.getNickname(),
                                     Constants.NotificationEnum.AT.name(),
                                     tid,
                                     content
@@ -88,9 +88,9 @@ public class ReplyController extends BaseController {
                 }
                 //清理缓存，保持数据最新
                 clearCache(CacheEnum.topic.name() + tid);
-                clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
-                clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-                redirect("/topic/" + tid + "#reply" + reply.getInt("id"));
+                clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
+                clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
+                redirect("/topic/" + tid + "#reply" + reply.getId());
             }
         }
     }
@@ -108,14 +108,15 @@ public class ReplyController extends BaseController {
         String method = getRequest().getMethod();
         Reply reply = ServiceHolder.replyService.findById(id);
         if (method.equals("GET")) {
-            Topic topic = ServiceHolder.topicService.findById(reply.getInt("tid"));
+            Topic topic = ServiceHolder.topicService.findById(reply.getTid());
             setAttr("reply", reply);
             setAttr("topic", topic);
             render("reply/edit.ftl");
         } else if (method.equals("POST")) {
             String content = getPara("content");
-            reply.set("content", content).update();
-            redirect("/topic/" + reply.getInt("tid") + "#reply" + id);
+            reply.setContent(content);
+            ServiceHolder.replyService.update(reply);
+            redirect("/topic/" + reply.getTid() + "#reply" + id);
         }
     }
 
@@ -131,10 +132,11 @@ public class ReplyController extends BaseController {
     public void delete() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
         Reply reply = ServiceHolder.replyService.findById(id);
-        Topic topic = ServiceHolder.topicService.findById(reply.getInt("tid"));
-        topic.set("reply_count", topic.getInt("reply_count") - 1).update();
+        Topic topic = ServiceHolder.topicService.findById(reply.getTid());
+        topic.setReplyCount(topic.getReplyCount() - 1);
+        ServiceHolder.topicService.update(topic);
         ServiceHolder.replyService.deleteById(id);
-        clearCache(CacheEnum.topic.name() + topic.getInt("id"));
+        clearCache(CacheEnum.topic.name() + topic.getId());
         //用户积分计算
 //        User user = ServiceHolder.userService.findByNickname(reply.getStr("author"));
 //        Integer score = user.getInt("score");
@@ -143,7 +145,7 @@ public class ReplyController extends BaseController {
         //清理缓存
 //        clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
 //        clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-        redirect("/topic/" + topic.getInt("id"));
+        redirect("/topic/" + topic.getId());
     }
 
     /**

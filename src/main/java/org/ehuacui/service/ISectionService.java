@@ -17,4 +17,9 @@ public interface ISectionService {
 
     Section findById(Integer id);
 
+    void save(Section section);
+
+    void update(Section section);
+
+    void deleteById(Integer id);
 }

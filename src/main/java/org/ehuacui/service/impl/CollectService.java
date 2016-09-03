@@ -69,4 +69,13 @@ public class CollectService implements ICollectService {
         return collectMapper.countByUid(uid);
     }
 
+    @Override
+    public void save(Collect collect){
+        collectMapper.insert(collect);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        collectMapper.deleteByPrimaryKey(id);
+    }
 }

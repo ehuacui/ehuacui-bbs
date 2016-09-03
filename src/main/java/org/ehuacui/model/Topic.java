@@ -1,130 +1,155 @@
 package org.ehuacui.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * [STRATO MyBatis Generator]
  * Table: ehuacui_topic
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
+ *
+ * @mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class Topic {
     /**
      * Column: ehuacui_topic.id
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
-     *   版块标识
+     * 版块标识
      * Column: ehuacui_topic.tab
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String tab;
 
     /**
-     *   话题标题
+     * 话题标题
      * Column: ehuacui_topic.title
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String title;
 
     /**
-     *   话题内容标签
+     * 话题内容标签
      * Column: ehuacui_topic.tag
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String tag;
 
     /**
-     *   录入时间
+     * 录入时间
      * Column: ehuacui_topic.in_time
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Date inTime;
 
     /**
-     *   修改时间
+     * 修改时间
      * Column: ehuacui_topic.modify_time
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Date modifyTime;
 
     /**
-     *   最后回复话题时间，用于排序
+     * 最后回复话题时间，用于排序
      * Column: ehuacui_topic.last_reply_time
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Date lastReplyTime;
 
     /**
-     *   最后回复话题的用户id
+     * 最后回复话题的用户id
      * Column: ehuacui_topic.last_reply_author
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String lastReplyAuthor;
 
     /**
-     *   浏览量
+     * 浏览量
      * Column: ehuacui_topic.view
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer view;
 
     /**
-     *   话题作者id
+     * 话题作者id
      * Column: ehuacui_topic.author
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String author;
 
     /**
-     *   1置顶 0默认
+     * 1置顶 0默认
      * Column: ehuacui_topic.top
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean top;
 
     /**
-     *   1精华 0默认
+     * 1精华 0默认
      * Column: ehuacui_topic.good
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean good;
 
     /**
-     *   1显示0不显示
+     * 1显示0不显示
      * Column: ehuacui_topic.show_status
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean showStatus;
 
     /**
-     *   回复数量
+     * 回复数量
      * Column: ehuacui_topic.reply_count
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Integer replyCount;
 
     /**
-     *   1删除0默认
+     * 1删除0默认
      * Column: ehuacui_topic.is_delete
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean isDelete;
 
     /**
-     *   话题内容标签是否被统计过1是0否默认
+     * 话题内容标签是否被统计过1是0否默认
      * Column: ehuacui_topic.tag_is_count
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean tagIsCount;
 
     /**
-     *   话题内容
+     * 话题内容
      * Column: ehuacui_topic.content
-    @mbggenerated 2016-08-16 13:07:45
+     *
+     * @mbggenerated 2016-08-16 13:07:45
      */
     private String content;
+
+    private String _top;
+
+    private String _good;
+
+    private List<TopicAppend> topicAppends;
 
     public Integer getId() {
         return id;
@@ -260,6 +285,30 @@ public class Topic {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public List<TopicAppend> getTopicAppends() {
+        return topicAppends;
+    }
+
+    public void setTopicAppends(List<TopicAppend> topicAppends) {
+        this.topicAppends = topicAppends;
+    }
+
+    public String get_top() {
+        return _top;
+    }
+
+    public void set_top(String _top) {
+        this._top = _top;
+    }
+
+    public String get_good() {
+        return _good;
+    }
+
+    public void set_good(String _good) {
+        this._good = _good;
     }
 
     /**

@@ -1,7 +1,6 @@
 package org.ehuacui.utils;
 
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Page;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -10,9 +9,10 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.ehuacui.common.Page;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.Topic;
-import org.ehuacui.module.TopicAppend;
+import org.ehuacui.model.Topic;
+import org.ehuacui.model.TopicAppend;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -46,14 +46,14 @@ public class SolrUtil {
             List<SolrInputDocument> docs = new ArrayList<>();
             for (Topic topic : topics) {
                 SolrInputDocument doc = new SolrInputDocument();
-                doc.addField("id", topic.getInt("id"));
-                doc.addField("title", topic.getStr("title"));
-                doc.addField("in_time", topic.getDate("in_time"));
+                doc.addField("id", topic.getId());
+                doc.addField("title", topic.getTitle());
+                doc.addField("in_time", topic.getInTime());
                 //话题内容与追加内容拼接作为一个整体索引
-                StringBuffer content = new StringBuffer(topic.getStr("content"));
-                for (TopicAppend ta : (List<TopicAppend>) topic.get("topicAppends")) {
+                StringBuffer content = new StringBuffer(topic.getContent());
+                for (TopicAppend ta : topic.getTopicAppends()) {
                     content.append("\n")//换行
-                            .append(ta.getStr("content"));
+                            .append(ta.getContent());
                 }
                 doc.addField("content", content.toString());
                 docs.add(doc);
@@ -76,14 +76,14 @@ public class SolrUtil {
     public boolean indexTopic(Topic topic) {
         try {
             SolrInputDocument doc = new SolrInputDocument();
-            doc.addField("id", topic.getInt("id"));
-            doc.addField("title", topic.getStr("title"));
-            doc.addField("in_time", topic.getDate("in_time"));
-            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getInt("id"));
-            StringBuffer content = new StringBuffer(topic.getStr("content"));
+            doc.addField("id", topic.getId());
+            doc.addField("title", topic.getTitle());
+            doc.addField("in_time", topic.getInTime());
+            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getId());
+            StringBuffer content = new StringBuffer(topic.getContent());
             for (TopicAppend ta : topicAppends) {
                 content.append("\n")//换行
-                        .append(ta.getStr("content"));
+                        .append(ta.getContent());
             }
             doc.addField("content", content.toString());
             client.add(doc);
@@ -125,24 +125,21 @@ public class SolrUtil {
             for (SolrDocument doc : docs) {
                 Topic topic = new Topic();
                 String id = doc.getFieldValue("id").toString();
-                topic.set("id", id);
+                topic.setId(Integer.valueOf(id));
                 List<String> titleList = highlightMap.get(id).get("title");
                 if (titleList != null && titleList.size() > 0) {
-                    topic.set("title", titleList.get(0));
+                    topic.setTitle(titleList.get(0));
                 } else {
-                    topic.set("title", doc.getFieldValueMap().get("title"));
+                    topic.setTitle(doc.getFieldValueMap().get("title").toString());
                 }
                 List<String> contentList = highlightMap.get(id).get("content");
                 if (contentList != null && contentList.size() > 0) {
-                    topic.set("content", Jsoup.clean(contentList.get(0) + "...", Whitelist.none().addTags("b").addAttributes("font", "color")));
+                    topic.setContent(Jsoup.clean(contentList.get(0) + "...", Whitelist.none().addTags("b").addAttributes("font", "color")));
                 }
                 list.add(topic);
             }
             int totalCount = (int) docs.getNumFound();
-            int totalPage = totalCount / pageSize;
-            if (totalCount % pageSize != 0) totalPage++;
-            Page page = new Page(list, pageNumber, pageSize, totalPage, totalCount);
-            return page;
+            return new Page<>(list, pageNumber, pageSize, totalCount);
         } catch (SolrServerException | IOException e) {
             e.printStackTrace();
         }

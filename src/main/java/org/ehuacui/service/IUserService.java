@@ -3,6 +3,7 @@ package org.ehuacui.service;
 
 import org.ehuacui.common.Page;
 import org.ehuacui.model.User;
+
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ import java.util.List;
 public interface IUserService {
 
     User findById(Integer id);
+
+    void update(User user);
+
+    void save(User user);
 
     /**
      * 根据Github_access_token查询用户信息

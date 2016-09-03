@@ -4,7 +4,7 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.Result;
 import org.ehuacui.utils.StrUtil;
 
@@ -26,7 +26,7 @@ public class ApiInterceptor implements Interceptor {
         if (StrUtil.notBlank(token)) {
             user = ServiceHolder.userService.findByAccessToken(token);
             if (user != null) {
-                if (user.getBoolean("is_block")) {
+                if (user.getIsBlock()) {
                     msg = "您的账户已被禁用";
                 } else {
                     flag = true;

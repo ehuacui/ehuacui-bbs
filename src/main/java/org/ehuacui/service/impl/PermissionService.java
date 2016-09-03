@@ -92,4 +92,14 @@ public class PermissionService implements IPermissionService {
     public void deleteById(Integer id) {
         permissionMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public void save(Permission permission) {
+        permissionMapper.insert(permission);
+    }
+
+    @Override
+    public void update(Permission permission) {
+        permissionMapper.updateByPrimaryKey(permission);
+    }
 }

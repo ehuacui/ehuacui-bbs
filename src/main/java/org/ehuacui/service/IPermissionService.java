@@ -50,4 +50,8 @@ public interface IPermissionService {
     Permission findById(Integer id);
 
     void deleteById(Integer id);
+
+    void save(Permission permission);
+
+    void update(Permission permission);
 }

@@ -6,7 +6,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.StrUtil;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class CommonInterceptor implements Interceptor {
             if (user == null) {
                 controller.removeCookie(Constants.USER_ACCESS_TOKEN, "/", PropKit.get("cookie.domain"));
             } else {
-                int count = ServiceHolder.notificationService.findNotReadCount(user.getStr("nickname"));
+                int count = ServiceHolder.notificationService.findNotReadCount(user.getNickname());
                 controller.setAttr("notifications", count == 0 ? null : count);
                 controller.setAttr("userinfo", user);
             }

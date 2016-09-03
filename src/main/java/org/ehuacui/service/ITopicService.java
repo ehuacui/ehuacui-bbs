@@ -103,4 +103,8 @@ public interface ITopicService {
      */
     void good(Integer id);
 
+    void save(Topic topic);
+
+    void update(Topic topic);
+
 }

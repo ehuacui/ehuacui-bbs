@@ -5,7 +5,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
-import org.ehuacui.module.User;
+import org.ehuacui.model.User;
 import org.ehuacui.utils.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;

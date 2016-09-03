@@ -7,9 +7,9 @@ import org.ehuacui.common.BaseController;
 import org.ehuacui.common.Constants;
 import org.ehuacui.common.ServiceHolder;
 import org.ehuacui.ext.route.ControllerBind;
-import org.ehuacui.module.Role;
-import org.ehuacui.module.User;
-import org.ehuacui.module.UserRole;
+import org.ehuacui.model.Role;
+import org.ehuacui.model.User;
+import org.ehuacui.model.UserRole;
 import org.ehuacui.utils.DateUtil;
 import org.ehuacui.utils.StrUtil;
 
@@ -93,35 +93,35 @@ public class OauthController extends BaseController {
             boolean flag = true;
             if (user == null) {
                 user = new User();
-                user.set("in_time", now)
-                        .set("access_token", access_token)
-                        .set("score", 0)
-                        .set("third_id", String.valueOf(githubId))
-                        .set("is_block", false)
-                        .set("channel", Constants.LoginEnum.Github.name())
-                        .set("receive_msg", true);//邮箱接收社区消息
+                user.setInTime(now);
+                user.setAccessToken(access_token);
+                user.setScore(0);
+                user.setThirdId(String.valueOf(githubId));
+                user.setIsBlock(false);
+                user.setChannel(Constants.LoginEnum.Github.name());
+                user.setReceiveMsg(true);//邮箱接收社区消息
                 flag = false;
             }
-            user.set("nickname", login)
-                    .set("avatar", avatar_url)
-                    .set("email", email)
-                    .set("url", html_url)
-                    .set("expire_time", DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
+            user.setNickname(login);
+            user.setAvatar(avatar_url);
+            user.setEmail(email);
+            user.setUrl(html_url);
+            user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             if (flag) {
-                user.update();
+                ServiceHolder.userService.update(user);
             } else {
-                user.save();
+                ServiceHolder.userService.save(user);
                 //新注册的用户角色都是普通用户
                 Role role = ServiceHolder.roleService.findByName("user");
                 if (role != null) {
                     UserRole userRole = new UserRole();
-                    userRole.set("uid", user.getInt("id"))
-                            .set("rid", role.getInt("id"))
-                            .save();
+                    userRole.setUid(user.getId());
+                    userRole.setRid(role.getId());
+                    ServiceHolder.userRoleService.save(userRole);
                 }
             }
             setCookie(Constants.USER_ACCESS_TOKEN,
-                    StrUtil.getEncryptionToken(user.getStr("access_token")),
+                    StrUtil.getEncryptionToken(user.getAccessToken()),
                     30 * 24 * 60 * 60, "/",
                     PropKit.get("cookie.domain"),
                     true);
@@ -205,36 +205,35 @@ public class OauthController extends BaseController {
             boolean flag = true;
             if (user == null) {
                 user = new User();
-                user.set("in_time", now)
-                        .set("access_token", access_token)
-                        .set("score", 0)
-                        .set("third_id", String.valueOf(weiboId))
-                        .set("is_block", false)
-                        .set("signature", description)
-                        .set("channel", Constants.LoginEnum.Weibo.name())
-                        .set("receive_msg", true);//邮箱接收社区消息
+                user.setInTime(now);
+                user.setAccessToken(access_token);
+                user.setScore(0);
+                user.setThirdId(String.valueOf(weiboId));
+                user.setIsBlock(false);
+                user.setSignature(description);
+                user.setChannel(Constants.LoginEnum.Weibo.name());
+                user.setReceiveMsg(true);//邮箱接收社区消息
                 flag = false;
             }
-            user.set("nickname", name)
-                    .set("avatar", avatar_large)
-                    .set("url", url)
-                    .set("third_access_token", weibo_access_token)
-                    .set("expire_time", DateUtil.getDateAfter(now, 30));
+            user.setNickname(name);
+            user.setAvatar(avatar_large);
+            user.setThirdAccessToken(weibo_access_token);
+            user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             if (flag) {
-                user.update();
+                ServiceHolder.userService.update(user);
             } else {
-                user.save();
+                ServiceHolder.userService.save(user);
                 //新注册的用户角色都是普通用户
                 Role role = ServiceHolder.roleService.findByName("user");
                 if (role != null) {
                     UserRole userRole = new UserRole();
-                    userRole.set("uid", user.getInt("id"))
-                            .set("rid", role.getInt("id"))
-                            .save();
+                    userRole.setUid(user.getId());
+                    userRole.setRid(role.getId());
+                    ServiceHolder.userRoleService.save(userRole);
                 }
             }
             setCookie(Constants.USER_ACCESS_TOKEN,
-                    StrUtil.getEncryptionToken(user.getStr("access_token")),
+                    StrUtil.getEncryptionToken(user.getAccessToken()),
                     30 * 24 * 60 * 60, "/",
                     PropKit.get("cookie.domain"),
                     true);
