@@ -1,17 +1,18 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.Section;
 
 import java.util.List;
 
 public interface SectionMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param("id") Integer id);
 
     int insert(Section record);
 
     int insertSelective(Section record);
 
-    Section selectByPrimaryKey(Integer id);
+    Section selectByPrimaryKey(@Param("id") Integer id);
 
     int updateByPrimaryKeySelective(Section record);
 
@@ -19,7 +20,7 @@ public interface SectionMapper {
 
     List<Section> selectAll();
 
-    List<Section> selectByShowStatus(boolean showStatus);
+    List<Section> selectByShowStatus(@Param("showStatus") boolean showStatus);
 
-    Section selectByShowTab(String tab);
+    Section selectByShowTab(@Param("tab") String tab);
 }

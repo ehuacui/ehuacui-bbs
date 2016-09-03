@@ -1,18 +1,19 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.Notification;
 
 import java.util.List;
 
 public interface NotificationMapper {
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param("id") Integer id);
 
     int insert(Notification record);
 
     int insertSelective(Notification record);
 
-    Notification selectByPrimaryKey(Integer id);
+    Notification selectByPrimaryKey(@Param("id") Integer id);
 
     int updateByPrimaryKeySelective(Notification record);
 
@@ -20,11 +21,11 @@ public interface NotificationMapper {
 
     int updateByPrimaryKey(Notification record);
 
-    int countNotReadByAuthor(String author);
+    int countNotReadByAuthor(@Param("author") String author);
 
-    int countByAuthor(String author);
+    int countByAuthor(@Param("author") String author);
 
-    List<Notification> selectByAuthor(String author,Integer start,Integer limit);
+    List<Notification> selectByAuthor(@Param("author") String author, @Param("start") Integer start, @Param("limit") Integer limit);
 
-    int updateUnreadToRead(String author);
+    int updateUnreadToRead(@Param("author") String author);
 }

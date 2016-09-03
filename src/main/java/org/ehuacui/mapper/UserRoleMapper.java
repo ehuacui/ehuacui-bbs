@@ -1,5 +1,6 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.UserRole;
 
 import java.util.List;
@@ -9,11 +10,11 @@ public interface UserRoleMapper {
 
     int insertSelective(UserRole record);
 
-    List<UserRole> selectByUserId(Integer uid);
+    List<UserRole> selectByUserId(@Param("uid")Integer uid);
 
-    List<UserRole> selectByRoleId(Integer rid);
+    List<UserRole> selectByRoleId(@Param("rid")Integer rid);
 
-    int deleteByUserId(Integer uid);
+    int deleteByUserId(@Param("uid")Integer uid);
 
-    int deleteByRoleId(Integer rid);
+    int deleteByRoleId(@Param("rid")Integer rid);
 }

@@ -1,27 +1,28 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.Permission;
 
 import java.util.List;
 
 public interface PermissionMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param("id") Integer id);
 
     int insert(Permission record);
 
     int insertSelective(Permission record);
 
-    Permission selectByPrimaryKey(Integer id);
+    Permission selectByPrimaryKey(@Param("id") Integer id);
 
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
 
-    List<Permission> selectByPid(Integer pid);
+    List<Permission> selectByPid(@Param("pid") Integer pid);
 
     List<Permission> selectAllChild();
 
-    List<Permission> selectByUid(Integer uid);
+    List<Permission> selectByUid(@Param("uid") Integer uid);
 
-    int deleteByPid(Integer pid);
+    int deleteByPid(@Param("pid") Integer pid);
 }

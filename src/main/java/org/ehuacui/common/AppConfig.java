@@ -3,8 +3,6 @@ package org.ehuacui.common;
 import com.jfinal.config.Constants;
 import com.jfinal.config.*;
 import com.jfinal.core.JFinal;
-import com.jfinal.plugin.druid.DruidPlugin;
-import com.jfinal.plugin.redis.RedisPlugin;
 import com.jfinal.render.FreeMarkerRender;
 import org.ehuacui.ext.cron.Cron4jPlugin;
 import org.ehuacui.ext.route.AutoBindRoutes;
@@ -42,7 +40,6 @@ public class AppConfig extends JFinalConfig {
     /**
      * 配置路由
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public void configRoute(Routes me) {
         this.routes = me;
         me.add(new AutoBindRoutes());
@@ -51,28 +48,8 @@ public class AppConfig extends JFinalConfig {
     /**
      * 配置插件
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public void configPlugin(Plugins me) {
-        // 配置C3p0数据库连接池插件
-        DruidPlugin druidPlugin = new DruidPlugin(
-                getProperty("jdbcUrl"),
-                getProperty("user"),
-                getProperty("password").trim()
-        );
-        druidPlugin.setFilters("stat,wall");
-        me.add(druidPlugin);
-        //增加redis插件
-        me.add(new RedisPlugin(
-                getProperty("redis.cachename"),
-                getProperty("redis.host"),
-                getPropertyToInt("redis.port"),
-                getPropertyToInt("redis.timeout")
-//                getProperty("redis.password"),
-//                getPropertyToInt("redis.database")
-        ));
-
         me.add(new Cron4jPlugin().config("cronjob.properties"));
-
     }
 
     /**

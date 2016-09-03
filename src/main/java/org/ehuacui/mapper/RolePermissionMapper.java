@@ -1,18 +1,19 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.RolePermission;
 
 import java.util.List;
 
 public interface RolePermissionMapper {
 
-    List<RolePermission> selectByRoleId(Integer rid);
+    List<RolePermission> selectByRoleId(@Param("rid")Integer rid);
 
     int insert(RolePermission record);
 
     int insertSelective(RolePermission record);
 
-    int deleteByRoleId(Integer rid);
+    int deleteByRoleId(@Param("rid")Integer rid);
 
-    int deleteByPermissionId(Integer pid);
+    int deleteByPermissionId(@Param("pid")Integer pid);
 }

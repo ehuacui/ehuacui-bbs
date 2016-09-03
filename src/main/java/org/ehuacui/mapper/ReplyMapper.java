@@ -1,17 +1,18 @@
 package org.ehuacui.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehuacui.model.Reply;
 
 import java.util.List;
 
 public interface ReplyMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param("id") Integer id);
 
     int insert(Reply record);
 
     int insertSelective(Reply record);
 
-    Reply selectByPrimaryKey(Integer id);
+    Reply selectByPrimaryKey(@Param("id") Integer id);
 
     int updateByPrimaryKeySelective(Reply record);
 
@@ -19,21 +20,21 @@ public interface ReplyMapper {
 
     int updateByPrimaryKey(Reply record);
 
-    List<Reply> selectByTid(Integer tid);
+    List<Reply> selectByTid(@Param("tid") Integer tid);
 
-    List<Reply> selectByTid(Integer tid, Integer start, Integer limit);
+    List<Reply> selectByTid(@Param("tid") Integer tid, @Param("start") Integer start, @Param("limit") Integer limit);
 
-    int countByTid(Integer tid);
+    int countByTid(@Param("tid") Integer tid);
 
-    List<Reply> selectAll(Integer start, Integer limit);
+    List<Reply> selectAll(@Param("start") Integer start, @Param("limit") Integer limit);
 
     int countAll();
 
-    List<Reply> selectByAuthor(String author, Integer start, Integer limit);
+    List<Reply> selectByAuthor(@Param("author") String author, @Param("start") Integer start, @Param("limit") Integer limit);
 
-    int countByAuthor(String author);
+    int countByAuthor(@Param("author") String author);
 
-    int deleteById(Integer id);
+    int deleteById(@Param("id") Integer id);
 
-    int deleteByTid(Integer tid);
+    int deleteByTid(@Param("tid") Integer tid);
 }
