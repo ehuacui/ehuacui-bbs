@@ -41,7 +41,7 @@ public class NotificationService implements INotificationService {
      */
     @Override
     public Page<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        List<Notification> list = notificationMapper.selectByAuthor(author, pageNumber, pageSize);
+        List<Notification> list = notificationMapper.selectByAuthor(author, (pageNumber - 1) * pageSize, pageSize);
         long total = notificationMapper.countByAuthor(author);
         return new Page<>(list, pageNumber, pageSize, total);
     }

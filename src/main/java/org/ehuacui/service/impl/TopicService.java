@@ -42,7 +42,7 @@ public class TopicService implements ITopicService {
         } else if (tab.equals("noreply")) {
             return pageNoReply(pageNumber, pageSize);
         } else {
-            List<Topic> list = topicMapper.selectByTab(tab, pageNumber, pageSize);
+            List<Topic> list = topicMapper.selectByTab(tab, (pageNumber - 1) * pageSize, pageSize);
             int total = topicMapper.countByTab(tab);
             return new Page<>(list, pageNumber, pageSize, total);
         }
@@ -57,7 +57,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageAll(Integer pageNumber, Integer pageSize) {
-        List<Topic> list = topicMapper.selectAll(pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAll();
         return new Page<>(list, pageNumber, pageSize, total);
     }
@@ -71,7 +71,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageGood(Integer pageNumber, Integer pageSize) {
-        List<Topic> list = topicMapper.selectAllGood(pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectAllGood((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAllGood();
         return new Page<>(list, pageNumber, pageSize, total);
     }
@@ -85,7 +85,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageNoReply(Integer pageNumber, Integer pageSize) {
-        List<Topic> list = topicMapper.selectAllNoReply(pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectAllNoReply((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAllNoReply();
         return new Page<>(list, pageNumber, pageSize, total);
     }
@@ -124,7 +124,7 @@ public class TopicService implements ITopicService {
      */
     @Override
     public Page<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
-        List<Topic> list = topicMapper.selectByAuthor(author, pageNumber, pageSize);
+        List<Topic> list = topicMapper.selectByAuthor(author, (pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countByAuthor(author);
         return new Page<>(list, pageNumber, pageSize, total);
     }

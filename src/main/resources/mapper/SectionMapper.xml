@@ -49,7 +49,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.model.Section">
+  <insert id="insert" parameterType="org.ehuacui.model.Section" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_section (id, name, tab, 
       show_status, display_index, default_show, 
       pid)
@@ -58,7 +58,7 @@
       #{pid,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.Section">
+  <insert id="insertSelective" parameterType="org.ehuacui.model.Section" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_section
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

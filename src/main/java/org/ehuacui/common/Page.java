@@ -30,7 +30,7 @@ public class Page<T> implements Serializable {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
         this.totalRow = totalRow;
-        this.totalPage = totalRow / pageSize == 0 ? totalRow / pageSize : (totalRow / pageSize) + 1;
+        this.totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : (totalRow / pageSize) + 1;
     }
 
     /**

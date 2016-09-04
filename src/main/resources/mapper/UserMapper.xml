@@ -94,7 +94,7 @@
     where nickname = #{nickname,jdbcType=VARCHAR}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.User">
+    <insert id="insert" parameterType="org.ehuacui.model.User" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_user (id, nickname, score, 
       avatar, email, url, 
       signature, third_id, access_token, 
@@ -109,7 +109,7 @@
       )
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.User">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.User" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

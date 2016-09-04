@@ -27,7 +27,7 @@ public class RoleService implements IRoleService {
     @Override
     public Page<Role> page(Integer pageNumber, Integer pageSize) {
         int total = roleMapper.countAll();
-        List<Role> list = roleMapper.selectAll(pageNumber, pageSize);
+        List<Role> list = roleMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
         return new Page<>(list, pageNumber, pageSize, total);
     }
 

@@ -53,14 +53,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Collect">
+    <insert id="insert" parameterType="org.ehuacui.model.Collect" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_collect (id, tid, uid, 
       in_time)
     values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
       #{inTime,jdbcType=TIMESTAMP})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Collect">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Collect" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_collect
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

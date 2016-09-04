@@ -53,7 +53,7 @@ public class CollectService implements ICollectService {
      */
     @Override
     public Page<Collect> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
-        List<Collect> list = collectMapper.selectByUid(uid, pageNumber, pageSize);
+        List<Collect> list = collectMapper.selectByUid(uid, (pageNumber - 1) * pageSize, pageSize);
         long total = collectMapper.countByUid(uid);
         return new Page<>(list, pageNumber, pageSize, total);
     }
@@ -70,7 +70,7 @@ public class CollectService implements ICollectService {
     }
 
     @Override
-    public void save(Collect collect){
+    public void save(Collect collect) {
         collectMapper.insert(collect);
     }
 

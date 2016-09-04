@@ -48,14 +48,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.model.Role">
+  <insert id="insert" parameterType="org.ehuacui.model.Role" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_role (id, name, description
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
       )
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.Role">
+  <insert id="insertSelective" parameterType="org.ehuacui.model.Role" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

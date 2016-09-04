@@ -14,7 +14,9 @@ public class ClearCacheJob implements Runnable {
     public void run() {
         LogKit.info("开始清理缓存");
         Cache cache = Redis.use();
-        cache.getJedis().flushDB();
+        if (cache != null) {
+            cache.getJedis().flushDB();
+        }
         LogKit.info("缓存清理完成");
     }
 }

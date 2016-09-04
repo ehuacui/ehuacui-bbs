@@ -78,14 +78,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.model.Reply">
+  <insert id="insert" parameterType="org.ehuacui.model.Reply" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_reply (id, tid, in_time, author, is_delete, content)
     values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
       #{author,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.Reply">
+  <insert id="insertSelective" parameterType="org.ehuacui.model.Reply" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_reply
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

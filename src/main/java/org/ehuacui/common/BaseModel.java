@@ -61,7 +61,7 @@ public class BaseModel<T extends Model> extends Model<T> {
      * @param nickname
      * @return
      */
-    public String getAvatarByNickname(String nickname) throws UnsupportedEncodingException {
+    public String getAvatarByNickname(String nickname) {
         User user = ServiceHolder.userService.findByNickname(nickname);
         if (user != null) {
             return user.getAvatar();

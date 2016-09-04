@@ -51,7 +51,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Notification">
+    <insert id="insert" parameterType="org.ehuacui.model.Notification" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_notification (id, read, author, 
       target_author, in_time, action, 
       tid, content)
@@ -60,7 +60,7 @@
       #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Notification">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Notification" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_notification
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

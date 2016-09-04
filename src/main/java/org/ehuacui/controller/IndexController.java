@@ -185,7 +185,9 @@ public class IndexController extends BaseController {
     })
     public void clear() {
         Cache cache = Redis.use();
-        cache.getJedis().flushDB();
+        if (cache != null) {
+            cache.getJedis().flushDB();
+        }
         redirect("/");
     }
 

@@ -34,14 +34,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.TopicAppend">
+    <insert id="insert" parameterType="org.ehuacui.model.TopicAppend" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_topic_append (id, tid, in_time, 
       is_delete, content)
     values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
       #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.TopicAppend">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.TopicAppend" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_topic_append
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

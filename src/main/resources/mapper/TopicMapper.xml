@@ -154,7 +154,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Topic">
+    <insert id="insert" parameterType="org.ehuacui.model.Topic" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_topic (id, tab, title, 
       tag, in_time, modify_time, 
       last_reply_time, last_reply_author, view, 
@@ -169,7 +169,7 @@
       #{content,jdbcType=LONGVARCHAR})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Topic">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Topic" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_topic
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

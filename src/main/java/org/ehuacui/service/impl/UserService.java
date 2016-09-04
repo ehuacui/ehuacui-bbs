@@ -82,7 +82,7 @@ public class UserService implements IUserService {
      */
     @Override
     public Page<User> page(Integer pageNumber, Integer pageSize) {
-        List<User> list = userMapper.selectAll(pageNumber, pageSize);
+        List<User> list = userMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
         int total = userMapper.countAll();
         return new Page<>(list, pageNumber, pageSize, total);
     }

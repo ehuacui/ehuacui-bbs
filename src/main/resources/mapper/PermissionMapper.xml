@@ -52,14 +52,14 @@
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Permission">
+    <insert id="insert" parameterType="org.ehuacui.model.Permission" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_permission (id, name, url, 
       description, pid)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Permission">
+    <insert id="insertSelective" parameterType="org.ehuacui.model.Permission" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

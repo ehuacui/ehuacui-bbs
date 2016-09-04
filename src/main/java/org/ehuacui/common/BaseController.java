@@ -43,7 +43,9 @@ public class BaseController extends Controller {
      */
     protected void clearCache(String key) {
         Cache cache = Redis.use();
-        cache.del(key);
+        if (cache != null) {
+            cache.del(key);
+        }
     }
 
     public User getUser() {
