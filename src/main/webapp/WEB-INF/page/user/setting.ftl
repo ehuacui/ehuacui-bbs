@@ -30,9 +30,9 @@
                         <textarea class="form-control" name="signature" id="signature">${userinfo.signature!}</textarea>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="receive_msg" name="receive_msg" value="1"
-                               <#if userinfo.receive_msg>checked</#if>/>
-                        <label for="receive_msg">是否接收系统邮件</label>
+                        <input type="checkbox" id="receiveMsg" name="receiveMsg" value="1"
+                               <#if userinfo.receiveMsg>checked</#if>/>
+                        <label for="receiveMsg">是否接收系统邮件</label>
                     </div>
                     <button type="button" id="userProfileUpdateBtn" onclick="updateUserProfile()"
                             class="btn btn-default">保存设置
@@ -44,7 +44,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Access Token</div>
             <div class="panel-body">
-                <p>AccessToken: ${userinfo.access_token!}</p>
+                <p>AccessToken: ${userinfo.accessToken!}</p>
                 <p id="qrcode"></p>
             </div>
         </div>
@@ -56,7 +56,7 @@
 <script src="//cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
     $(function () {
-        $('#qrcode').qrcode("${userinfo.access_token!}");
+        $('#qrcode').qrcode("${userinfo.accessToken!}");
     });
 </script>
 </@html>

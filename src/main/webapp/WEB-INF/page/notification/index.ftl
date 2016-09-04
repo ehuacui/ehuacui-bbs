@@ -29,7 +29,7 @@
                                     <#elseif notification.action == "AT">
                                         时提到了你
                                     </#if>
-                                    <span>${notification.formatDate(notification.in_time)!}</span>
+                                    <span>${notification.formatDate(notification.inTime)!}</span>
                                 </div>
                                 <#if notification.content?? && notification.content != "">
                                     <div class="payload">

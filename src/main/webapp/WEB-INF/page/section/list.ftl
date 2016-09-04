@@ -16,7 +16,7 @@
                             <td>${section.id!}</td>
                             <td>${section.name!}</td>
                             <td>${section.tab!}</td>
-                            <td>${section.in_time!}</td>
+                            <td>${section.inTime!}</td>
                             <td>
                                 <#if section.showStatus(section) == 'true'>
                                     显示

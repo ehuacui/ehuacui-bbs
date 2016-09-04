@@ -29,7 +29,7 @@
     from ehuacui_section
   </select>
 
-  <select id="selectByShowStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByShowStatus" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from ehuacui_section

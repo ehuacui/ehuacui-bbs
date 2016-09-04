@@ -17,7 +17,7 @@
                             </#if>
                             <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
                             <span>•</span>
-                            <span>${topic.formatDate(topic.in_time)}</span>
+                            <span>${topic.formatDate(topic.inTime)}</span>
                             <span>•</span>
                             <span>${topic.view!1}次点击</span>
                             <span>•</span>
@@ -63,7 +63,7 @@
                     <p class="gray">
                         <span>第 ${topicAppend_index + 1} 条追加</span>
                         <span>•</span>
-                        <span>${topicAppend.formatDate(topicAppend.in_time)}</span>
+                        <span>${topicAppend.formatDate(topicAppend.inTime)}</span>
                         <#if userinfo??>
                             <@py.hasPermission name="topic:append:edit" id="${userinfo.id!}">
                                 <span>•</span>
@@ -86,13 +86,13 @@
                 </div>
             </#if>
         </div>
-        <#if topic.reply_count == 0>
+        <#if topic.replyCount == 0>
             <div class="panel panel-default">
                 <div class="panel-body text-center">目前暂无回复</div>
             </div>
         <#else>
             <div class="panel panel-default">
-                <div class="panel-heading">${topic.reply_count!0} 条回复</div>
+                <div class="panel-heading">${topic.replyCount!0} 条回复</div>
                 <div class="panel-body paginate-bot">
                     <#include "../components/replies.ftl"/>
                     <@replies replies=page.getList()/>

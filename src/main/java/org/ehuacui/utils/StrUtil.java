@@ -104,7 +104,7 @@ public class StrUtil extends StrKit {
     }
 
     public static void main(String[] args) {
-        System.out.println(getEncryptionToken("e305974cf85e961f4be5f214d4616acc107a9829"));
+        System.out.println(getEncryptionToken("f377ac7992ac419f80deb3d7e88b8157"));
     }
 
 }

@@ -19,9 +19,9 @@
                             <td>
                                 <a href="/manage/userrole?id=${user.id!}" class="btn btn-xs btn-warning">配置角色</a>
                                 <a href="javascript:if(confirm('确认此操作吗?')) location.href='/manage/userblock?id=${user.id!}'" class="btn btn-xs btn-danger">
-                                    <#if user.is_block == true>
+                                    <#if user.isBlock == true>
                                         取消禁用
-                                    <#elseif user.is_block == false>
+                                    <#elseif user.isBlock == false>
                                         禁用账户
                                     </#if>
                                 </a>

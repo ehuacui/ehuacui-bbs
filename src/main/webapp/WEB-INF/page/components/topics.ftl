@@ -19,14 +19,14 @@
                 <span>•</span>
                 <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
                 <span class="hidden-sm hidden-xs">•</span>
-                <span class="hidden-sm hidden-xs">${topic.reply_count!0}个回复</span>
+                <span class="hidden-sm hidden-xs">${topic.replyCount!0}个回复</span>
                 <span class="hidden-sm hidden-xs">•</span>
                 <span class="hidden-sm hidden-xs">${topic.view!0}次浏览</span>
                 <span>•</span>
-                <span>${topic.formatDate(topic.in_time)}</span>
-                <#if topic.last_reply_author?? && topic.last_reply_author != "">
+                <span>${topic.formatDate(topic.inTime)}</span>
+                <#if topic.lastReplyAuthor?? && topic.lastReplyAuthor != "">
                     <span>•</span>
-                    <span>最后回复来自 <a href="/user/${topic.last_reply_author!}">${topic.last_reply_author!}</a></span>
+                    <span>最后回复来自 <a href="/user/${topic.lastReplyAuthor!}">${topic.lastReplyAuthor!}</a></span>
                 </#if>
             </p>
         </div>

@@ -28,7 +28,7 @@ public interface TopicMapper {
 
     List<Topic> selectByTab(@Param("tab") String tab, @Param("start") Integer start, @Param("limit") Integer limit);
 
-    int countByTab(@Param("id") String tab);
+    int countByTab(@Param("tab") String tab);
 
     List<Topic> selectAllGood(@Param("start") Integer start, @Param("limit") Integer limit);
 

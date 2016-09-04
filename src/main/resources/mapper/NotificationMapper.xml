@@ -26,7 +26,7 @@
     </select>
 
     <select id="countNotReadByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(id) from ehuacui_notification where read = 0 and target_author = #{author,jdbcType=VARCHAR}
+        select count(id) from ehuacui_notification where 'read' = 0 and target_author = #{author,jdbcType=VARCHAR}
     </select>
 
     <select id="countByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">

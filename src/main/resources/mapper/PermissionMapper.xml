@@ -36,8 +36,7 @@
     </select>
 
     <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select p.*
         from ehuacui_user u, ehuacui_role r, ehuacui_permission p,ehuacui_user_role ur, ehuacui_role_permission rp
         where u.id = ur.uid and r.id = ur.rid and r.id = rp.rid and p.id = rp.pid
         and u.id = #{uid,jdbcType=INTEGER}
