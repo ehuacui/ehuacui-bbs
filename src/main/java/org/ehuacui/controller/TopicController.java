@@ -49,6 +49,7 @@ public class TopicController extends BaseController {
             //话题浏览次数+1
             topic.setView(topic.getView() + 1);
             ServiceHolder.topicService.update(topic);
+            /*
             //更新redis里的topic数据
             Cache cache = Redis.use();
             Topic _topic = cache.get(Constants.CacheEnum.topic.name() + tid);
@@ -56,6 +57,7 @@ public class TopicController extends BaseController {
                 _topic.setView(_topic.getView() + 1);
                 cache.set(Constants.CacheEnum.topic.name() + tid, _topic);
             }
+            */
             //查询版块名称
             Section section = ServiceHolder.sectionService.findByTab(topic.getTab());
             //查询话题作者信息
@@ -63,7 +65,7 @@ public class TopicController extends BaseController {
             //查询作者其他话题
             List<Topic> otherTopics = ServiceHolder.topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
             //查询回复
-            Page<Reply> page = ServiceHolder.replyService.page(getParaToInt("p"), PropKit.getInt("replyPageSize"), tid);
+            Page<Reply> page = ServiceHolder.replyService.page(getParaToInt("p", 1), PropKit.getInt("replyPageSize"), tid);
             //查询收藏数量
             long collectCount = ServiceHolder.collectService.countByTid(tid);
             //查询当前用户是否收藏了该话题
