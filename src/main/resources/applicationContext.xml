@@ -83,16 +83,16 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- SpringContextHolder -->
-    <bean id="springContextHolder" class="org.ehuacui.common.SpringContextHolder"/>
-
     <!-- 定义个通知，指定事务管理器 -->
     <tx:advice id="txAdvice" transaction-manager="txManager">
         <tx:attributes>
-            <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
-            <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
-            <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
-            <tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+		    <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="modify*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="has*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="load*" propagation="SUPPORTS" read-only="true"/>
             <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
             <tx:method name="search*" propagation="SUPPORTS" read-only="true"/>
@@ -101,12 +101,94 @@
         </tx:attributes>
     </tx:advice>
 
-    <!-- 启动AOP支持 -->
-    <aop:aspectj-autoproxy/>
+    <!-- 启动AOP支持,使用cglib进行代理,兼容service实现层中使用非接口声明bean的情况 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config>
         <!-- 配置一个切入点 -->
         <aop:pointcut id="serviceMethods" expression="execution(* org.ehuacui.service.impl.*Service.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
+
+    <!-- SpringContextHolder -->
+    <bean id="springContextHolder" class="org.ehuacui.common.SpringContextHolder"/>
+
+    <!-- 配置线程池 -->
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="10"/>
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="600"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="100"/>
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name="queueCapacity" value="50"/>
+    </bean>
+
+    <!-- 配置RestTemplate -->
+    <!--Http client Factory -->
+    <bean id="httpClientFactory" class="org.springframework.http.client.OkHttpClientHttpRequestFactory">
+        <property name="connectTimeout" value="${rest.connectTimeout}"/>
+        <property name="readTimeout" value="${rest.readTimeout}"/>
+    </bean>
+
+    <!--RestTemplate -->
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="httpClientFactory"/>
+    </bean>
+
+
+    <!-- shiro redisManager -->
+    <bean id="redisManager" class="com.quanshi.report.redis.RedisManager" init-method="init">
+        <property name="host" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="expire" value="${redis.expire}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+        <!-- optional properties:
+        <property name="password" value="123456"/>
+        -->
+    </bean>
+
+    <!-- 邮件发送配置 -->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!-- SMTP发送邮件的服务器的IP和端口 -->
+        <property name="host" value="${mail.smtp.host}"/>
+        <property name="port" value="${mail.smtp.port}"/>
+        <!-- 登陆SMTP邮件发送服务器的用户名和密码 -->
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <!-- 获得邮件会话属性,验证登录邮件服务器是否成功 -->
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="prop">true</prop>
+                <prop key="mail.smtp.timeout">25000</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Freemarker 模板配置 -->
+    <bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">10</prop>
+                <!--刷新模板的周期，单位为秒 -->
+                <prop key="default_encoding">UTF-8</prop>
+                <!--模板的编码格式 -->
+                <prop key="locale">zh_CN</prop>
+                <!-- 本地化设置 -->
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="number_format">#.##</prop>
+                <prop key="whitespace_stripping">true</prop>
+                <!--模板异常信息处理 ignore-->
+                <prop key="template_exception_handler">ignore</prop>
+                <!-- 配置自定义的freemarker异常处理-->
+                <!--<prop key="template_exception_handler">com.quanshi.report.exception.FreemarkerExceptionHandler</prop>-->
+            </props>
+        </property>
+    </bean>
 
 </beans>
