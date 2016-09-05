@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-lazy-init="true">
 
-    <context:component-scan base-package="org.ehuacui.controller">
+    <context:component-scan base-package="org.ehuacui.bbs.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 

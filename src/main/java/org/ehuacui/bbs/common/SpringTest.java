@@ -1,6 +1,8 @@
 package org.ehuacui.bbs.common;
 
 import org.ehuacui.bbs.service.ICollectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -9,10 +11,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Created by Administrator on 2016/9/3.
  */
 public class SpringTest {
-    public static void main(String[] args) {
+
+    private static final Logger logger = LoggerFactory.getLogger(SpringTest.class);
+
+    private static void te() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         ICollectService collectService = applicationContext.getBean(ICollectService.class);
         Long size = collectService.countByTid(1);
-        System.err.println(size);
+        logger.info("countByTid==={}===", size);
+    }
+
+    public static void main(String[] args) {
+        te();
     }
 }
