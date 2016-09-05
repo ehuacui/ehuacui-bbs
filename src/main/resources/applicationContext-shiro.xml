@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <description>Shiro安全配置</description>
+
+    <!-- Shiro main business-tier object for web-enabled applications -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroDbRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+    <bean id="shiroDbRealm" class="com.quanshi.report.shiro.ShiroRealm">
+        <property name="cacheManager" ref="redisCacheManager"/>
+    </bean>
+
+    <!-- redisCacheManager -->
+    <bean id="redisCacheManager" class="com.quanshi.report.shiro.ShiroRedisCacheManager">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- 每60秒检查一下Session的有效性  -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="60000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 主要是为了注入SessionDAO -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="redisSessionDAO"/>
+        <property name="globalSessionTimeout" value="3600000"/>
+        <!--<property name="sessionIdCookie.path" value="/qsboss"/>
+        <property name="sessionIdCookie.name" value="JSESSIONID"/>-->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+    </bean>
+
+    <!-- redisSessionDAO -->
+    <bean id="redisSessionDAO" class="com.quanshi.report.shiro.ShiroRedisSessionDAO">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="authorizedAdviceFilter" class="com.quanshi.report.shiro.AuthorizedAdviceFilter"/>
+
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/toLogin"/>
+        <property name="successUrl" value="/"/>
+        <property name="filters">
+            <map>
+                <entry key="authorizedAdviceFilter" value-ref="authorizedAdviceFilter"/>
+            </map>
+        </property>
+        <property name="unauthorizedUrl" value="/qsboss/index"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /static/** = anon
+                /** = authc,authorizedAdviceFilter
+            </value>
+        </property>
+    </bean>
+
+</beans>

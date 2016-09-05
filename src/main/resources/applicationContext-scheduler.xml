@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- =============定义目标bean和bean中的方法 =================== -->
+    <bean id="customerStandardReportJob" class="com.quanshi.report.scheduler.CustomerStandardReportJob"/>
+
+    <bean id="standardCustomerReportJobMethod"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="customerStandardReportJob"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <bean id="customerConfigReportJob" class="com.quanshi.report.scheduler.CustomerConfigReportJob"/>
+
+    <bean id="customerConfigReportJobMethod"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="customerConfigReportJob"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <!-- ======================== 调度触发器 ======================== -->
+    <bean id="standardCustomerReportJobMethodTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="standardCustomerReportJobMethod"/>
+        <property name="cronExpression" value="0 0 23 10 * ?"/>
+    </bean>
+
+    <bean id="customerConfigReportJobMethodTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="customerConfigReportJobMethod"/>
+        <property name="cronExpression" value="0 0 23 12 * ?"/>
+    </bean>
+
+    <!-- ======================== 调度工厂 ======================== -->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="standardCustomerReportJobMethodTrigger"/>
+                <ref bean="customerConfigReportJobMethodTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
