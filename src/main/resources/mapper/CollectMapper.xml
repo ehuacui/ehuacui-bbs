@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.ehuacui.mapper.CollectMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.CollectMapper">
 
-    <resultMap id="BaseResultMap" type="org.ehuacui.model.Collect">
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Collect">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="tid" jdbcType="INTEGER" property="tid"/>
         <result column="uid" jdbcType="INTEGER" property="uid"/>
@@ -53,14 +53,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Collect" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_collect (id, tid, uid, 
       in_time)
     values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
       #{inTime,jdbcType=TIMESTAMP})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Collect" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_collect
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -92,7 +92,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Collect">
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Collect">
         update ehuacui_collect
         <set>
             <if test="tid != null">
@@ -108,7 +108,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Collect">
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Collect">
     update ehuacui_collect
     set tid = #{tid,jdbcType=INTEGER},
       uid = #{uid,jdbcType=INTEGER},

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ehuacui.mapper.UserRoleMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.UserRoleMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.model.UserRole">
+  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.UserRole">
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="rid" jdbcType="INTEGER" property="rid" />
   </resultMap>
@@ -15,12 +15,12 @@
     select * from ehuacui_user_role where rid = #{rid,jdbcType=INTEGER}
   </select>
 
-  <insert id="insert" parameterType="org.ehuacui.model.UserRole">
+  <insert id="insert" parameterType="org.ehuacui.bbs.model.UserRole">
     insert into ehuacui_user_role (uid, rid)
     values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.UserRole">
+  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.UserRole">
     insert into ehuacui_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">

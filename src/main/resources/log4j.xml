@@ -3,7 +3,7 @@
 <log4j:configuration>
 
     <appender name="logFile" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="./logs/report_internal.log"/>
+        <param name="file" value="./logs/ehuacui_bbs.log"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.sss} [%-5p] %c (%M:%L) - %m%n"/>

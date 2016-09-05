@@ -19,7 +19,7 @@
     <context:property-placeholder location="classpath:config.properties" file-encoding="UTF-8"/>
 
     <!-- 开启自动扫包 -->
-    <context:component-scan base-package="org.ehuacui.service">
+    <context:component-scan base-package="org.ehuacui.bbs.service">
         <!--制定扫包规则，不扫描@Controller注解的JAVA类，其他的还是要扫描  -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
@@ -69,12 +69,12 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
         <!-- 自动扫描需要定义类别名的包，将包内的JAVA类的类名作为类别名 -->
-        <property name="typeAliasesPackage" value="org.ehuacui.model"/>
+        <property name="typeAliasesPackage" value="org.ehuacui.bbs.model"/>
     </bean>
 
     <!-- 自动扫描所有的Mapper接口与文件 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.ehuacui.mapper"/>
+        <property name="basePackage" value="org.ehuacui.bbs.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
@@ -105,12 +105,12 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config>
         <!-- 配置一个切入点 -->
-        <aop:pointcut id="serviceMethods" expression="execution(* org.ehuacui.service.impl.*Service.*(..))"/>
+        <aop:pointcut id="serviceMethods" expression="execution(* org.ehuacui.bbs.service.impl.*Service.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
 
     <!-- SpringContextHolder -->
-    <bean id="springContextHolder" class="org.ehuacui.common.SpringContextHolder"/>
+    <bean id="springContextHolder" class="org.ehuacui.bbs.common.SpringContextHolder"/>
 
     <!-- 配置线程池 -->
     <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -136,9 +136,8 @@
         <constructor-arg ref="httpClientFactory"/>
     </bean>
 
-
     <!-- shiro redisManager -->
-    <bean id="redisManager" class="com.quanshi.report.redis.RedisManager" init-method="init">
+    <bean id="redisManager" class="org.ehuacui.bbs.redis.RedisManager" init-method="init">
         <property name="host" value="${redis.host}"/>
         <property name="port" value="${redis.port}"/>
         <property name="expire" value="${redis.expire}"/>
@@ -186,9 +185,12 @@
                 <!--模板异常信息处理 ignore-->
                 <prop key="template_exception_handler">ignore</prop>
                 <!-- 配置自定义的freemarker异常处理-->
-                <!--<prop key="template_exception_handler">com.quanshi.report.exception.FreemarkerExceptionHandler</prop>-->
+                <!--<prop key="template_exception_handler">org.ehuacui.bbs.exception.FreemarkerExceptionHandler</prop>-->
             </props>
         </property>
     </bean>
+
+    <import resource="applicationContext-shiro.xml"/>
+    <import resource="applicationContext-scheduler.xml"/>
 
 </beans>

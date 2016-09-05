@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ehuacui.mapper.SectionMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.SectionMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.model.Section">
+  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Section">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="tab" jdbcType="VARCHAR" property="tab" />
@@ -49,7 +49,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.model.Section" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insert" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_section (id, name, tab, 
       show_status, display_index, default_show, 
       pid)
@@ -58,7 +58,7 @@
       #{pid,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.Section" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_section
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -108,7 +108,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Section">
+  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Section">
     update ehuacui_section
     <set>
       <if test="name != null">
@@ -133,7 +133,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Section">
+  <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Section">
     update ehuacui_section
     set name = #{name,jdbcType=VARCHAR},
       tab = #{tab,jdbcType=VARCHAR},

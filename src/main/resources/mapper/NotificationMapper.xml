@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.ehuacui.mapper.NotificationMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.NotificationMapper">
 
-    <resultMap id="BaseResultMap" type="org.ehuacui.model.Notification">
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Notification">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="read" jdbcType="BIT" property="read"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
@@ -51,7 +51,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.Notification" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_notification (id, read, author, 
       target_author, in_time, action, 
       tid, content)
@@ -60,7 +60,7 @@
       #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.Notification" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_notification
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -116,7 +116,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.Notification">
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Notification">
         update ehuacui_notification
         <set>
             <if test="read != null">
@@ -144,7 +144,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.Notification">
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
     update ehuacui_notification
     set read = #{read,jdbcType=BIT},
       author = #{author,jdbcType=VARCHAR},

@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-lazy-init="true">
 
-    <context:component-scan base-package="com.quanshi.report.controller">
+    <context:component-scan base-package="org.ehuacui.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -22,7 +22,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <bean id="stopWatchHandlerInterceptor"
-                  class="com.quanshi.report.interceptors.RequestWatchHandlerInterceptor">
+                  class="org.ehuacui.bbs.interceptor.RequestWatchHandlerInterceptor">
                 <!--<property name="logService" ref="logService"/>-->
                 <property name="filterTime" value="200"/>
             </bean>
@@ -46,7 +46,7 @@
         <property name="maxUploadSize" value="2147483648"/>
     </bean>
 
-    <bean id="viewResolver" class="com.quanshi.report.utils.MultiViewResolver">
+    <bean id="viewResolver" class="org.ehuacui.bbs.utils.MultiViewResolver">
         <property name="defaultViewResolver">
             <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                 <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -76,6 +76,6 @@
     </bean>
 
     <!--定义异常处理类  -->
-    <bean id="exceptionHandler" class="com.quanshi.report.exception.ReportInternalExceptionHandler"/>
+    <bean id="exceptionHandler" class="org.ehuacui.bbs.exception.BusinessExceptionHandler"/>
 
 </beans>

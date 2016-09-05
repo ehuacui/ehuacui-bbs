@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ehuacui.mapper.RolePermissionMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.RolePermissionMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.model.RolePermission">
+  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.RolePermission">
     <result column="rid" jdbcType="INTEGER" property="rid" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
   </resultMap>
@@ -11,12 +11,12 @@
     select * from ehuacui_role_permission where rid = #{rid,jdbcType=INTEGER}
   </select>
 
-  <insert id="insert" parameterType="org.ehuacui.model.RolePermission">
+  <insert id="insert" parameterType="org.ehuacui.bbs.model.RolePermission">
     insert into ehuacui_role_permission (rid, pid)
     values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.model.RolePermission">
+  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.RolePermission">
     insert into ehuacui_role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="rid != null">

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ehuacui.mapper.UserMapper">
+<mapper namespace="org.ehuacui.bbs.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="org.ehuacui.model.User">
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.User">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="score" jdbcType="INTEGER" property="score"/>
@@ -94,7 +94,7 @@
     where nickname = #{nickname,jdbcType=VARCHAR}
   </delete>
 
-    <insert id="insert" parameterType="org.ehuacui.model.User" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_user (id, nickname, score, 
       avatar, email, url, 
       signature, third_id, access_token, 
@@ -109,7 +109,7 @@
       )
   </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.model.User" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -207,7 +207,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.model.User">
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.User">
         update ehuacui_user
         <set>
             <if test="nickname != null">
@@ -256,7 +256,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="org.ehuacui.model.User">
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.User">
     update ehuacui_user
     set nickname = #{nickname,jdbcType=VARCHAR},
       score = #{score,jdbcType=INTEGER},

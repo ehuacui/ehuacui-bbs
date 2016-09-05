@@ -14,12 +14,12 @@
     </bean>
 
     <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
-    <bean id="shiroDbRealm" class="com.quanshi.report.shiro.ShiroRealm">
+    <bean id="shiroDbRealm" class="org.ehuacui.bbs.shiro.ShiroRealm">
         <property name="cacheManager" ref="redisCacheManager"/>
     </bean>
 
     <!-- redisCacheManager -->
-    <bean id="redisCacheManager" class="com.quanshi.report.shiro.ShiroRedisCacheManager">
+    <bean id="redisCacheManager" class="org.ehuacui.bbs.shiro.ShiroRedisCacheManager">
         <property name="redisManager" ref="redisManager"/>
     </bean>
 
@@ -40,14 +40,14 @@
     </bean>
 
     <!-- redisSessionDAO -->
-    <bean id="redisSessionDAO" class="com.quanshi.report.shiro.ShiroRedisSessionDAO">
+    <bean id="redisSessionDAO" class="org.ehuacui.bbs.shiro.ShiroRedisSessionDAO">
         <property name="redisManager" ref="redisManager"/>
     </bean>
 
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-    <bean id="authorizedAdviceFilter" class="com.quanshi.report.shiro.AuthorizedAdviceFilter"/>
+    <bean id="authorizedAdviceFilter" class="org.ehuacui.bbs.shiro.AuthorizedAdviceFilter"/>
 
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

@@ -5,41 +5,24 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- =============定义目标bean和bean中的方法 =================== -->
-    <bean id="customerStandardReportJob" class="com.quanshi.report.scheduler.CustomerStandardReportJob"/>
+    <bean id="standardJob" class="org.ehuacui.bbs.scheduler.StandardJob"/>
 
-    <bean id="standardCustomerReportJobMethod"
-          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="customerStandardReportJob"/>
-        <property name="targetMethod" value="execute"/>
-    </bean>
-
-    <bean id="customerConfigReportJob" class="com.quanshi.report.scheduler.CustomerConfigReportJob"/>
-
-    <bean id="customerConfigReportJobMethod"
-          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="customerConfigReportJob"/>
+    <bean id="standardJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="standardJob"/>
         <property name="targetMethod" value="execute"/>
     </bean>
 
     <!-- ======================== 调度触发器 ======================== -->
-    <bean id="standardCustomerReportJobMethodTrigger"
-          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="standardCustomerReportJobMethod"/>
+    <bean id="standardJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="standardJobMethod"/>
         <property name="cronExpression" value="0 0 23 10 * ?"/>
-    </bean>
-
-    <bean id="customerConfigReportJobMethodTrigger"
-          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="customerConfigReportJobMethod"/>
-        <property name="cronExpression" value="0 0 23 12 * ?"/>
     </bean>
 
     <!-- ======================== 调度工厂 ======================== -->
     <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="standardCustomerReportJobMethodTrigger"/>
-                <ref bean="customerConfigReportJobMethodTrigger"/>
+                <ref bean="standardJobTrigger"/>
             </list>
         </property>
     </bean>
