@@ -86,7 +86,7 @@
     <!-- 定义个通知，指定事务管理器 -->
     <tx:advice id="txAdvice" transaction-manager="txManager">
         <tx:attributes>
-		    <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+            <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
             <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
             <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
             <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>

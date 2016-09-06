@@ -4,7 +4,7 @@ scan：当此属性设置为true时，配置文件如果发生改变，将会被
 scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒当scan为true时，此属性生效。默认的时间间隔为1分钟。
 debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
 -->
-<configuration scan="true" scanPeriod="60 seconds" debug="false">
+<configuration scan="true" scanPeriod="60 seconds">
     <!-- 定义日志的根目录 -->
     <property name="LOG_HOME" value="./logs"/>
     <!-- 定义日志文件名称 -->
@@ -12,8 +12,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     <contextName>${appName}</contextName>
 
     <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-        <Encoding>UTF-8</Encoding>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!--
         日志输出格式：%d表示日期时间，%thread表示线程名，%-5level：级别从左显示5个字符宽度
         %logger{50} 表示logger名字最长50个字符，否则按照句点分割。 %msg：日志消息，%n是换行符
@@ -24,8 +23,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     </appender>
 
     <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
-    <appender name="appLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 指定日志文件的名称 -->
         <file>${LOG_HOME}/${appName}.log</file>
         <!--
@@ -67,23 +65,25 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         false：表示只用当前logger的appender-ref，
         true：表示当前logger的appender-ref和rootLogger的appender-ref都有效
     -->
-    <logger name="ch.qos.logback" level="error"/>
-    <logger name="org.quartz" level="error" additivity="false"/>
-    <!-- Spring framework logger -->
-    <logger name="org.springframework" level="error" additivity="false"/>
-    <!--mybatis log configure-->
-    <logger name="org.mybatis" level="error" additivity="false"/>
-    <logger name="org.apache.ibatis" level="error" additivity="false"/>
-    <logger name="java.sql.Connection" level="debug" additivity="false"/>
-    <logger name="java.sql.Statement" level="debug" additivity="false"/>
-    <logger name="java.sql.PreparedStatement" level="debug" additivity="false"/>
+
+    <logger name="org.eclipse.jetty" level="error" additivity="true"/>
+    <logger name="com.alibaba.druid" level="error" additivity="true"/>
+    <logger name="org.apache.shiro" level="error" additivity="true"/>
+    <logger name="org.quartz" level="error" additivity="true"/>
+    <logger name="org.springframework" level="error" additivity="true"/>
+    <logger name="org.mybatis" level="error" additivity="true"/>
+    <logger name="org.apache.ibatis" level="error" additivity="true"/>
+    <logger name="java.sql.Connection" level="debug" additivity="true"/>
+    <logger name="java.sql.Statement" level="debug" additivity="true"/>
+    <logger name="java.sql.PreparedStatement" level="debug" additivity="true"/>
+
     <!--
     root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
     要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
     -->
     <root level="debug">
-        <appender-ref ref="stdout"/>
-        <!--<appender-ref ref="appLogAppender"/>-->
+        <appender-ref ref="console"/>
+        <appender-ref ref="rollingFile"/>
     </root>
 
 </configuration>

@@ -43,7 +43,8 @@
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <!--<url-pattern>/*</url-pattern>-->
+        <url-pattern>*.do</url-pattern>
     </filter-mapping>
 
     <!-- 安全认证 Filter -->
@@ -57,7 +58,8 @@
     </filter>
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <!--<url-pattern>/*</url-pattern>-->
+        <url-pattern>*.do</url-pattern>
     </filter-mapping>
 
     <!-- Spring MVC Servlet -->
@@ -72,7 +74,8 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <!--<url-pattern>/</url-pattern>-->
+        <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
     <filter>

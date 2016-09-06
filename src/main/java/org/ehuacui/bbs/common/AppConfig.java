@@ -6,9 +6,9 @@ import com.jfinal.core.JFinal;
 import com.jfinal.render.FreeMarkerRender;
 import org.ehuacui.bbs.ext.cron.Cron4jPlugin;
 import org.ehuacui.bbs.ext.route.AutoBindRoutes;
+import org.ehuacui.bbs.interceptor.CommonInterceptor;
 import org.ehuacui.bbs.template.PyTag;
 import org.ehuacui.bbs.utils.StrUtil;
-import org.ehuacui.bbs.interceptor.CommonInterceptor;
 
 /**
  * Created by ehuacui.
@@ -17,19 +17,16 @@ import org.ehuacui.bbs.interceptor.CommonInterceptor;
  */
 public class AppConfig extends JFinalConfig {
 
-    private Routes routes;
-
     /**
      * 配置常量
      */
     public void configConstant(Constants me) {
         // 加载少量必要配置，随后可用getProperty(...)获取值
         loadPropertyFile("config.properties");
-        me.setDevMode(getPropertyToBoolean("devMode", false));
         me.setFreeMarkerViewExtension("ftl");
         String staticPath = getProperty("static.path");
         me.setBaseUploadPath(StrUtil.isBlank(staticPath) ? "static/upload" : staticPath);
-//        me.setMaxPostSize(1024 * 1024 * 2);
+        me.setMaxPostSize(1024 * 1024 * 2);
         me.setFreeMarkerTemplateUpdateDelay(300);
         me.setError401View("/WEB-INF/page/401.html");
         me.setError404View("/WEB-INF/page/404.html");
@@ -41,7 +38,6 @@ public class AppConfig extends JFinalConfig {
      * 配置路由
      */
     public void configRoute(Routes me) {
-        this.routes = me;
         me.add(new AutoBindRoutes());
     }
 

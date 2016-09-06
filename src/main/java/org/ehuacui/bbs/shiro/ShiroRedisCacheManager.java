@@ -15,10 +15,8 @@ public class ShiroRedisCacheManager implements CacheManager {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRedisCacheManager.class);
 
     // fast lookup by name map
-    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<String, Cache>();
-
+    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<>();
     private RedisManager redisManager;
-
     /**
      * The Redis key prefix for caches
      */
@@ -27,6 +25,7 @@ public class ShiroRedisCacheManager implements CacheManager {
     /**
      * Returns the Redis session keys
      * prefix.
+     *
      * @return The prefix
      */
     public String getKeyPrefix() {
@@ -36,6 +35,7 @@ public class ShiroRedisCacheManager implements CacheManager {
     /**
      * Sets the Redis sessions key
      * prefix.
+     *
      * @param keyPrefix The prefix
      */
     public void setKeyPrefix(String keyPrefix) {
@@ -44,18 +44,13 @@ public class ShiroRedisCacheManager implements CacheManager {
 
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        logger.debug("获取名称为: " + name + " 的RedisCache实例");
-
+        logger.debug("get name {} cache", name);
         Cache c = caches.get(name);
-
         if (c == null) {
-
             // initialize the Redis manager instance
             redisManager.init();
-
             // create a new cache instance
-            c = new ShiroRedisCache<K, V>(redisManager, keyPrefix);
-
+            c = new ShiroRedisCache<>(redisManager, keyPrefix);
             // add it to the cache collection
             caches.put(name, c);
         }
