@@ -4,7 +4,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import org.ehuacui.bbs.common.*;
-import org.ehuacui.bbs.ext.route.ControllerBind;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
@@ -28,7 +28,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/topic", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/topic", viewPath = "WEB-INF/ftl")
 public class TopicController extends BaseController {
 
     /**

@@ -29,8 +29,7 @@ public class Constants {
 
     //第三方登录渠道
     public enum LoginEnum {
-        Github,
-        Weibo
+        Github
     }
 
     //通知事件

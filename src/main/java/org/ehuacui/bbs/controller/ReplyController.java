@@ -7,7 +7,7 @@ import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.ext.route.ControllerBind;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
@@ -28,7 +28,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/reply", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/reply", viewPath = "WEB-INF/ftl")
 public class ReplyController extends BaseController {
 
     @Before({

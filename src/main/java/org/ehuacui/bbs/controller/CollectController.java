@@ -5,7 +5,7 @@ import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.ext.route.ControllerBind;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Topic;
@@ -18,7 +18,7 @@ import java.util.Date;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/collect", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/collect", viewPath = "WEB-INF/ftl")
 public class CollectController extends BaseController {
 
     /**

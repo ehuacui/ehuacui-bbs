@@ -13,7 +13,7 @@ import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.ext.route.ControllerBind;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Reply;
@@ -28,7 +28,7 @@ import java.net.URLEncoder;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/user", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/user", viewPath = "WEB-INF/ftl")
 public class UserController extends BaseController {
 
     /**

@@ -7,7 +7,7 @@ import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.ext.route.ControllerBind;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Permission;
@@ -26,7 +26,7 @@ import java.util.List;
         UserInterceptor.class,
         PermissionInterceptor.class
 })
-@ControllerBind(controllerKey = "/manage", viewPath = "WEB-INF/page")
+@ControllerBind(controllerKey = "/manage", viewPath = "WEB-INF/ftl")
 public class ManageController extends BaseController {
 
     /**

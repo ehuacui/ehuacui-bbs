@@ -33,7 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ehuacui.bbs.ext.kit;
+package org.ehuacui.bbs.route;
 
 import java.lang.reflect.InvocationTargetException;
 

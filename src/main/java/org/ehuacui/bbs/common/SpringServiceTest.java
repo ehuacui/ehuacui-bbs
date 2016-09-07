@@ -10,9 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Spring Test
  * Created by Administrator on 2016/9/3.
  */
-public class SpringTest {
+public class SpringServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpringTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringServiceTest.class);
 
     private static void te() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");

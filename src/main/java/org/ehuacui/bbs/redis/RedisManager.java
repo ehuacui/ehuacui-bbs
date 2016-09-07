@@ -23,9 +23,6 @@ public class RedisManager {
     private String password = "";
     private JedisPool jedisPool = null;
 
-    public RedisManager() {
-    }
-
     /**
      * 初始化连接
      */

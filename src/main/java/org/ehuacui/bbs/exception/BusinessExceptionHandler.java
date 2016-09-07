@@ -32,7 +32,7 @@ public class BusinessExceptionHandler implements HandlerExceptionResolver {
         String errorMsg;
         // 把漏网的异常信息记入日志
         // 对Spring初始化的一些异常进行处理
-        if (ex instanceof RBusinessException) {
+        if (ex instanceof BusinessException) {
             errorMsg = ex.getMessage();
             logger.error(ex.getMessage(), ex);
         } else {

@@ -4,8 +4,7 @@ import com.jfinal.config.Constants;
 import com.jfinal.config.*;
 import com.jfinal.core.JFinal;
 import com.jfinal.render.FreeMarkerRender;
-import org.ehuacui.bbs.ext.cron.Cron4jPlugin;
-import org.ehuacui.bbs.ext.route.AutoBindRoutes;
+import org.ehuacui.bbs.route.AutoBindRoutes;
 import org.ehuacui.bbs.interceptor.CommonInterceptor;
 import org.ehuacui.bbs.template.PyTag;
 import org.ehuacui.bbs.utils.StrUtil;
@@ -45,7 +44,6 @@ public class AppConfig extends JFinalConfig {
      * 配置插件
      */
     public void configPlugin(Plugins me) {
-        me.add(new Cron4jPlugin().config("cronjob.properties"));
     }
 
     /**

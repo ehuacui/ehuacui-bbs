@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.ext.route;
+package org.ehuacui.bbs.route;
 
 import java.lang.annotation.*;
 

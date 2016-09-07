@@ -18,6 +18,6 @@ public class FreemarkerExceptionHandler implements TemplateExceptionHandler {
     @Override
     public void handleTemplateException(TemplateException te, Environment environment, Writer writer) throws TemplateException {
         log.warn("[Freemarker Error: " + te.getMessage() + "]");
-        throw new RBusinessException("freemarker error", te);
+        throw new BusinessException("freemarker error", te);
     }
 }

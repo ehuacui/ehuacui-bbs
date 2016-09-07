@@ -40,12 +40,7 @@ public class CommonInterceptor implements Interceptor {
         //如果是微博登录的话,要在页面头部添加meta标签
         String loginChannel = PropKit.get("login.channel");
         Map<String, String> loginChannelMap = new HashMap<String, String>();
-        if (loginChannel.equals(Constants.LoginEnum.Weibo.name())) {
-            loginChannelMap.put("loginChannelName", Constants.LoginEnum.Weibo.name());
-            loginChannelMap.put("loginChannelUrl", "/oauth/weibologin");
-            controller.setAttr("login_channel", loginChannelMap);
-            controller.setAttr("weibometa", PropKit.get("weibo.meta"));
-        } else if (StrUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
+        if (StrUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
             loginChannelMap.put("loginChannelName", Constants.LoginEnum.Github.name());
             loginChannelMap.put("loginChannelUrl", "/oauth/githublogin");
             controller.setAttr("login_channel", loginChannelMap);

@@ -11,7 +11,7 @@
     <#--<link rel="stylesheet/less" href="/static/css/less/bootstrap.less">-->
     <#--<script src="//cdn.bootcss.com/less.js/2.7.1/less.min.js"></script>-->
     <link rel="stylesheet" href="/static/css/github.css">
-    <link rel="stylesheet" href="/static/css/pybbs.css">
+    <link rel="stylesheet" href="/static/css/bbs.css">
     <script src="http://cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
@@ -25,7 +25,7 @@
 </div>
     <#include "./footer.ftl">
     <@footer/>
-<script src="/static/js/pybbs.js"></script>
+<script src="/static/js/bbs.js"></script>
 </body>
 </html>
 </#macro>

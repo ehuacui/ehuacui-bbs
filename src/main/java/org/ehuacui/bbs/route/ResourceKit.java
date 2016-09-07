@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehuacui.bbs.ext.kit;
+package org.ehuacui.bbs.route;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;

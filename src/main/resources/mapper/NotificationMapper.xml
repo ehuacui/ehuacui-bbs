@@ -15,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, read, author, target_author, in_time, action, tid, content
+    id, `read`, author, target_author, in_time, action, tid, content
    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -26,7 +26,7 @@
     </select>
 
     <select id="countNotReadByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(id) from ehuacui_notification where 'read' = 0 and target_author = #{author,jdbcType=VARCHAR}
+        select count(id) from ehuacui_notification where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
     </select>
 
     <select id="countByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -52,7 +52,7 @@
   </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_notification (id, read, author, 
+    insert into ehuacui_notification (id, `read`, author,
       target_author, in_time, action, 
       tid, content)
     values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR}, 
@@ -67,7 +67,7 @@
                 id,
             </if>
             <if test="read != null">
-                read,
+                `read`,
             </if>
             <if test="author != null">
                 author,
@@ -120,7 +120,7 @@
         update ehuacui_notification
         <set>
             <if test="read != null">
-                read = #{read,jdbcType=BIT},
+                `read` = #{read,jdbcType=BIT},
             </if>
             <if test="author != null">
                 author = #{author,jdbcType=VARCHAR},
@@ -146,7 +146,7 @@
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
     update ehuacui_notification
-    set read = #{read,jdbcType=BIT},
+    set `read` = #{read,jdbcType=BIT},
       author = #{author,jdbcType=VARCHAR},
       target_author = #{targetAuthor,jdbcType=VARCHAR},
       in_time = #{inTime,jdbcType=TIMESTAMP},
@@ -157,7 +157,7 @@
   </update>
 
     <update id="updateUnreadToRead" parameterType="java.lang.String">
-        update ehuacui_notification set read = 1 where read = 0 and target_author = #{targetAuthor,jdbcType=VARCHAR}
+        update ehuacui_notification set `read` = 1 where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
     </update>
 
 </mapper>
