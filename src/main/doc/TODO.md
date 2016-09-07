@@ -1,7 +1,7 @@
 ##EHuaCui-BBS RoadMap
 
 #技术RoadMap
- 打包配置项优化--Maven配置
+ 打包、依赖库配置项优化--Maven配置
  前端代码引用整理
  使用Shiro重写拦截器
  Controller使用SpringMVC重写
