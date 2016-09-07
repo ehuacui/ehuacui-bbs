@@ -11,7 +11,7 @@
                     <#list page.getList() as notification>
                         <div class="media">
                             <div class="media-left">
-                                <img src="${notification.getAvatarByNickname(notification.author)!}" class="avatar-sm">
+                                <img src="${getAvatarByNickname(notification.author)!}" class="avatar-sm">
                             </div>
                             <div class="media-body">
                                 <div class="gray" <#if notification.isRead(notification) == "false">style="font-weight:700;"</#if>>
@@ -29,11 +29,11 @@
                                     <#elseif notification.action == "AT">
                                         时提到了你
                                     </#if>
-                                    <span>${notification.formatDate(notification.inTime)!}</span>
+                                    <span>${formatDate(notification.inTime)!}</span>
                                 </div>
                                 <#if notification.content?? && notification.content != "">
                                     <div class="payload">
-                                        ${notification.marked(notification.content)!}
+                                        ${marked(notification.content)!}
                                     </div>
                                 </#if>
                             </div>

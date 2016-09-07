@@ -5,6 +5,9 @@ import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.template.FormatDate;
+import org.ehuacui.bbs.template.GetNameByTab;
+import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StrUtil;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
@@ -44,11 +47,14 @@ public class UserController extends BaseController {
                 Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
                 setAttr("topicPage", topicPage);
                 setAttr("replyPage", replyPage);
+                setAttr("currentUser", currentUser);
+                setAttr("formatDate", new FormatDate());
+                setAttr("getNameByTab", new GetNameByTab());
+                setAttr("marked", new Marked());
                 setAttr("pageTitle", currentUser.getNickname() + " 个人主页");
             } else {
                 setAttr("pageTitle", "用户未找到");
             }
-            setAttr("currentUser", currentUser);
             render("user/info.ftl");
         }
     }
@@ -65,6 +71,8 @@ public class UserController extends BaseController {
             setAttr("currentUser", user);
             Page<Topic> page = ServiceHolder.topicService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
             setAttr("page", page);
+            setAttr("formatDate", new FormatDate());
+            setAttr("getNameByTab", new GetNameByTab());
             render("user/topics.ftl");
         }
     }
@@ -81,6 +89,8 @@ public class UserController extends BaseController {
             setAttr("currentUser", user);
             Page<Reply> page = ServiceHolder.replyService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
             setAttr("page", page);
+            setAttr("marked", new Marked());
+            setAttr("formatDate", new FormatDate());
             render("user/replies.ftl");
         }
     }
@@ -97,6 +107,8 @@ public class UserController extends BaseController {
             setAttr("currentUser", user);
             Page<Collect> page = ServiceHolder.collectService.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getId());
             setAttr("page", page);
+            setAttr("formatDate", new FormatDate());
+            setAttr("getNameByTab", new GetNameByTab());
             render("user/collects.ftl");
         }
     }

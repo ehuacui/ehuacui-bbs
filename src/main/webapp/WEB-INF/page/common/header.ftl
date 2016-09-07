@@ -20,17 +20,11 @@
                 </form>
             </#if>
             <ul class="nav navbar-nav navbar-right">
-               <#--
-               <li <#if page_tab == 'donate'> class="active" </#if>>
-                    <a href="/donate">捐赠</a>
-                </li>
-                <li <#if page_tab == 'api'> class="active" </#if>>
-                    <a href="/api">API</a>
-                </li>
-                <li <#if page_tab == 'about'> class="active" </#if>>
-                    <a href="/about">关于</a>
-                </li>
-                -->
+            <#--
+             <li <#if page_tab == 'about'> class="active" </#if>>
+                 <a href="/about">关于</a>
+             </li>
+             -->
                 <#if userinfo??>
                     <li class="hidden-md hidden-lg">
                         <a href="/topic/create">发布话题</a>
@@ -40,7 +34,7 @@
                     </li>
                     <li <#if page_tab == 'user'> class="active" </#if>>
                         <a href="/user/${userinfo.nickname!}">
-                            ${userinfo.nickname!}
+                        ${userinfo.nickname!}
                             <span class="badge" id="badge"></span>
                         </a>
                     </li>

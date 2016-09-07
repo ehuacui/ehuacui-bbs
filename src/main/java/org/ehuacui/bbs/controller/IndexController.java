@@ -5,9 +5,6 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.jfinal.upload.UploadFile;
-import org.ehuacui.bbs.model.Section;
-import org.ehuacui.bbs.utils.SolrUtil;
-import org.ehuacui.bbs.utils.StrUtil;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
@@ -15,8 +12,14 @@ import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.ext.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
+import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.template.FormatDate;
+import org.ehuacui.bbs.template.GetAvatarByNickname;
+import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.utils.QiniuUpload;
+import org.ehuacui.bbs.utils.SolrUtil;
+import org.ehuacui.bbs.utils.StrUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +52,9 @@ public class IndexController extends BaseController {
         setAttr("tab", tab);
         setAttr("sections", ServiceHolder.sectionService.findByShowStatus(true));
         setAttr("page", page);
+        setAttr("getAvatarByNickname", new GetAvatarByNickname());
+        setAttr("getNameByTab", new GetNameByTab());
+        setAttr("formatDate", new FormatDate());
         render("index.ftl");
     }
 
@@ -160,20 +166,6 @@ public class IndexController extends BaseController {
      */
     public void top100() {
         render("top100.ftl");
-    }
-
-    /**
-     * 捐赠
-     */
-    public void donate() {
-        render("donate.ftl");
-    }
-
-    /**
-     * API
-     */
-    public void api() {
-        render("api.ftl");
     }
 
     /**

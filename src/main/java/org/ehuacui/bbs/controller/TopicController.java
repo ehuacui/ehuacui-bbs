@@ -3,15 +3,16 @@ package org.ehuacui.bbs.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import org.ehuacui.bbs.model.*;
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
-import org.ehuacui.bbs.common.Page;
-import org.ehuacui.bbs.common.ServiceHolder;
+import org.ehuacui.bbs.common.*;
 import org.ehuacui.bbs.ext.route.ControllerBind;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
+import org.ehuacui.bbs.model.*;
+import org.ehuacui.bbs.template.FormatDate;
+import org.ehuacui.bbs.template.GetAvatarByNickname;
+import org.ehuacui.bbs.template.Marked;
+import org.ehuacui.bbs.template.MarkedNotAt;
 import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.StrUtil;
 import org.jsoup.Jsoup;
@@ -79,6 +80,11 @@ public class TopicController extends BaseController {
             setAttr("otherTopics", otherTopics);
             setAttr("page", page);
             setAttr("collectCount", collectCount);
+            setAttr("getAvatarByNickname", new GetAvatarByNickname());
+            setAttr("marked", new Marked());
+            setAttr("markedNotAt", new MarkedNotAt());
+            setAttr("formatDate", new FormatDate());
+            setAttr("getAvatarByNickname", new GetAvatarByNickname());
             render("topic/detail.ftl");
         }
     }

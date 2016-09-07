@@ -6,7 +6,7 @@
                 <a href="/topic/${topic.id!}">${topic.title!}</a>
             </div>
             <p>
-                <a href="#">${topic.getNameByTab(topic.tab)}</a>
+                <a href="#">${getNameByTab(topic.tab)}</a>
                 <span>•</span>
                 <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
                 <span class="hidden-sm hidden-xs">•</span>
@@ -14,7 +14,7 @@
                 <span class="hidden-sm hidden-xs">•</span>
                 <span class="hidden-sm hidden-xs">${topic.view!0}次浏览</span>
                 <span>•</span>
-                <span>${topic.formatDate(topic.inTime)}</span>
+                <span>${formatDate(topic.inTime)}</span>
                 <#if topic.lastReplyAuthor?? && topic.lastReplyAuthor != "">
                     <span>•</span>
                     <span>最后回复来自 <a href="#">${topic.lastReplyAuthor!}</a></span>

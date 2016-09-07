@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.common;
 
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Model;
 import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.utils.MarkdownUtil;
@@ -19,7 +18,7 @@ import java.util.Locale;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class BaseModel<T extends Model> extends Model<T> {
+public class BaseModel {
 
     static {
         PropKit.use("config.properties");
