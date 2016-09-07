@@ -1,7 +1,7 @@
 package org.ehuacui.bbs.template;
 
 import com.jfinal.kit.PropKit;
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ehuacui.bbs.utils.MarkdownUtil;
 import org.ehuacui.bbs.utils.StrUtil;
@@ -14,13 +14,13 @@ import java.util.List;
  * 解析markdown文章
  * Created by jianwei.zhou on 2016/9/7.
  */
-public class Marked implements TemplateMethodModel {
+public class Marked implements TemplateMethodModelEx {
     @Override
     public Object exec(List list) throws TemplateModelException {
         if (list == null || list.size() != 1) {
             throw new TemplateModelException("Wrong arguments");
         }
-        String content = (String) list.get(0);
+        String content = list.get(0).toString();
         if (StrUtil.isBlank(content)) return "";
         //处理@
         List<String> users = StrUtil.fetchUsers(content);

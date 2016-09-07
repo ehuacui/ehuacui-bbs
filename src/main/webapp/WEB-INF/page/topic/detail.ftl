@@ -17,7 +17,7 @@
                             </#if>
                             <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
                             <span>•</span>
-                            <span>${formatDate(topic.inTime)}</span>
+                            <span>${formatDate(topic.inTime)!}</span>
                             <span>•</span>
                             <span>${topic.view!1}次点击</span>
                             <span>•</span>
@@ -47,14 +47,14 @@
                         </p>
                     </div>
                     <div class="media-right">
-                        <img src="${getAvatarByNickname(topic.author)}" alt="" class="avatar-lg"/>
+                        <img src="${getAvatarByNickname(topic.author)!}" alt="" class="avatar-lg"/>
                     </div>
                 </div>
             </div>
             <#if topic.content?? && topic.content != "">
                 <div class="divide"></div>
                 <div class="panel-body topic-detail-content">
-                ${markedNotAt(topic.content)}
+                ${markedNotAt(topic.content)!}
                 </div>
             </#if>
             <#list topicAppends as topicAppend>
@@ -63,7 +63,7 @@
                     <p class="gray">
                         <span>第 ${topicAppend_index + 1} 条追加</span>
                         <span>•</span>
-                        <span>${formatDate(topicAppend.inTime)}</span>
+                        <span>${formatDate(topicAppend.inTime)!}</span>
                         <#if userinfo??>
                             <@py.hasPermission name="topic:append:edit" id="${userinfo.id!}">
                                 <span>•</span>
@@ -71,7 +71,7 @@
                             </@py.hasPermission>
                         </#if>
                     </p>
-                ${markedNotAt(topicAppend.content)}
+                ${markedNotAt(topicAppend.content)!}
                 </div>
             </#list>
             <#if userinfo??>

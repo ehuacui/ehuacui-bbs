@@ -18,7 +18,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         %logger{50} 表示logger名字最长50个字符，否则按照句点分割。 %msg：日志消息，%n是换行符
         -->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}]-[%-5level]-[Thread:%thread]-[%logger{50}:%line]:%msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}]-[%-5level]-[Thread:%thread]-[%logger{90}:%line]:%msg%n</pattern>
         </encoder>
     </appender>
 

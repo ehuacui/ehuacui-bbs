@@ -2,7 +2,7 @@
     <#list page.getList() as topic>
     <div class="media">
         <div class="media-left">
-            <a href="/user/${topic.author!}"><img src="${getAvatarByNickname(topic.author)}" class="avatar" alt=""></a>
+            <a href="/user/${topic.author!}"><img src="${getAvatarByNickname(topic.author)!}" class="avatar" alt=""></a>
         </div>
         <div class="media-body">
             <div class="title">
@@ -14,7 +14,7 @@
                 <#elseif topic.isGood(topic) == "true">
                     <span class="label label-success">精华</span>
                 <#else>
-                    <a href="/?tab=${topic.tab!}">${getNameByTab(topic.tab)}</a>
+                    <a href="/?tab=${topic.tab!}">${getNameByTab(topic.tab)!}</a>
                 </#if>
                 <span>•</span>
                 <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
@@ -23,7 +23,7 @@
                 <span class="hidden-sm hidden-xs">•</span>
                 <span class="hidden-sm hidden-xs">${topic.view!0}次浏览</span>
                 <span>•</span>
-                <span>${formatDate(topic.inTime?datetime)!}</span>
+                <span>${formatDate(topic.inTime)!}</span>
                 <#if topic.lastReplyAuthor?? && topic.lastReplyAuthor != "">
                     <span>•</span>
                     <span>最后回复来自 <a href="/user/${topic.lastReplyAuthor!}">${topic.lastReplyAuthor!}</a></span>
