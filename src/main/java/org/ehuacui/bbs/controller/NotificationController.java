@@ -3,7 +3,6 @@ package org.ehuacui.bbs.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.BaseModel;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.ext.route.ControllerBind;
