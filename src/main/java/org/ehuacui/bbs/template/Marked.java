@@ -4,7 +4,7 @@ import com.jfinal.kit.PropKit;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ehuacui.bbs.utils.MarkdownUtil;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -21,9 +21,9 @@ public class Marked implements TemplateMethodModelEx {
             throw new TemplateModelException("Wrong arguments");
         }
         String content = list.get(0).toString();
-        if (StrUtil.isBlank(content)) return "";
+        if (StringUtil.isBlank(content)) return "";
         //处理@
-        List<String> users = StrUtil.fetchUsers(content);
+        List<String> users = StringUtil.fetchUsers(content);
         for (String user : users) {
             content = content.replace("@" + user, "[@" + user + "](" + PropKit.get("site.domain") + "/user/" + user + ")");
         }

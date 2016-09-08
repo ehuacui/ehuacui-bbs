@@ -8,7 +8,7 @@ import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.template.Marked;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
@@ -36,7 +36,7 @@ public class UserController extends BaseController {
      */
     public void index() throws UnsupportedEncodingException {
         String nickname = getPara(0);
-        if (StrUtil.isBlank(nickname)) {
+        if (StringUtil.isBlank(nickname)) {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             User currentUser = ServiceHolder.userService.findByNickname(nickname);
@@ -127,8 +127,8 @@ public class UserController extends BaseController {
             String signature = getPara("signature");
             Integer receive_msg = getParaToInt("receive_msg", 0);
             User user = getUser();
-            user.setSignature(StrUtil.notBlank(signature) ? Jsoup.clean(signature, Whitelist.basic()) : null);
-            user.setUrl(StrUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
+            user.setSignature(StringUtil.notBlank(signature) ? Jsoup.clean(signature, Whitelist.basic()) : null);
+            user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
             user.setReceiveMsg(receive_msg == 1);
             ServiceHolder.userService.update(user);
             //清理缓存

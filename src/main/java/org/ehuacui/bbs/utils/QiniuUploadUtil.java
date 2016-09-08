@@ -16,7 +16,7 @@ import java.util.Map;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class QiniuUpload {
+public class QiniuUploadUtil {
 
     static {
         PropKit.use("config.properties");
@@ -28,7 +28,7 @@ public class QiniuUpload {
     //要上传的空间
     String bucketname = PropKit.get("qiniu.bucketname");
     //上传到七牛后保存的文件名
-    String key = DateUtil.formatDateTime(new Date(), "yyyyMMddHHmmss") + StrUtil.randomString(6);
+    String key = DateUtil.formatDateTime(new Date(), "yyyyMMddHHmmss") + StringUtil.randomString(6);
 
     //密钥配置
     Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
@@ -45,7 +45,7 @@ public class QiniuUpload {
             //调用put方法上传
             Response res = uploadManager.put(filePath, key, getUpToken());
             //打印返回的信息
-            Map map = StrUtil.parseToMap(res.bodyString());
+            Map map = StringUtil.parseToMap(res.bodyString());
             return map;
         } catch (QiniuException e) {
             Response r = e.response;
@@ -59,9 +59,5 @@ public class QiniuUpload {
             }
             return null;
         }
-    }
-
-    public static void main(String args[]) throws IOException {
-        new QiniuUpload().upload("");
     }
 }

@@ -5,8 +5,8 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.utils.StrUtil;
-import org.ehuacui.bbs.utils.Result;
+import org.ehuacui.bbs.utils.StringUtil;
+import org.ehuacui.bbs.common.Result;
 
 /**
  * Created by ehuacui.
@@ -23,7 +23,7 @@ public class ApiInterceptor implements Interceptor {
         boolean flag = false;
         User user;
         String msg = "请先登录";
-        if (StrUtil.notBlank(token)) {
+        if (StringUtil.notBlank(token)) {
             user = ServiceHolder.userService.findByAccessToken(token);
             if (user != null) {
                 if (user.getIsBlock()) {

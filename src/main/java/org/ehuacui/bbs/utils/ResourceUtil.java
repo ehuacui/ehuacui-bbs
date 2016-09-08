@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehuacui.bbs.route;
+package org.ehuacui.bbs.utils;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -24,7 +24,14 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 
-public class ResourceKit {
+/**
+ * 获取配置文件
+ */
+public class ResourceUtil {
+
+    /**
+     * 读取属性文件并转换键值
+     */
     public static Map<String, String> readProperties(String resourceName) {
         Properties properties = new Properties();
         URL resource = Resources.getResource(resourceName);

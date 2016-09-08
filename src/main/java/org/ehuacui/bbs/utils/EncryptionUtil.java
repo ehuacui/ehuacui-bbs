@@ -1,16 +1,14 @@
 package org.ehuacui.bbs.utils;
 
-import com.jfinal.kit.HashKit;
-
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class EncryptionUtil extends HashKit {
+public class EncryptionUtil {
 
     /**
-     * 码表;
+     * 码表
      */
     public static char[] encodeTable = {'A', 'B', 'C', 'D',
             'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
@@ -20,10 +18,7 @@ public class EncryptionUtil extends HashKit {
             '4', '5', '6', '7', '8', '9', '+', '/'};
 
     /**
-     * Base64的编码;
-     *
-     * @param value
-     * @return
+     * Base64的编码
      */
     public static String encoderBase64(byte[] value) {
         StringBuilder sb = new StringBuilder();
@@ -95,10 +90,7 @@ public class EncryptionUtil extends HashKit {
     }
 
     /**
-     * Base64的解码;
-     *
-     * @param value
-     * @return
+     * Base64的解码
      */
     public static String decoderBase64(byte[] value) {
 
@@ -151,10 +143,7 @@ public class EncryptionUtil extends HashKit {
     }
 
     /**
-     * 将码表中的字符映射到索引值;
-     *
-     * @param ch
-     * @return
+     * 将码表中的字符映射到索引值
      */
     public static int char2Index(char ch) {
         if (ch >= 'A' && ch <= 'Z') {

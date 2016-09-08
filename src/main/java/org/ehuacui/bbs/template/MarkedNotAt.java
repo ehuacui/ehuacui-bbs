@@ -3,7 +3,7 @@ package org.ehuacui.bbs.template;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ehuacui.bbs.utils.MarkdownUtil;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -20,7 +20,7 @@ public class MarkedNotAt implements TemplateMethodModelEx {
             throw new TemplateModelException("Wrong arguments");
         }
         String content = list.get(0).toString();
-        if (StrUtil.isBlank(content)) return "";
+        if (StringUtil.isBlank(content)) return "";
         //markdown 转 html 并返回
         return Jsoup.clean(MarkdownUtil.pegDown(content), Whitelist.relaxed().addTags("input").addAttributes("input", "checked", "type"));
     }

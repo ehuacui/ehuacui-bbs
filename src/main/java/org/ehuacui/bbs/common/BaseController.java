@@ -5,8 +5,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.utils.StrUtil;
-import org.ehuacui.bbs.utils.Result;
+import org.ehuacui.bbs.utils.StringUtil;
 
 /**
  * Created by ehuacui.
@@ -51,15 +50,15 @@ public class BaseController extends Controller {
     public User getUser() {
         String user_cookie = getCookie(Constants.USER_ACCESS_TOKEN);
 
-        if (StrUtil.notBlank(user_cookie)) {
-            return ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+        if (StringUtil.notBlank(user_cookie)) {
+            return ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
         }
         return null;
     }
 
     public User getUserByToken() {
         String token = getPara("token");
-        if (StrUtil.notBlank(token)) {
+        if (StringUtil.notBlank(token)) {
             return ServiceHolder.userService.findByAccessToken(token);
         }
         return null;

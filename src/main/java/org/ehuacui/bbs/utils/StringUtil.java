@@ -2,7 +2,6 @@ package org.ehuacui.bbs.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jfinal.kit.StrKit;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -13,12 +12,70 @@ import java.util.regex.Pattern;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class StrUtil extends StrKit {
+public class StringUtil {
 
-    static final char[] hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-    static final char[] digits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    static final Random rand = new Random();
-    static final String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+    private static final char[] hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] digits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private static final Random rand = new Random();
+    private static final String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+
+    /**
+     * 首字母变小写
+     */
+    public static String firstCharToLowerCase(String str) {
+        char firstChar = str.charAt(0);
+        if (firstChar >= 'A' && firstChar <= 'Z') {
+            char[] arr = str.toCharArray();
+            arr[0] += ('a' - 'A');
+            return new String(arr);
+        }
+        return str;
+    }
+
+    /**
+     * 首字母变大写
+     */
+    public static String firstCharToUpperCase(String str) {
+        char firstChar = str.charAt(0);
+        if (firstChar >= 'a' && firstChar <= 'z') {
+            char[] arr = str.toCharArray();
+            arr[0] -= ('a' - 'A');
+            return new String(arr);
+        }
+        return str;
+    }
+
+    /**
+     * 字符串为 null 或者为  "" 时返回 true
+     */
+    public static boolean isBlank(String str) {
+        return str == null || "".equals(str.trim());
+    }
+
+    /**
+     * 字符串不为 null 而且不为  "" 时返回 true
+     */
+    public static boolean notBlank(String str) {
+        return str != null && !"".equals(str.trim());
+    }
+
+    public static boolean notBlank(String... strings) {
+        if (strings == null)
+            return false;
+        for (String str : strings)
+            if (str == null || "".equals(str.trim()))
+                return false;
+        return true;
+    }
+
+    public static boolean notNull(Object... paras) {
+        if (paras == null)
+            return false;
+        for (Object obj : paras)
+            if (obj == null)
+                return false;
+        return true;
+    }
 
     public static boolean isEmail(String email) {
         if (isBlank(email)) {
@@ -101,10 +158,6 @@ public class StrUtil extends StrKit {
     public static Map<String, Object> parseToMap(String jsonString) {
         return new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
         }.getType());
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getEncryptionToken("f377ac7992ac419f80deb3d7e88b8157"));
     }
 
 }

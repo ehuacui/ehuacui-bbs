@@ -5,7 +5,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.common.Constants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ public class UserInterceptor implements Interceptor {
 
         boolean flag = false;
         User user = null;
-        if (StrUtil.notBlank(user_cookie)) {
-            user = ServiceHolder.userService.findByAccessToken(StrUtil.getDecryptToken(user_cookie));
+        if (StringUtil.notBlank(user_cookie)) {
+            user = ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
             if (user != null) {
                 flag = true;
             }
@@ -39,7 +39,7 @@ public class UserInterceptor implements Interceptor {
         } else {
             String querystring = request.getQueryString();
             String beforeUrl = request.getRequestURL() + "?" + querystring;
-            if (StrUtil.isBlank(querystring)) {
+            if (StringUtil.isBlank(querystring)) {
                 beforeUrl = request.getRequestURL().toString();
             }
             try {

@@ -25,7 +25,7 @@
     </context-param>
     <!-- 重写了Spring的监听器，负责初始化上下文 -->
     <listener>
-        <listener-class>org.ehuacui.bbs.listener.SpringContextLoaderListener</listener-class>
+        <listener-class>org.ehuacui.bbs.common.SpringContextLoaderListener</listener-class>
     </listener>
 
     <!-- 字符集过滤器 -->
@@ -93,15 +93,15 @@
 
     <error-page>
         <error-code>401</error-code>
-        <location>/WEB-INF/page/401.html</location>
+        <location>/WEB-INF/ftl/401.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/page/404.html</location>
+        <location>/WEB-INF/ftl/404.html</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/WEB-INF/page/500.html</location>
+        <location>/WEB-INF/ftl/500.html</location>
     </error-page>
 
 </web-app>

@@ -11,7 +11,7 @@ import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.utils.DateUtil;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -36,7 +36,7 @@ public class OauthController extends BaseController {
      */
     public void githublogin() throws UnsupportedEncodingException {
         LogKit.info("githublogin");
-        String state = StrUtil.randomString(6);
+        String state = StringUtil.randomString(6);
         setCookie(STATE, state, 5 * 60, "/", PropKit.get("cookie.domain"), true);
         StringBuffer sb = new StringBuffer();
         sb.append("https://github.com/login/oauth/authorize")
@@ -73,14 +73,14 @@ public class OauthController extends BaseController {
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Accept", "application/json");
             String resp1 = HttpKit.post("https://github.com/login/oauth/access_token", map1, "", headers);
-            Map respMap1 = StrUtil.parseToMap(resp1);
+            Map respMap1 = StringUtil.parseToMap(resp1);
             //access_token, scope, token_type
             String github_access_token = (String) respMap1.get("access_token");
             //获取用户信息
             Map<String, String> map2 = new HashMap<String, String>();
             map2.put("access_token", github_access_token);
             String resp2 = HttpKit.get("https://api.github.com/user", map2);
-            Map respMap2 = StrUtil.parseToMap(resp2);
+            Map respMap2 = StringUtil.parseToMap(resp2);
             Double githubId = (Double) respMap2.get("id");
             String login = (String) respMap2.get("login");
             String avatar_url = (String) respMap2.get("avatar_url");
@@ -88,7 +88,7 @@ public class OauthController extends BaseController {
             String html_url = (String) respMap2.get("html_url");
 
             Date now = new Date();
-            String access_token = StrUtil.getUUID();
+            String access_token = StringUtil.getUUID();
             User user = ServiceHolder.userService.findByThirdId(String.valueOf(githubId));
             boolean flag = true;
             if (user == null) {
@@ -121,15 +121,15 @@ public class OauthController extends BaseController {
                 }
             }
             setCookie(Constants.USER_ACCESS_TOKEN,
-                    StrUtil.getEncryptionToken(user.getAccessToken()),
+                    StringUtil.getEncryptionToken(user.getAccessToken()),
                     30 * 24 * 60 * 60, "/",
                     PropKit.get("cookie.domain"),
                     true);
             String callback = getPara("callback");
-            if (StrUtil.notBlank(callback)) {
+            if (StringUtil.notBlank(callback)) {
                 callback = URLDecoder.decode(callback, "UTF-8");
             }
-            redirect(StrUtil.notBlank(callback) ? callback : "/");
+            redirect(StringUtil.notBlank(callback) ? callback : "/");
         } else {
             renderText(Constants.OP_ERROR_MESSAGE);
         }

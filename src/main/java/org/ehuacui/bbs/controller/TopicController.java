@@ -14,7 +14,7 @@ import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.template.MarkedNotAt;
 import org.ehuacui.bbs.utils.SolrUtil;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -105,7 +105,7 @@ public class TopicController extends BaseController {
             Date now = new Date();
             String title = getPara("title");
             String content = getPara("content");
-            if (StrUtil.isBlank(Jsoup.clean(title, Whitelist.basic()))) {
+            if (StringUtil.isBlank(Jsoup.clean(title, Whitelist.basic()))) {
                 renderText(Constants.OP_ERROR_MESSAGE);
             } else {
                 String tab = getPara("tab");

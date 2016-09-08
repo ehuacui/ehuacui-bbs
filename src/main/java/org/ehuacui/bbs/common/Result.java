@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.utils;
+package org.ehuacui.bbs.common;
 
 /**
  * Created by ehuacui.

@@ -21,7 +21,7 @@ public class MarkdownUtil {
 //            String markedPath = PropKit.get("markedjs.path");
 //            scriptEngine.eval(
 //                    new FileReader(
-//                            StrUtil.isBlank(
+//                            StringUtil.isBlank(
 //                                    PropKit.get("markedjs.path")) ?
 //                                    PathKit.getWebRootPath() + "/static/js/marked.js" :
 //                                    markedPath

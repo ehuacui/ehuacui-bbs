@@ -7,7 +7,7 @@ import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +25,8 @@ public class CommonInterceptor implements Interceptor {
 
         String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
 
-        if (StrUtil.notBlank(user_cookie)) {
-            String user_access_token = StrUtil.getDecryptToken(user_cookie);
+        if (StringUtil.notBlank(user_cookie)) {
+            String user_access_token = StringUtil.getDecryptToken(user_cookie);
             User user = ServiceHolder.userService.findByAccessToken(user_access_token);
             if (user == null) {
                 controller.removeCookie(Constants.USER_ACCESS_TOKEN, "/", PropKit.get("cookie.domain"));
@@ -40,7 +40,7 @@ public class CommonInterceptor implements Interceptor {
         //如果是微博登录的话,要在页面头部添加meta标签
         String loginChannel = PropKit.get("login.channel");
         Map<String, String> loginChannelMap = new HashMap<String, String>();
-        if (StrUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
+        if (StringUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
             loginChannelMap.put("loginChannelName", Constants.LoginEnum.Github.name());
             loginChannelMap.put("loginChannelUrl", "/oauth/githublogin");
             controller.setAttr("login_channel", loginChannelMap);

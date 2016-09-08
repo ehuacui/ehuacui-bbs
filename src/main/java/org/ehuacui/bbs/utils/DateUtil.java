@@ -45,7 +45,7 @@ public class DateUtil {
      * @return
      */
     public static Date string2Date(String dateString, String style) {
-        if (StrUtil.isBlank(dateString)) return null;
+        if (StringUtil.isBlank(dateString)) return null;
         Date date = new Date();
         SimpleDateFormat strToDate = new SimpleDateFormat(style);
         try {

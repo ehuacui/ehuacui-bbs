@@ -17,9 +17,9 @@ import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
-import org.ehuacui.bbs.utils.QiniuUpload;
+import org.ehuacui.bbs.utils.QiniuUploadUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class IndexController extends BaseController {
      */
     public void index() {
         String tab = getPara("tab");
-        if (StrUtil.isBlank(tab)) {
+        if (StringUtil.isBlank(tab)) {
             tab = "all";
         }
         if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
@@ -100,7 +100,7 @@ public class IndexController extends BaseController {
                 } else if (PropKit.get("upload.type").equals("qiniu")) {
                     // 将本地文件上传到七牛,并删除本地文件
                     String filePath = uf.getUploadPath() + uf.getFileName();
-                    Map map = new QiniuUpload().upload(filePath);
+                    Map map = new QiniuUploadUtil().upload(filePath);
                     new File(filePath).delete();
                     url = PropKit.get("qiniu.url") + "/" + map.get("key");
                     urls.add(url);

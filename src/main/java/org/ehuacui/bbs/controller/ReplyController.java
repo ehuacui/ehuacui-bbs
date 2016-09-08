@@ -16,7 +16,7 @@ import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
-import org.ehuacui.bbs.utils.StrUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -73,7 +73,7 @@ public class ReplyController extends BaseController {
                     );
                 }
                 //检查回复内容里有没有at用户,有就发通知
-                List<String> atUsers = StrUtil.fetchUsers(content);
+                List<String> atUsers = StringUtil.fetchUsers(content);
                 for (String u : atUsers) {
                     if (!u.equals(topic.getAuthor())) {
                         User _user = ServiceHolder.userService.findByNickname(u);
