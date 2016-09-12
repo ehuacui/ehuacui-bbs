@@ -8,10 +8,10 @@
                     <div class="media-body">
                         <h2 class="topic-detail-title">${topic.title!}</h2>
                         <p class="gray">
-                            <#if topic.isTop(topic) == "true">
+                            <#if topic.top>
                                 <span class="label label-primary">置顶</span>
                                 <span>•</span>
-                            <#elseif topic.isGood(topic) == "true">
+                            <#elseif topic.good>
                                 <span class="label label-success">精华</span>
                                 <span>•</span>
                             </#if>
@@ -37,11 +37,11 @@
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:top" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic._top!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic._top!}</a></span>
+                                    <span><a href="javascript:if(confirm('确定要${topic.isTop!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.isTop!}</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:good" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic._good!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic._good!}</a></span>
+                                    <span><a href="javascript:if(confirm('确定要${topic.isGood!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.isGood!}</a></span>
                                 </@py.hasPermission>
                             </#if>
                         </p>
@@ -76,7 +76,6 @@
             </#list>
             <#if userinfo??>
                 <div class="panel-footer">
-                    <a href="javascript:window.open('http://service.weibo.com/share/share.php?url=${shareDomain!}/topic/${topic.id!}?r=${userinfo.nickname!}&title=${topic.title!}', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');">分享微博</a>&nbsp;
                     <#if collect??>
                         <a href="/collect/delete?tid=${topic.id!}">取消收藏</a>
                     <#else>
@@ -95,9 +94,9 @@
                 <div class="panel-heading">${topic.replyCount!0} 条回复</div>
                 <div class="panel-body paginate-bot">
                     <#include "../components/replies.ftl"/>
-                    <@replies replies=page.getList()/>
+                    <@replies replies=page.list/>
                     <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/topic/${topic.id}"/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/topic/${topic.id}"/>
                 </div>
             </div>
         </#if>

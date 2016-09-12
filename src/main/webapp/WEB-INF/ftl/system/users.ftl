@@ -5,12 +5,12 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 用户管理
-                <span class="pull-right">${page.getTotalRow()!}个用户</span>
+                <span class="pull-right">${page.totalRow!}个用户</span>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <tbody>
-                    <#list page.getList() as user>
+                    <#list page.list as user>
                         <tr>
                             <td>${user.id!}</td>
                             <td><a href="/user/${user.nickname!}" target="_blank">${user.nickname!}</a></td>
@@ -34,7 +34,7 @@
             </div>
             <div class="panel-body" style="padding: 0 15px;">
                 <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/manage/users" urlParas="" showdivide="no"/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/manage/users" urlParas="" showdivide="no"/>
             </div>
         </div>
     </div>

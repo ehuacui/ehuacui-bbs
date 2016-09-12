@@ -1,11 +1,11 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.model.TopicAppend;
-import org.ehuacui.bbs.service.ITopicService;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.mapper.TopicAppendMapper;
 import org.ehuacui.bbs.mapper.TopicMapper;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.model.TopicAppend;
+import org.ehuacui.bbs.service.ITopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -160,7 +160,11 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void top(Integer id) {
-        topicMapper.updateTopById(id);
+        Topic topic = topicMapper.selectByPrimaryKey(id);
+        if (topic != null) {
+            topic.setTop(!topic.getTop());
+            topicMapper.updateByPrimaryKey(topic);
+        }
     }
 
     /**
@@ -170,7 +174,11 @@ public class TopicService implements ITopicService {
      */
     @Override
     public void good(Integer id) {
-        topicMapper.updateGoodById(id);
+        Topic topic = topicMapper.selectByPrimaryKey(id);
+        if (topic != null) {
+            topic.setGood(!topic.getGood());
+            topicMapper.updateByPrimaryKey(topic);
+        }
     }
 
     @Override

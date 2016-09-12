@@ -41,6 +41,7 @@
                 </form>
             </div>
         </div>
+        <#--
         <div class="panel panel-default">
             <div class="panel-heading">Access Token</div>
             <div class="panel-body">
@@ -48,15 +49,17 @@
                 <p id="qrcode"></p>
             </div>
         </div>
+        -->
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
-
     </div>
 </div>
-<script src="//cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<#--
+<script src="http://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
     $(function () {
         $('#qrcode').qrcode("${userinfo.accessToken!}");
     });
 </script>
+-->
 </@html>

@@ -1,26 +1,21 @@
 package org.ehuacui.bbs.model;
 
 /**
- * [STRATO MyBatis Generator]
  * Table: ehuacui_role
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class Role {
     /**
      * Column: ehuacui_role.id
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
      * Column: ehuacui_role.name
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String name;
 
     /**
      * Column: ehuacui_role.description
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String description;
 

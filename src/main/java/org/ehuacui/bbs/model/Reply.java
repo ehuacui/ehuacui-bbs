@@ -3,49 +3,41 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * [STRATO MyBatis Generator]
  * Table: ehuacui_reply
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class Reply {
     /**
      * Column: ehuacui_reply.id
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
-     *   话题id
+     * 话题id
      * Column: ehuacui_reply.tid
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer tid;
 
     /**
-     *   录入时间
+     * 录入时间
      * Column: ehuacui_reply.in_time
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Date inTime;
 
     /**
-     *   当前回复用户id
+     * 当前回复用户id
      * Column: ehuacui_reply.author
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String author;
 
     /**
-     *   是否删除0 默认 1删除
+     * 是否删除0 默认 1删除
      * Column: ehuacui_reply.is_delete
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean isDelete;
 
     /**
-     *   回复内容
+     * 回复内容
      * Column: ehuacui_reply.content
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String content;
 

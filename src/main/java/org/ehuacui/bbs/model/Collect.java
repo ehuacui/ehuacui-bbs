@@ -3,32 +3,26 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * [STRATO MyBatis Generator]
  * Table: ehuacui_collect
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:44
  */
 public class Collect {
     /**
      * Column: ehuacui_collect.id
-    @mbggenerated 2016-08-16 13:07:44
      */
     private Integer id;
 
     /**
      * Column: ehuacui_collect.tid
-    @mbggenerated 2016-08-16 13:07:44
      */
     private Integer tid;
 
     /**
      * Column: ehuacui_collect.uid
-    @mbggenerated 2016-08-16 13:07:44
      */
     private Integer uid;
 
     /**
      * Column: ehuacui_collect.in_time
-    @mbggenerated 2016-08-16 13:07:44
      */
     private Date inTime;
 

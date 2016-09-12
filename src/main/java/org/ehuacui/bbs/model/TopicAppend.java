@@ -3,38 +3,31 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * [STRATO MyBatis Generator]
  * Table: ehuacui_topic_append
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class TopicAppend {
     /**
      * Column: ehuacui_topic_append.id
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
      * Column: ehuacui_topic_append.tid
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer tid;
 
     /**
      * Column: ehuacui_topic_append.in_time
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Date inTime;
 
     /**
      * Column: ehuacui_topic_append.is_delete
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean isDelete;
 
     /**
      * Column: ehuacui_topic_append.content
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String content;
 

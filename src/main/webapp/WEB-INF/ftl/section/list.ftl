@@ -18,7 +18,7 @@
                             <td>${section.tab!}</td>
                             <td>${section.inTime!}</td>
                             <td>
-                                <#if section.showStatus(section) == 'true'>
+                                <#if section.showStatus>
                                     显示
                                 <#else>
                                     不显示

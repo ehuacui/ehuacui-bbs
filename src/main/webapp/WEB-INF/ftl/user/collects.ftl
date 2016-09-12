@@ -10,7 +10,7 @@
                     <#include "../components/usertopics.ftl"/>
                     <@usertopics topics=page.getList()/>
                     <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/user/collects/${currentUser.nickname!}" urlParas=""/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/user/collects/${currentUser.nickname!}" urlParas=""/>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     通知
-                    <span class="pull-right">总共收到通知 ${page.getTotalRow()!}</span>
+                    <span class="pull-right">总共收到通知 ${page.totalRow!}</span>
                 </div>
                 <div class="panel-body">
                     <#list page.getList() as notification>
@@ -14,7 +14,7 @@
                                 <img src="${getAvatarByNickname(notification.author)!}" class="avatar-sm">
                             </div>
                             <div class="media-body">
-                                <div class="gray" <#if notification.isRead(notification) == "false">style="font-weight:700;"</#if>>
+                                <div class="gray" <#if notification.read>style="font-weight:700;"</#if>>
                                     <a href="/user/${notification.author!}">${notification.author!}</a>
                                     <#if notification.action == "COLLECT">
                                         收藏了你发布的话题
@@ -43,7 +43,7 @@
                         </#if>
                     </#list>
                     <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/notifications"/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/notifications"/>
                 </div>
             </div>
         </div>

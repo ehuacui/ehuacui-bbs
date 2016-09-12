@@ -26,7 +26,7 @@
                             <label for="showStatus_0">否</label>
                         </div>
                         <script type="text/javascript">
-                            <#if section.showStatus(section) == 'true'>
+                            <#if section.showStatus>
                                 $("#showStatus_1").attr("checked", true);
                             <#else>
                                 $("#showStatus_0").attr("checked", true);

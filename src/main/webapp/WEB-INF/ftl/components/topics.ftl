@@ -1,5 +1,5 @@
 <#macro topics>
-    <#list page.getList() as topic>
+    <#list page.list as topic>
     <div class="media">
         <div class="media-left">
             <a href="/user/${topic.author!}"><img src="${getAvatarByNickname(topic.author)!}" class="avatar" alt=""></a>
@@ -9,9 +9,9 @@
                 <a href="/topic/${topic.id!}">${topic.title!}</a>
             </div>
             <p class="gray">
-                <#if topic.isTop(topic) == "true">
+                <#if topic.top>
                     <span class="label label-primary">置顶</span>
-                <#elseif topic.isGood(topic) == "true">
+                <#elseif topic.good>
                     <span class="label label-success">精华</span>
                 <#else>
                     <a href="/?tab=${topic.tab!}">${getNameByTab(topic.tab)!}</a>

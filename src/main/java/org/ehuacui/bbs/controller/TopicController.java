@@ -41,8 +41,8 @@ public class TopicController extends BaseController {
             renderText(Constants.OP_ERROR_MESSAGE);
         } else {
             //处理一下置顶，精华
-            topic.set_top(topic.getTop() ? "取消置顶" : "置顶");
-            topic.set_good(topic.getGood() ? "取消精华" : "精华");
+            topic.setIsTop(topic.getTop() ? "取消置顶" : "置顶");
+            topic.setIsGood(topic.getGood() ? "取消精华" : "精华");
             //查询追加内容
             List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
             //话题浏览次数+1

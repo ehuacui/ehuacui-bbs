@@ -1,56 +1,47 @@
 package org.ehuacui.bbs.model;
 
 /**
- * [STRATO MyBatis Generator]
  * Table: ehuacui_section
-@mbggenerated do_not_delete_during_merge 2016-08-16 13:07:45
  */
 public class Section {
     /**
      * Column: ehuacui_section.id
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer id;
 
     /**
-     *   板块名称
+     * 板块名称
      * Column: ehuacui_section.name
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String name;
 
     /**
-     *   板块标签
+     * 板块标签
      * Column: ehuacui_section.tab
-    @mbggenerated 2016-08-16 13:07:45
      */
     private String tab;
 
     /**
-     *   是否显示，0不显示1显示
+     * 是否显示，0不显示1显示
      * Column: ehuacui_section.show_status
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean showStatus;
 
     /**
-     *   板块排序
+     * 板块排序
      * Column: ehuacui_section.display_index
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer displayIndex;
 
     /**
-     *   默认显示板块 0默认，1显示
+     * 默认显示板块 0默认，1显示
      * Column: ehuacui_section.default_show
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Boolean defaultShow;
 
     /**
-     *   模块父节点
+     * 模块父节点
      * Column: ehuacui_section.pid
-    @mbggenerated 2016-08-16 13:07:45
      */
     private Integer pid;
 
@@ -110,11 +101,4 @@ public class Section {
         this.pid = pid;
     }
 
-    public String showStatus(Section section) {
-        if (showStatus) {
-            return "true";
-        } else {
-            return "false";
-        }
-    }
 }

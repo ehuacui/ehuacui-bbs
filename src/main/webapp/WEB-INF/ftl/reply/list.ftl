@@ -8,11 +8,11 @@
             </div>
             <div class="table-responsive">
                 <#include "../components/replylist.ftl"/>
-                <@userreplies replies=page.getList()/>
+                <@userreplies replies=page.list/>
             </div>
             <div class="panel-body" style="padding: 0 15px;">
                 <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/reply/list" urlParas="" showdivide="no"/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/reply/list" urlParas="" showdivide="no"/>
             </div>
         </div>
     </div>

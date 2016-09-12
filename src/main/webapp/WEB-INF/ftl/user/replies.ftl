@@ -7,10 +7,10 @@
                     ${currentUser.nickname!}回复的话题
                 </div>
                 <#include "../components/userreplies.ftl"/>
-                <@userreplies replies=page.getList()/>
+                <@userreplies replies=page.list/>
                 <div class="panel-body" style="padding: 0 15px;">
                     <#include "../components/paginate.ftl"/>
-                    <@paginate currentPage=page.getPageNumber() totalPage=page.getTotalPage() actionUrl="/user/replies/${currentUser.nickname!}" urlParas="" showdivide="no"/>
+                    <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/user/replies/${currentUser.nickname!}" urlParas="" showdivide="no"/>
                 </div>
             </div>
         </div>
