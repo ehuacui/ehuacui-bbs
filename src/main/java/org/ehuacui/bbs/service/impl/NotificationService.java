@@ -73,6 +73,7 @@ public class NotificationService implements INotificationService {
         notification.setAction(action);
         notification.setTid(tid);
         notification.setContent(content);
+        notification.setRead(false);
         notificationMapper.insert(notification);
     }
 }
