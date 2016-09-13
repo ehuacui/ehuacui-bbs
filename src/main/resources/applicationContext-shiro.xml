@@ -59,7 +59,7 @@
                 <entry key="authorizedAdviceFilter" value-ref="authorizedAdviceFilter"/>
             </map>
         </property>
-        <property name="unauthorizedUrl" value="/qsboss/index"/>
+        <property name="unauthorizedUrl" value="/403"/>
         <property name="filterChainDefinitions">
             <value>
                 /static/** = anon

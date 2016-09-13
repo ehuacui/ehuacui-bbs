@@ -3,7 +3,9 @@ package org.ehuacui.bbs.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 
@@ -25,6 +27,7 @@ public class SpringContextLoaderListener extends ContextLoaderListener {
         logger.info("EHuaCui BBS To Start Running");
         super.contextInitialized(event);
         logger.info("EHuaCui BBS To Completed Running");
-        // ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
+        ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
+        WebApplicationContextHolder.setApplicationContext(applicationContext);
     }
 }

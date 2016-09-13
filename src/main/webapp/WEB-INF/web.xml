@@ -59,7 +59,7 @@
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
         <!--<url-pattern>/*</url-pattern>-->
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.php</url-pattern>
     </filter-mapping>
 
     <!-- Spring MVC Servlet -->
@@ -78,7 +78,7 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
-    <filter>
+<!--    <filter>
         <filter-name>jfinal</filter-name>
         <filter-class>com.jfinal.core.JFinalFilter</filter-class>
         <init-param>
@@ -89,7 +89,7 @@
     <filter-mapping>
         <filter-name>jfinal</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <error-page>
         <error-code>401</error-code>

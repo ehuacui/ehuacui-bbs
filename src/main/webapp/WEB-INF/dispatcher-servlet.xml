@@ -21,11 +21,14 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean id="stopWatchHandlerInterceptor"
-                  class="org.ehuacui.bbs.interceptor.RequestWatchHandlerInterceptor">
+            <bean class="org.ehuacui.bbs.interceptor.RequestWatchHandlerInterceptor">
                 <!--<property name="logService" ref="logService"/>-->
                 <property name="filterTime" value="200"/>
             </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="org.ehuacui.bbs.interceptor.BasicHandlerInterceptorAdapter"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
@@ -38,6 +41,8 @@
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <bean id="basicInterceptor" class="org.ehuacui.bbs.interceptor.BasicInterceptor"/>
 
     <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

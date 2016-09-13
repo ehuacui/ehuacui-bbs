@@ -1,7 +1,5 @@
 package org.ehuacui.bbs.interceptor;
 
-import com.jfinal.aop.Interceptor;
-
 import java.lang.annotation.*;
 
 /**
