@@ -1,67 +1,54 @@
 package org.ehuacui.bbs.common;
 
-import com.jfinal.core.Controller;
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.redis.Cache;
-import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.utils.StringUtil;
+import org.ehuacui.bbs.utils.WebUtil;
+import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class BaseController extends Controller {
+@Controller
+public class BaseController {
 
     // 接口返回状态码
     private static final String CODE_SUCCESS = "200";
     private static final String CODE_FAILURE = "201";
     private static final String DESC_SUCCESS = "success";
 
-    static {
-        PropKit.use("config.properties");
+    public Result success(Object object) {
+        return new Result(CODE_SUCCESS, DESC_SUCCESS, object);
     }
 
-    public void success() {
-        success(null);
+    public Result error(String message) {
+        return new Result(CODE_FAILURE, message, null);
     }
 
-    public void success(Object object) {
-        renderJson(new Result(CODE_SUCCESS, DESC_SUCCESS, object));
-    }
-
-    public void error(String message) {
-        renderJson(new Result(CODE_FAILURE, message, null));
+    public User getUser(HttpServletRequest request) {
+        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
+        if (StringUtil.notBlank(user_cookie)) {
+            return ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
+        } else {
+            return null;
+        }
     }
 
     /**
      * 删除redis里的缓存
-     *
-     * @param key
      */
     protected void clearCache(String key) {
-        Cache cache = Redis.use();
-        if (cache != null) {
-            cache.del(key);
-        }
     }
 
-    public User getUser() {
-        String user_cookie = getCookie(Constants.USER_ACCESS_TOKEN);
-
-        if (StringUtil.notBlank(user_cookie)) {
-            return ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
-        }
-        return null;
+    protected String forward(String url) {
+        return "forward:" + url;
     }
 
-    public User getUserByToken() {
-        String token = getPara("token");
-        if (StringUtil.notBlank(token)) {
-            return ServiceHolder.userService.findByAccessToken(token);
-        }
-        return null;
+    protected String redirect(String url) {
+        return "redirect:" + url;
     }
 
 }

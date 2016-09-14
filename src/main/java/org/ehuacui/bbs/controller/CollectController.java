@@ -9,8 +9,12 @@ import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -18,17 +22,18 @@ import java.util.Date;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/collect", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/collect")
 public class CollectController extends BaseController {
 
     /**
      * 收藏话题
      */
     @BeforeAdviceController(UserInterceptor.class)
-    public void add() {
-        Integer tid = getParaToInt("tid");
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(@RequestParam("tid") Integer tid, HttpServletRequest request) {
         Date now = new Date();
-        User user = getUser();
+        User user = getUser(request);
         Collect collect = new Collect();
         collect.setTid(tid);
         collect.setUid(user.getId());
@@ -43,26 +48,24 @@ public class CollectController extends BaseController {
         clearCache(CacheEnum.collects.name() + user.getId());
         clearCache(CacheEnum.collectcount.name() + tid);
         clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
-        redirect("/topic/" + tid);
+        return redirect("/topic/" + tid);
     }
 
     /**
      * 取消收藏话题
      */
     @BeforeAdviceController(UserInterceptor.class)
-    public void delete() {
-        Integer tid = getParaToInt("tid");
-        User user = getUser();
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("tid") Integer tid, HttpServletRequest request) {
+        User user = getUser(request);
         Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getId());
-        if (collect == null) {
-            renderText("请先收藏");
-        } else {
+        if (collect != null) {
             ServiceHolder.collectService.delete(collect.getId());
             clearCache(CacheEnum.usercollectcount.name() + user.getId());
             clearCache(CacheEnum.collects.name() + user.getId());
             clearCache(CacheEnum.collectcount.name() + tid);
             clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
-            redirect("/topic/" + tid);
         }
+        return redirect("/topic/" + tid);
     }
 }

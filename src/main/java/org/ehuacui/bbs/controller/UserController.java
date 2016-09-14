@@ -12,13 +12,14 @@ import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,7 +29,8 @@ import java.net.URLEncoder;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/user", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/user")
 public class UserController extends BaseController {
 
     /**

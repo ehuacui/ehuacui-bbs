@@ -9,9 +9,10 @@ import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
-import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.StringUtil;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -24,7 +25,8 @@ import java.util.Map;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/oauth", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/oauth")
 public class OauthController extends BaseController {
 
     private static final String STATE = "thirdlogin_state";

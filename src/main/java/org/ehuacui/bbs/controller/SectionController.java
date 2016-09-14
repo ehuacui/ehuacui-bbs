@@ -7,18 +7,17 @@ import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@BeforeAdviceController({
-        UserInterceptor.class,
-        PermissionInterceptor.class
-})
-@ControllerBind(controllerKey = "/section", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/section")
+@BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
 public class SectionController extends BaseController {
 
     /**

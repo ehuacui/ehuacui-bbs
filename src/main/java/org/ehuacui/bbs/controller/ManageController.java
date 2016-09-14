@@ -12,7 +12,8 @@ import org.ehuacui.bbs.model.Permission;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
+@Controller
+@RequestMapping("/manage")
 @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
-@ControllerBind(controllerKey = "/manage", viewPath = "WEB-INF/ftl")
 public class ManageController extends BaseController {
 
     /**

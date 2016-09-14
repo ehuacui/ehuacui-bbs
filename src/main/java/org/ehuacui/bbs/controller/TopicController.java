@@ -10,7 +10,6 @@ import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.*;
-import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
@@ -19,6 +18,8 @@ import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,7 +31,8 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/topic", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/topic")
 public class TopicController extends BaseController {
 
     /**
@@ -142,11 +144,7 @@ public class TopicController extends BaseController {
     /**
      * 编辑话题
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     public void edit() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
         Topic topic = ServiceHolder.topicService.findById(id);
@@ -178,10 +176,7 @@ public class TopicController extends BaseController {
     /**
      * 话题追加
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     public void append() {
         String method = getRequest().getMethod();
         Integer tid = getParaToInt(0);
@@ -218,11 +213,7 @@ public class TopicController extends BaseController {
     /**
      * 编辑追加的内容
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class,PermissionInterceptor.class})
     public void appendedit() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
@@ -282,11 +273,7 @@ public class TopicController extends BaseController {
     /**
      * 置顶
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     public void top() {
         Integer id = getParaToInt("id");
         ServiceHolder.topicService.top(id);
@@ -297,11 +284,7 @@ public class TopicController extends BaseController {
     /**
      * 设置精华
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     public void good() {
         Integer id = getParaToInt("id");
         ServiceHolder.topicService.good(id);

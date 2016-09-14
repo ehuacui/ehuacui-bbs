@@ -12,10 +12,11 @@ import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StringUtil;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -27,13 +28,11 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/reply", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/reply")
 public class ReplyController extends BaseController {
 
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     public void save() throws UnsupportedEncodingException {
         String method = getRequest().getMethod();
         if (method.equals("GET")) {
@@ -99,11 +98,7 @@ public class ReplyController extends BaseController {
     /**
      * 编辑回复
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class,PermissionInterceptor.class})
     public void edit() {
         Integer id = getParaToInt("id");
         String method = getRequest().getMethod();
@@ -124,11 +119,7 @@ public class ReplyController extends BaseController {
     /**
      * 删除回复
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            UserStatusInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class,UserStatusInterceptor.class,PermissionInterceptor.class})
     public void delete() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
         Reply reply = ServiceHolder.replyService.findById(id);
@@ -151,10 +142,7 @@ public class ReplyController extends BaseController {
     /**
      * 回复列表
      */
-    @BeforeAdviceController({
-            UserInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     public void list() {
         setAttr("page", ServiceHolder.replyService.findAll(getParaToInt("p", 1), PropKit.getInt("pageSize")));
         setAttr("formatDate", new FormatDate());

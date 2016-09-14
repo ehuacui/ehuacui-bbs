@@ -19,7 +19,7 @@ public class HomeController {
 
     @ResponseBody
     @BeforeAdviceController(BasicInterceptor.class)
-    @RequestMapping("/index.do")
+    @RequestMapping("/index")
     public Map<String, Object> home() {
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("code", 200);

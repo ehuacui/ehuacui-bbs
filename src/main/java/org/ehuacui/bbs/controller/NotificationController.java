@@ -8,17 +8,19 @@ import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Notification;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@ControllerBind(controllerKey = "/notification", viewPath = "WEB-INF/ftl")
+@Controller
+@RequestMapping("/notification")
 public class NotificationController extends BaseController {
 
     @BeforeAdviceController(UserInterceptor.class)
