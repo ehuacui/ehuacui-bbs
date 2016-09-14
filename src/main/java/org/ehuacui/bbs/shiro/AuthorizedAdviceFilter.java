@@ -4,8 +4,6 @@ import org.apache.shiro.web.servlet.AdviceFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author jianwei.zhou

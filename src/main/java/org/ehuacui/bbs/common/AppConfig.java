@@ -4,7 +4,6 @@ import com.jfinal.config.Constants;
 import com.jfinal.config.*;
 import com.jfinal.render.FreeMarkerRender;
 import org.ehuacui.bbs.route.AutoBindRoutes;
-import org.ehuacui.bbs.interceptor.CommonInterceptor;
 import org.ehuacui.bbs.template.PyTag;
 import org.ehuacui.bbs.utils.StringUtil;
 
@@ -49,7 +48,6 @@ public class AppConfig extends JFinalConfig {
      * 配置全局拦截器
      */
     public void configInterceptor(Interceptors me) {
-        me.add(new CommonInterceptor());
     }
 
     /**

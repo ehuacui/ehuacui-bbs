@@ -14,7 +14,8 @@
                     </div>
                     <div class="form-group">
                         <label for="title">内容</label>
-                        <textarea name="content" id="content" rows="15" class="form-control" placeholder="支持Markdown语法哦~"></textarea>
+                        <textarea name="content" id="content" rows="15" class="form-control"
+                                  placeholder="支持Markdown语法哦~"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="title">版块</label>
@@ -37,15 +38,25 @@
             </div>
             <div class="panel-body">
                 <p>• 话题内容支持 Markdown 文本标记语法</p>
+
                 <p>• 发布话题奖励 5 积分，但是被管理员删除话题将会扣除作者 7 积分</p>
+
                 <p>• 发布话题之前,可以点击预览查看</p>
+
                 <p>• ctrl+b 粗体</p>
+
                 <p>• ctrl+i 斜体</p>
+
                 <p>• ctrl+k 插入链接</p>
+
                 <p>• ctrl+alt+i 插入图片</p>
+
                 <p>• ctrl+' 插入引用</p>
+
                 <p>• ctrl+alt+l 有序列表</p>
+
                 <p>• ctrl+l 无序列表</p>
+
                 <p>• 截图在编辑器里直接粘贴即可上传(IE10+)</p>
             </div>
         </div>

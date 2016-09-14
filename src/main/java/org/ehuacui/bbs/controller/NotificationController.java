@@ -1,14 +1,14 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Notification;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
@@ -21,7 +21,7 @@ import org.ehuacui.bbs.template.Marked;
 @ControllerBind(controllerKey = "/notification", viewPath = "WEB-INF/ftl")
 public class NotificationController extends BaseController {
 
-    @Before(UserInterceptor.class)
+    @BeforeAdviceController(UserInterceptor.class)
     public void index() {
         User user = getUser();
         Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getNickname());

@@ -18,6 +18,7 @@
                     </div>
                     <div class="form-group">
                         <label>是否显示</label>
+
                         <div>
                             <input type="radio" name="showStatus" id="showStatus_1" value="1" checked="checked">
                             <label for="showStatus_1">是&nbsp;</label>

@@ -11,8 +11,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, name, url, description, pid
-  </sql>
+        id, name, url, description, pid
+    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -43,23 +43,24 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_permission
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_permission
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <delete id="deleteByPid" parameterType="java.lang.Integer">
-    delete from ehuacui_permission
-    where pid = #{pid,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_permission
+        where pid = #{pid,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Permission" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_permission (id, name, url, 
-      description, pid)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
-  </insert>
+        insert into ehuacui_permission (id, name, url,
+        description, pid)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
+    </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Permission" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Permission" keyProperty="id"
+            useGeneratedKeys="true">
         insert into ehuacui_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -117,12 +118,12 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Permission">
-    update ehuacui_permission
-    set name = #{name,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update ehuacui_permission
+        set name = #{name,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        pid = #{pid,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

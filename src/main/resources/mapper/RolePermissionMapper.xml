@@ -2,48 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ehuacui.bbs.mapper.RolePermissionMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.RolePermission">
-    <result column="rid" jdbcType="INTEGER" property="rid" />
-    <result column="pid" jdbcType="INTEGER" property="pid" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.RolePermission">
+        <result column="rid" jdbcType="INTEGER" property="rid"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+    </resultMap>
 
-  <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from ehuacui_role_permission where rid = #{rid,jdbcType=INTEGER}
-  </select>
+    <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from ehuacui_role_permission where rid = #{rid,jdbcType=INTEGER}
+    </select>
 
-  <insert id="insert" parameterType="org.ehuacui.bbs.model.RolePermission">
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.RolePermission">
     insert into ehuacui_role_permission (rid, pid)
     values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.RolePermission">
-    insert into ehuacui_role_permission
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="rid != null">
-        rid,
-      </if>
-      <if test="pid != null">
-        pid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="rid != null">
-        #{rid,jdbcType=INTEGER},
-      </if>
-      <if test="pid != null">
-        #{pid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.RolePermission">
+        insert into ehuacui_role_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rid != null">
+                rid,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rid != null">
+                #{rid,jdbcType=INTEGER},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
-    delete from ehuacui_role_permission
-    where rid = #{rid,jdbcType=INTEGER}
-  </delete>
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from ehuacui_role_permission
+        where rid = #{rid,jdbcType=INTEGER}
+    </delete>
 
-  <delete id="deleteByPermissionId" parameterType="java.lang.Integer">
-    delete from ehuacui_role_permission
-    where pid = #{pid,jdbcType=INTEGER}
-  </delete>
+    <delete id="deleteByPermissionId" parameterType="java.lang.Integer">
+        delete from ehuacui_role_permission
+        where pid = #{pid,jdbcType=INTEGER}
+    </delete>
 
 </mapper>

@@ -8,7 +8,7 @@
         </tr>
         <tr>
             <td>
-                ${topic.content!}
+            ${topic.content!}
             </td>
         </tr>
     </#list>

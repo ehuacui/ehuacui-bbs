@@ -1,7 +1,7 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.mapper.SectionMapper;
+import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.service.ISectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

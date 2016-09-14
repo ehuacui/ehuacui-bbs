@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2013, kidzhou 周磊 (zhouleib1412@gmail.com)
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ public class ResourceUtil {
     /**
      * 读取属性文件并转换键值
      */
-    public static Map<String, String> readProperties(String resourceName) {
+    private static Map<String, String> readProperties(String resourceName) {
         Properties properties = new Properties();
         URL resource = Resources.getResource(resourceName);
         try {
@@ -43,4 +43,22 @@ public class ResourceUtil {
         return Maps.fromProperties(properties);
     }
 
+    /**
+     * 读取属性文件("webconfig.properties")并转换键值
+     */
+    public static Map<String, String> readWebConfigProperties() {
+        return readProperties("webconfig.properties");
+    }
+
+    /**
+     * 读取属性文件("webconfig.properties")根据键获取值信息
+     */
+    public static String getWebConfigValueByKey(String key) {
+        Map<String, String> data = readWebConfigProperties();
+        if (data != null) {
+            return data.get(key);
+        } else {
+            return null;
+        }
+    }
 }

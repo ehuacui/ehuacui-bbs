@@ -8,8 +8,10 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd"
-       default-lazy-init="true">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 引入外部配置信息 -->
+    <context:property-placeholder location="classpath:webconfig.properties" file-encoding="UTF-8"/>
 
     <context:component-scan base-package="org.ehuacui.bbs.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -32,6 +34,8 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <bean id="basicInterceptor" class="org.ehuacui.bbs.interceptor.BasicInterceptor"/>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -41,8 +45,6 @@
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <bean id="basicInterceptor" class="org.ehuacui.bbs.interceptor.BasicInterceptor"/>
 
     <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -80,6 +82,8 @@
         </property>
     </bean>
 
+    <!-- webApplicationContextHolder -->
+    <bean id="webApplicationContextHolder" class="org.ehuacui.bbs.common.WebApplicationContextHolder"/>
     <!--定义异常处理类  -->
     <bean id="exceptionHandler" class="org.ehuacui.bbs.exception.BusinessExceptionHandler"/>
 

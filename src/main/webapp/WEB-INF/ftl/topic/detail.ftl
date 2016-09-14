@@ -7,6 +7,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h2 class="topic-detail-title">${topic.title!}</h2>
+
                         <p class="gray">
                             <#if topic.top>
                                 <span class="label label-primary">置顶</span>
@@ -33,15 +34,18 @@
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:delete" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要删除吗？'))location.href='/topic/delete?id=${topic.id}'">删除</a></span>
+                                    <span><a
+                                            href="javascript:if(confirm('确定要删除吗？'))location.href='/topic/delete?id=${topic.id}'">删除</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:top" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic.isTop!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.isTop!}</a></span>
+                                    <span><a
+                                            href="javascript:if(confirm('确定要${topic.isTop!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.isTop!}</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:good" id="${userinfo.id!}">
                                     <span>•</span>
-                                    <span><a href="javascript:if(confirm('确定要${topic.isGood!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.isGood!}</a></span>
+                                    <span><a
+                                            href="javascript:if(confirm('确定要${topic.isGood!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.isGood!}</a></span>
                                 </@py.hasPermission>
                             </#if>
                         </p>
@@ -133,9 +137,9 @@
 <script type="text/javascript" src="/static/js/lodash.min.js"></script>
 <link rel="stylesheet" href="/static/libs/editor/editor.css"/>
 <style>
-.CodeMirror {
-    height: 150px;
-}
+    .CodeMirror {
+        height: 150px;
+    }
 </style>
 <script type="text/javascript" src="/static/js/highlight.min.js"></script>
 <script type="text/javascript" src="/static/libs/webuploader/webuploader.withoutimage.js"></script>
@@ -144,7 +148,7 @@
 <script type="text/javascript" src="/static/libs/editor/ext.js"></script>
 <script type="text/javascript">
 
-    $('pre code').each(function(i, block) {
+    $('pre code').each(function (i, block) {
         hljs.highlightBlock(block);
     });
 
@@ -152,10 +156,10 @@
     editor.render();
 
     var $input = $(editor.codemirror.display.input);
-    $input.keydown(function(event){
+    $input.keydown(function (event) {
         if (event.keyCode === 13 && (event.ctrlKey || event.metaKey)) {
             event.preventDefault();
-            if(editor.codemirror.getValue().length == 0) {
+            if (editor.codemirror.getValue().length == 0) {
                 $("#error_message").html("回复内容不能为空");
             } else {
                 $("#replyForm").submit();
@@ -168,23 +172,23 @@
     var codeMirrorGoLineDown = CodeMirror.commands.goLineDown;
     var codeMirrorNewlineAndIndent = CodeMirror.commands.newlineAndIndent;
     var data = [];
-    <#list page.getList() as reply>
+        <#list page.getList() as reply>
         data.push('${reply.author}');
-    </#list>
+        </#list>
     data = _.unique(data);
     $input.atwho({
         at: "@",
-        data:data
+        data: data
     }).on('shown.atwho', function () {
         CodeMirror.commands.goLineUp = _.noop;
         CodeMirror.commands.goLineDown = _.noop;
         CodeMirror.commands.newlineAndIndent = _.noop;
     })
-    .on('hidden.atwho', function () {
-        CodeMirror.commands.goLineUp = codeMirrorGoLineUp;
-        CodeMirror.commands.goLineDown = codeMirrorGoLineDown;
-        CodeMirror.commands.newlineAndIndent = codeMirrorNewlineAndIndent;
-    });
+            .on('hidden.atwho', function () {
+                CodeMirror.commands.goLineUp = codeMirrorGoLineUp;
+                CodeMirror.commands.goLineDown = codeMirrorGoLineDown;
+                CodeMirror.commands.newlineAndIndent = codeMirrorNewlineAndIndent;
+            });
     // END at.js 配置
 </script>
 </@html>

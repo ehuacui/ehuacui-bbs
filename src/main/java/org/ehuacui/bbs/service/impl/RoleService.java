@@ -1,10 +1,10 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.model.RolePermission;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.mapper.RoleMapper;
 import org.ehuacui.bbs.mapper.RolePermissionMapper;
 import org.ehuacui.bbs.model.Role;
+import org.ehuacui.bbs.model.RolePermission;
 import org.ehuacui.bbs.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

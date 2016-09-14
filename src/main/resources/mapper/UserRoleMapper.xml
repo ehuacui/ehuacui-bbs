@@ -2,52 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ehuacui.bbs.mapper.UserRoleMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.UserRole">
-    <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="rid" jdbcType="INTEGER" property="rid" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.UserRole">
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="rid" jdbcType="INTEGER" property="rid"/>
+    </resultMap>
 
-  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from ehuacui_user_role where uid = #{uid,jdbcType=INTEGER}
-  </select>
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from ehuacui_user_role where uid = #{uid,jdbcType=INTEGER}
+    </select>
 
-  <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from ehuacui_user_role where rid = #{rid,jdbcType=INTEGER}
-  </select>
+    <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from ehuacui_user_role where rid = #{rid,jdbcType=INTEGER}
+    </select>
 
-  <insert id="insert" parameterType="org.ehuacui.bbs.model.UserRole">
-    insert into ehuacui_user_role (uid, rid)
-    values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
-  </insert>
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.UserRole">
+        insert into ehuacui_user_role (uid, rid)
+        values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
+    </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.UserRole">
-    insert into ehuacui_user_role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        uid,
-      </if>
-      <if test="rid != null">
-        rid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="rid != null">
-        #{rid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.UserRole">
+        insert into ehuacui_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="rid != null">
+                rid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="rid != null">
+                #{rid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <delete id="deleteByUserId" parameterType="java.lang.Integer">
-    delete from ehuacui_user_role
-    where uid = #{uid,jdbcType=INTEGER}
-  </delete>
+    <delete id="deleteByUserId" parameterType="java.lang.Integer">
+        delete from ehuacui_user_role
+        where uid = #{uid,jdbcType=INTEGER}
+    </delete>
 
-  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
-    delete from ehuacui_user_role
-    where rid = #{rid,jdbcType=INTEGER}
-  </delete>
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from ehuacui_user_role
+        where rid = #{rid,jdbcType=INTEGER}
+    </delete>
 
 </mapper>

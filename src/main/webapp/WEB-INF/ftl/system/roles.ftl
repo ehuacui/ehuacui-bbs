@@ -10,17 +10,18 @@
             <div class="table-responsive">
                 <table class="table table-striped table-responsive">
                     <tbody>
-                    <#list roles as role>
+                        <#list roles as role>
                         <tr>
                             <td>${role.id!}</td>
                             <td>${role.name!}</td>
                             <td>${role.description!}</td>
                             <td>
                                 <a href="/manage/rolepermission?id=${role.id!}" class="btn btn-xs btn-warning">配置权限</a>
-                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deleterole?id=${role.id!}'" class="btn btn-xs btn-danger">删除</a>
+                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deleterole?id=${role.id!}'"
+                                   class="btn btn-xs btn-danger">删除</a>
                             </td>
                         </tr>
-                    </#list>
+                        </#list>
                     </tbody>
                 </table>
             </div>

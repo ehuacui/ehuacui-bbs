@@ -11,8 +11,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, tid, uid, in_time
-  </sql>
+        id, tid, uid, in_time
+    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -41,24 +41,24 @@
     </select>
 
     <select id="countByTid" parameterType="java.lang.Integer" resultType="java.lang.Long">
-    select count(1) as count from ehuacui_collect where tid = #{tid,jdbcType=INTEGER}
-  </select>
+        select count(1) as count from ehuacui_collect where tid = #{tid,jdbcType=INTEGER}
+    </select>
 
     <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(1) as count from ehuacui_collect where uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_collect
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_collect
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_collect (id, tid, uid, 
-      in_time)
-    values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
-      #{inTime,jdbcType=TIMESTAMP})
-  </insert>
+        insert into ehuacui_collect (id, tid, uid,
+        in_time)
+        values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+        #{inTime,jdbcType=TIMESTAMP})
+    </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_collect
@@ -109,11 +109,11 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Collect">
-    update ehuacui_collect
-    set tid = #{tid,jdbcType=INTEGER},
-      uid = #{uid,jdbcType=INTEGER},
-      in_time = #{inTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update ehuacui_collect
+        set tid = #{tid,jdbcType=INTEGER},
+        uid = #{uid,jdbcType=INTEGER},
+        in_time = #{inTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

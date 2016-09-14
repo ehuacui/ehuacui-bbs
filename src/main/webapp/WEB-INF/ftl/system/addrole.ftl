@@ -16,11 +16,13 @@
                     </div>
                     <div class="form-group">
                         <label for="roles">权限</label>
+
                         <div>
                             <#list permissions as permission>
                                 <h4><b>${permission.description!}</b></h4>
                                 <#list permission.childPermissions as childPermission>
-                                    <input type="checkbox" name="permissions" value="${childPermission.id!}" id="permission_${childPermission.id!}">
+                                    <input type="checkbox" name="permissions" value="${childPermission.id!}"
+                                           id="permission_${childPermission.id!}">
                                     <label for="permission_${childPermission.id!}">${childPermission.description!}</label>&nbsp;
                                 </#list>
                             </#list>

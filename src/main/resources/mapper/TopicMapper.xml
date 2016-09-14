@@ -150,9 +150,9 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_topic
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_topic
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Topic" keyProperty="id" useGeneratedKeys="true">
     insert into ehuacui_topic (id, tab, title, 

@@ -1,19 +1,18 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.tx.Tx;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StringUtil;
@@ -31,7 +30,7 @@ import java.util.List;
 @ControllerBind(controllerKey = "/reply", viewPath = "WEB-INF/ftl")
 public class ReplyController extends BaseController {
 
-    @Before({
+    @BeforeAdviceController({
             UserInterceptor.class,
             UserStatusInterceptor.class
     })
@@ -100,7 +99,7 @@ public class ReplyController extends BaseController {
     /**
      * 编辑回复
      */
-    @Before({
+    @BeforeAdviceController({
             UserInterceptor.class,
             UserStatusInterceptor.class,
             PermissionInterceptor.class
@@ -125,11 +124,10 @@ public class ReplyController extends BaseController {
     /**
      * 删除回复
      */
-    @Before({
+    @BeforeAdviceController({
             UserInterceptor.class,
             UserStatusInterceptor.class,
-            PermissionInterceptor.class,
-            Tx.class
+            PermissionInterceptor.class
     })
     public void delete() throws UnsupportedEncodingException {
         Integer id = getParaToInt("id");
@@ -153,7 +151,7 @@ public class ReplyController extends BaseController {
     /**
      * 回复列表
      */
-    @Before({
+    @BeforeAdviceController({
             UserInterceptor.class,
             PermissionInterceptor.class
     })

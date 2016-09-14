@@ -1,20 +1,20 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
+import org.ehuacui.bbs.common.BaseController;
+import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
+import org.ehuacui.bbs.route.ControllerBind;
 
 /**
  * Created by ehuacui.
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@Before({
+@BeforeAdviceController({
         UserInterceptor.class,
         PermissionInterceptor.class
 })

@@ -41,15 +41,15 @@
                 </form>
             </div>
         </div>
-        <#--
-        <div class="panel panel-default">
-            <div class="panel-heading">Access Token</div>
-            <div class="panel-body">
-                <p>AccessToken: ${userinfo.accessToken!}</p>
-                <p id="qrcode"></p>
-            </div>
+    <#--
+    <div class="panel panel-default">
+        <div class="panel-heading">Access Token</div>
+        <div class="panel-body">
+            <p>AccessToken: ${userinfo.accessToken!}</p>
+            <p id="qrcode"></p>
         </div>
-        -->
+    </div>
+    -->
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
     </div>

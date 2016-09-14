@@ -1,19 +1,18 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.tx.Tx;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Permission;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.route.ControllerBind;
 
 import java.util.List;
 
@@ -22,10 +21,7 @@ import java.util.List;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-@Before({
-        UserInterceptor.class,
-        PermissionInterceptor.class
-})
+@BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
 @ControllerBind(controllerKey = "/manage", viewPath = "WEB-INF/ftl")
 public class ManageController extends BaseController {
 
@@ -40,10 +36,6 @@ public class ManageController extends BaseController {
     /**
      * 删除用户
      */
-    @Before({
-            UserInterceptor.class,
-            PermissionInterceptor.class
-    })
     public void deleteuser() {
         Integer id = getParaToInt("id");
         //删除与用户关联的角色
@@ -227,7 +219,6 @@ public class ManageController extends BaseController {
     /**
      * 删除角色
      */
-    @Before(Tx.class)
     public void deleterole() {
         Integer id = getParaToInt("id");
         if (id == null) {
@@ -248,7 +239,6 @@ public class ManageController extends BaseController {
     /**
      * 删除权限
      */
-    @Before(Tx.class)
     public void deletepermission() {
         Integer id = getParaToInt("id");
         if (id == null) {

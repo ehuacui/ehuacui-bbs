@@ -9,16 +9,20 @@
             <div class="panel-body">
                 <form action="/section/edit" method="post" id="sectionForm">
                     <input type="hidden" name="id" value="${section.id!}">
+
                     <div class="form-group">
                         <label for="name">名称</label>
-                        <input type="text" name="name" id="name" value="${section.name}" placeholder="名称" class="form-control">
+                        <input type="text" name="name" id="name" value="${section.name}" placeholder="名称"
+                               class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="tab">tab(不能与已经存在的tab重复)</label>
-                        <input type="text" name="tab" id="tab" value="${section.tab}" placeholder="tab" class="form-control">
+                        <input type="text" name="tab" id="tab" value="${section.tab}" placeholder="tab"
+                               class="form-control">
                     </div>
                     <div class="form-group">
                         <label>是否显示</label>
+
                         <div>
                             <input type="radio" name="showStatus" id="showStatus_1" value="1">
                             <label for="showStatus_1">是&nbsp;</label>
@@ -26,11 +30,11 @@
                             <label for="showStatus_0">否</label>
                         </div>
                         <script type="text/javascript">
-                            <#if section.showStatus>
+                                <#if section.showStatus>
                                 $("#showStatus_1").attr("checked", true);
-                            <#else>
+                                <#else>
                                 $("#showStatus_0").attr("checked", true);
-                            </#if>
+                                </#if>
                         </script>
                     </div>
                     <button onclick="saveSection()" id="saveSectionBtn" class="btn btn-sm btn-default">保存</button>

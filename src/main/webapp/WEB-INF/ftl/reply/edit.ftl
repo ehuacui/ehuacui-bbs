@@ -32,10 +32,10 @@
     editor.render();
 
     var $input = $(editor.codemirror.display.input);
-    $input.keydown(function(event){
+    $input.keydown(function (event) {
         if (event.keyCode === 13 && (event.ctrlKey || event.metaKey)) {
             event.preventDefault();
-            if(editor.codemirror.getValue().length == 0) {
+            if (editor.codemirror.getValue().length == 0) {
                 $("#error_message").html("回复内容不能为空");
             } else {
                 $("#replyForm").submit();

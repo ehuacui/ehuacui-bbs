@@ -21,9 +21,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, nickname, score, avatar, email, url, signature, third_id, access_token, receive_msg, 
-    in_time, expire_time, channel, is_block, third_access_token
-  </sql>
+        id, nickname, score, avatar, email, url, signature, third_id, access_token, receive_msg,
+        in_time, expire_time, channel, is_block, third_access_token
+    </sql>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
@@ -38,8 +38,8 @@
     </select>
 
     <select id="countAll" resultType="java.lang.Integer">
-    select count(id) from ehuacui_user
-  </select>
+        select count(id) from ehuacui_user
+    </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -63,10 +63,10 @@
     </select>
 
     <select id="selectByPermissionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select u.* from ehuacui_user u, ehuacui_user_role ur, ehuacui_role r, ehuacui_role_permission rp,
-     ehuacui_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
-    and p.id = #{pid,jdbcType=INTEGER}
-  </select>
+        select u.* from ehuacui_user u, ehuacui_user_role ur, ehuacui_role r, ehuacui_role_permission rp,
+        ehuacui_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
+        and p.id = #{pid,jdbcType=INTEGER}
+    </select>
 
     <select id="selectUserScores" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select user.*, role.description from ehuacui_user user, ehuacui_role role, ehuacui_user_role ur
@@ -85,29 +85,29 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_user
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <delete id="deleteByNickName" parameterType="java.lang.String">
-    delete from ehuacui_user
-    where nickname = #{nickname,jdbcType=VARCHAR}
-  </delete>
+        delete from ehuacui_user
+        where nickname = #{nickname,jdbcType=VARCHAR}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_user (id, nickname, score, 
-      avatar, email, url, 
-      signature, third_id, access_token, 
-      receive_msg, in_time, expire_time, 
-      channel, is_block, third_access_token
-      )
-    values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
-      #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{signature,jdbcType=VARCHAR}, #{thirdId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
-      #{receiveMsg,jdbcType=BIT}, #{inTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, 
-      #{channel,jdbcType=VARCHAR}, #{isBlock,jdbcType=BIT}, #{thirdAccessToken,jdbcType=VARCHAR}
-      )
-  </insert>
+        insert into ehuacui_user (id, nickname, score,
+        avatar, email, url,
+        signature, third_id, access_token,
+        receive_msg, in_time, expire_time,
+        channel, is_block, third_access_token
+        )
+        values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER},
+        #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+        #{signature,jdbcType=VARCHAR}, #{thirdId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR},
+        #{receiveMsg,jdbcType=BIT}, #{inTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP},
+        #{channel,jdbcType=VARCHAR}, #{isBlock,jdbcType=BIT}, #{thirdAccessToken,jdbcType=VARCHAR}
+        )
+    </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
         insert into ehuacui_user
@@ -257,22 +257,22 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.User">
-    update ehuacui_user
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      score = #{score,jdbcType=INTEGER},
-      avatar = #{avatar,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      signature = #{signature,jdbcType=VARCHAR},
-      third_id = #{thirdId,jdbcType=VARCHAR},
-      access_token = #{accessToken,jdbcType=VARCHAR},
-      receive_msg = #{receiveMsg,jdbcType=BIT},
-      in_time = #{inTime,jdbcType=TIMESTAMP},
-      expire_time = #{expireTime,jdbcType=TIMESTAMP},
-      channel = #{channel,jdbcType=VARCHAR},
-      is_block = #{isBlock,jdbcType=BIT},
-      third_access_token = #{thirdAccessToken,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update ehuacui_user
+        set nickname = #{nickname,jdbcType=VARCHAR},
+        score = #{score,jdbcType=INTEGER},
+        avatar = #{avatar,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        signature = #{signature,jdbcType=VARCHAR},
+        third_id = #{thirdId,jdbcType=VARCHAR},
+        access_token = #{accessToken,jdbcType=VARCHAR},
+        receive_msg = #{receiveMsg,jdbcType=BIT},
+        in_time = #{inTime,jdbcType=TIMESTAMP},
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+        channel = #{channel,jdbcType=VARCHAR},
+        is_block = #{isBlock,jdbcType=BIT},
+        third_access_token = #{thirdAccessToken,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

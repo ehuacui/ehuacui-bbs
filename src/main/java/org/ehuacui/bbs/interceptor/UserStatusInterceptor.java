@@ -1,12 +1,13 @@
 package org.ehuacui.bbs.interceptor;
 
-import com.jfinal.aop.Interceptor;
-import com.jfinal.aop.Invocation;
-import com.jfinal.core.Controller;
-import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.ServiceHolder;
+import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.utils.StringUtil;
+import org.ehuacui.bbs.utils.WebUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by ehuacui.
@@ -16,17 +17,12 @@ import org.ehuacui.bbs.common.ServiceHolder;
 public class UserStatusInterceptor implements Interceptor {
 
     @Override
-    public void intercept(Invocation inv) {
-        Controller controller = inv.getController();
-        String user_cookie = controller.getCookie(Constants.USER_ACCESS_TOKEN);
-
+    public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
         User user = ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
         if (user.getIsBlock()) {
-            controller.renderText("您的账户已被禁用!");
-        } else {
-            inv.invoke();
+            response.sendRedirect("/403");
         }
-
     }
 
 }

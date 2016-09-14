@@ -1,9 +1,9 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.mapper.UserMapper;
 import org.ehuacui.bbs.mapper.UserRoleMapper;
+import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.interceptor;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.ehuacui.bbs.common.WebApplicationContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -22,8 +21,7 @@ public class BasicHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
             Class<? extends Interceptor>[] interceptors = authPassport.value();
             for (int i = 0; i < interceptors.length; i++) {
                 Class<? extends Interceptor> interceptor = interceptors[i];
-                ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext(), "org.springframework.web.servlet.FrameworkServlet.CONTEXT.SpringMVC");
-                Object object = context.getBean(interceptor);
+                Object object = WebApplicationContextHolder.getBean(interceptor);
                 Method method = interceptor.getDeclaredMethod("invoke", HttpServletRequest.class, HttpServletResponse.class);
                 method.invoke(object, request, response);
             }

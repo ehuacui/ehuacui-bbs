@@ -3,13 +3,13 @@ package org.ehuacui.bbs.controller;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PropKit;
-import org.ehuacui.bbs.model.Role;
-import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.model.Role;
+import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 

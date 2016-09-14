@@ -11,8 +11,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, tid, in_time, is_delete, content
-  </sql>
+        id, tid, in_time, is_delete, content
+    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -30,18 +30,19 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_topic_append
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_topic_append
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.TopicAppend" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_topic_append (id, tid, in_time, 
-      is_delete, content)
-    values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, 
-      #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
-  </insert>
+        insert into ehuacui_topic_append (id, tid, in_time,
+        is_delete, content)
+        values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP},
+        #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+    </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.TopicAppend" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.TopicAppend" keyProperty="id"
+            useGeneratedKeys="true">
         insert into ehuacui_topic_append
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -80,8 +81,8 @@
     </insert>
 
     <update id="deleteByTid" parameterType="java.lang.Integer">
-    update ehuacui_topic_append set is_delete = 1 where tid = #{tid,jdbcType=INTEGER}
-  </update>
+        update ehuacui_topic_append set is_delete = 1 where tid = #{tid,jdbcType=INTEGER}
+    </update>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.TopicAppend">
         update ehuacui_topic_append
@@ -103,12 +104,12 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.TopicAppend">
-    update ehuacui_topic_append
-    set tid = #{tid,jdbcType=INTEGER},
-      in_time = #{inTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=BIT},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update ehuacui_topic_append
+        set tid = #{tid,jdbcType=INTEGER},
+        in_time = #{inTime,jdbcType=TIMESTAMP},
+        is_delete = #{isDelete,jdbcType=BIT},
+        content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

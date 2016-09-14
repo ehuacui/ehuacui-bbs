@@ -9,13 +9,16 @@
             <div class="panel-body">
                 <form method="post" action="/topic/edit" id="topicForm">
                     <input type="hidden" name="id" value="${topic.id!}"/>
+
                     <div class="form-group">
                         <label for="title">标题</label>
-                        <input type="text" class="form-control" id="title" name="title" value="${topic.title!}" placeholder="标题">
+                        <input type="text" class="form-control" id="title" name="title" value="${topic.title!}"
+                               placeholder="标题">
                     </div>
                     <div class="form-group">
                         <label for="title">内容</label>
-                        <textarea name="content" id="content" rows="15" class="form-control">${topic.content?html!}</textarea>
+                        <textarea name="content" id="content" rows="15"
+                                  class="form-control">${topic.content?html!}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="title">版块</label>
@@ -23,7 +26,7 @@
                             <#list sections as section>
                                 <option value="${section.tab}"
                                         <#if topic.tab == section.tab>selected="selected"</#if>>
-                                    ${section.name!}
+                                ${section.name!}
                                 </option>
                             </#list>
                         </select>
@@ -41,8 +44,11 @@
             </div>
             <div class="panel-body">
                 <p>• 关于积分：发布话题奖励 5 积分，但是被管理员删除话题将会扣除作者 7 积分</p>
+
                 <p>• 问题标题: 请用准确的语言描述您发布的问题思想</p>
+
                 <p>• 添加标签: 添加一个或者多个合适的标签, 让您发布的问题得到更多有相同兴趣的人参与.</p>
+
                 <p>• 给话题选择合适的板块方便查找浏览</p>
             </div>
         </div>

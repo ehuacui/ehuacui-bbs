@@ -8,6 +8,7 @@ package org.ehuacui.bbs.scheduler;
 public abstract class BasicJob {
     /**
      * 任务执行方法
+     *
      * @throws RuntimeException 拋出异常
      */
     public abstract void execute() throws RuntimeException;

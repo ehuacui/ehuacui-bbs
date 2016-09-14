@@ -1,4 +1,3 @@
-
 package org.ehuacui.bbs.exception;
 
 import org.slf4j.Logger;

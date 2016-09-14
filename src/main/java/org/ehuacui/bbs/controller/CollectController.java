@@ -1,15 +1,15 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.route.ControllerBind;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ public class CollectController extends BaseController {
     /**
      * 收藏话题
      */
-    @Before(UserInterceptor.class)
+    @BeforeAdviceController(UserInterceptor.class)
     public void add() {
         Integer tid = getParaToInt("tid");
         Date now = new Date();
@@ -49,7 +49,7 @@ public class CollectController extends BaseController {
     /**
      * 取消收藏话题
      */
-    @Before(UserInterceptor.class)
+    @BeforeAdviceController(UserInterceptor.class)
     public void delete() {
         Integer tid = getParaToInt("tid");
         User user = getUser();

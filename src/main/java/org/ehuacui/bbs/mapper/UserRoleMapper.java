@@ -10,11 +10,11 @@ public interface UserRoleMapper {
 
     int insertSelective(UserRole record);
 
-    List<UserRole> selectByUserId(@Param("uid")Integer uid);
+    List<UserRole> selectByUserId(@Param("uid") Integer uid);
 
-    List<UserRole> selectByRoleId(@Param("rid")Integer rid);
+    List<UserRole> selectByRoleId(@Param("rid") Integer rid);
 
-    int deleteByUserId(@Param("uid")Integer uid);
+    int deleteByUserId(@Param("uid") Integer uid);
 
-    int deleteByRoleId(@Param("rid")Integer rid);
+    int deleteByRoleId(@Param("rid") Integer rid);
 }

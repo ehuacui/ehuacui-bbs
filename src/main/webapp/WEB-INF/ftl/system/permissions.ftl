@@ -17,7 +17,8 @@
                             <td>${permission.url!}</td>
                             <td>${permission.description!}</td>
                             <td>
-                                <a href="/manage/editpermission?id=${permission.id!}" class="btn btn-xs btn-warning">编辑</a>
+                                <a href="/manage/editpermission?id=${permission.id!}"
+                                   class="btn btn-xs btn-warning">编辑</a>
                                 <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deletepermission?id=${permission.id!}'"
                                    class="btn btn-xs btn-danger">删除</a>
                             </td>
@@ -36,7 +37,7 @@
                     <li class="list-group-item permission-item <#if pid?? && pid == permission.id>active</#if>">
                         <a href="javascript:if(confirm('确认删除吗?'))location.href='/manage/deletepermission?id=${permission.id!}'">删除</a>
                         <a href="/manage/permissions?pid=${permission.id!}">
-                            ${permission.description!}
+                        ${permission.description!}
                         </a>
                     </li>
                 </#list>

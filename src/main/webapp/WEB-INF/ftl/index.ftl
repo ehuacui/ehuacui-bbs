@@ -8,9 +8,10 @@
                     <li <#if tab == 'all'>class="active"</#if>><a href="/?tab=all">全部</a></li>
                     <li <#if tab == 'good'>class="active"</#if>><a href="/?tab=good">精华</a></li>
                     <li <#if tab == 'noreply'>class="active"</#if>><a href="/?tab=noreply">等待回复</a></li>
-                    <li class="dropdown <#if tab != 'good' && tab != 'all' && tab != 'noreply'>active</#if>" style="margin-right: 8px;">
+                    <li class="dropdown <#if tab != 'good' && tab != 'all' && tab != 'noreply'>active</#if>"
+                        style="margin-right: 8px;">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" data-target="#">
-                             ${sectionName!} <span class="caret"></span>
+                        ${sectionName!} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <#list sections as section>

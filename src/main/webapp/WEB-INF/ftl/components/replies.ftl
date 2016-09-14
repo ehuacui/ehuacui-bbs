@@ -7,7 +7,7 @@
         <div class="media-body reply-content">
             <div class="media-heading gray">
                 <a href="/user/${reply.author!}">${reply.author!} </a>
-                ${formatDate(reply.inTime)!}
+            ${formatDate(reply.inTime)!}
                 <#if userinfo??>
                     <span class="pull-right">
                         <@py.hasPermission name="reply:edit" id="${userinfo.id!}">

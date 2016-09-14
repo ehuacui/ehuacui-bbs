@@ -3,7 +3,7 @@
     <#list replies as reply>
         <tr>
             <td>
-                ${formatDate(reply.inTime)!}
+            ${formatDate(reply.inTime)!}
                 回复了
                 <a href="/user/${reply.topicAuthor!}">${reply.topicAuthor!}</a>
                 创建的话题 › <a href="/topic/${reply.tid!}">${reply.title!}</a>

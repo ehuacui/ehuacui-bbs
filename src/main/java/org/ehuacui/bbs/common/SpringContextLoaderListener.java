@@ -3,9 +3,7 @@ package org.ehuacui.bbs.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 
@@ -16,18 +14,19 @@ public class SpringContextLoaderListener extends ContextLoaderListener {
 
     private static final Logger logger = LoggerFactory.getLogger(SpringContextLoaderListener.class);
 
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.info("EHuaCui BBS To Start Stop");
         MDC.remove("app_name");
+        super.contextDestroyed(sce);
     }
 
+    @Override
     public void contextInitialized(ServletContextEvent event) {
         //Config application name for logger
         MDC.put("app_name", "ehuacui-bbs");
         logger.info("EHuaCui BBS To Start Running");
         super.contextInitialized(event);
         logger.info("EHuaCui BBS To Completed Running");
-        ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-        WebApplicationContextHolder.setApplicationContext(applicationContext);
     }
 }

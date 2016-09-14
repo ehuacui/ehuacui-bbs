@@ -15,8 +15,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, `read`, author, target_author, in_time, action, tid, content
-   </sql>
+        id, `read`, author, target_author, in_time, action, tid, content
+    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -47,20 +47,21 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_notification
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from ehuacui_notification
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_notification (id, `read`, author,
-      target_author, in_time, action, 
-      tid, content)
-    values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR}, 
-      #{targetAuthor,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR}, 
-      #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
-  </insert>
+        insert into ehuacui_notification (id, `read`, author,
+        target_author, in_time, action,
+        tid, content)
+        values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR},
+        #{targetAuthor,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR},
+        #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+    </insert>
 
-    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id"
+            useGeneratedKeys="true">
         insert into ehuacui_notification
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -145,16 +146,16 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
-    update ehuacui_notification
-    set `read` = #{read,jdbcType=BIT},
-      author = #{author,jdbcType=VARCHAR},
-      target_author = #{targetAuthor,jdbcType=VARCHAR},
-      in_time = #{inTime,jdbcType=TIMESTAMP},
-      action = #{action,jdbcType=VARCHAR},
-      tid = #{tid,jdbcType=INTEGER},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update ehuacui_notification
+        set `read` = #{read,jdbcType=BIT},
+        author = #{author,jdbcType=VARCHAR},
+        target_author = #{targetAuthor,jdbcType=VARCHAR},
+        in_time = #{inTime,jdbcType=TIMESTAMP},
+        action = #{action,jdbcType=VARCHAR},
+        tid = #{tid,jdbcType=INTEGER},
+        content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
     <update id="updateUnreadToRead" parameterType="java.lang.String">
         update ehuacui_notification set `read` = 1 where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}

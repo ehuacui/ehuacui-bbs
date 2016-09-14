@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
@@ -9,11 +8,12 @@ import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.route.ControllerBind;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
@@ -87,7 +87,7 @@ public class IndexController extends BaseController {
     /**
      * 上传
      */
-    @Before(UserInterceptor.class)
+    @BeforeAdviceController(UserInterceptor.class)
     public void upload() {
         try {
             List<UploadFile> uploadFiles = getFiles(PropKit.get("static.path"));
@@ -116,10 +116,7 @@ public class IndexController extends BaseController {
     /**
      * 索引所有话题
      */
-    @Before({
-            UserInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     public void solr() {
         if (PropKit.getBoolean("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
@@ -147,10 +144,7 @@ public class IndexController extends BaseController {
         }
     }
 
-    @Before({
-            UserInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     public void deleteallindex() {
         if (PropKit.getBoolean("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
@@ -171,10 +165,7 @@ public class IndexController extends BaseController {
     /**
      * 清理缓存
      */
-    @Before({
-            UserInterceptor.class,
-            PermissionInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     public void clear() {
         Cache cache = Redis.use();
         if (cache != null) {

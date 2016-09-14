@@ -1,22 +1,22 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
-import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
-import org.ehuacui.bbs.model.Topic;
-import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.template.FormatDate;
-import org.ehuacui.bbs.template.GetNameByTab;
-import org.ehuacui.bbs.template.Marked;
-import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
+import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Reply;
+import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.route.ControllerBind;
+import org.ehuacui.bbs.template.FormatDate;
+import org.ehuacui.bbs.template.GetNameByTab;
+import org.ehuacui.bbs.template.Marked;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -116,10 +116,7 @@ public class UserController extends BaseController {
     /**
      * 用户设置
      */
-    @Before({
-            UserInterceptor.class,
-            UserStatusInterceptor.class
-    })
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     public void setting() throws UnsupportedEncodingException {
         String method = getRequest().getMethod();
         if (method.equals("POST")) {

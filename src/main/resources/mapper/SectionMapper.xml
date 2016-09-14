@@ -2,146 +2,146 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ehuacui.bbs.mapper.SectionMapper">
 
-  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Section">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="tab" jdbcType="VARCHAR" property="tab" />
-    <result column="show_status" jdbcType="BIT" property="showStatus" />
-    <result column="display_index" jdbcType="INTEGER" property="displayIndex" />
-    <result column="default_show" jdbcType="BIT" property="defaultShow" />
-    <result column="pid" jdbcType="INTEGER" property="pid" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Section">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="tab" jdbcType="VARCHAR" property="tab"/>
+        <result column="show_status" jdbcType="BIT" property="showStatus"/>
+        <result column="display_index" jdbcType="INTEGER" property="displayIndex"/>
+        <result column="default_show" jdbcType="BIT" property="defaultShow"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+    </resultMap>
 
-  <sql id="Base_Column_List">
-    id, name, tab, show_status, display_index, default_show, pid
-  </sql>
+    <sql id="Base_Column_List">
+        id, name, tab, show_status, display_index, default_show, pid
+    </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from ehuacui_section
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_section
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_section
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_section
+    </select>
 
-  <select id="selectByShowStatus" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_section
-    where show_status = #{showStatus,jdbcType=BIT}
-    order by display_index
-  </select>
+    <select id="selectByShowStatus" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_section
+        where show_status = #{showStatus,jdbcType=BIT}
+        order by display_index
+    </select>
 
-  <select id="selectByShowTab" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ehuacui_section
-    where tab = #{tab,jdbcType=VARCHAR}
-  </select>
+    <select id="selectByShowTab" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ehuacui_section
+        where tab = #{tab,jdbcType=VARCHAR}
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from ehuacui_section
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ehuacui_section
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
-  <insert id="insert" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_section (id, name, tab, 
-      show_status, display_index, default_show, 
-      pid)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tab,jdbcType=VARCHAR}, 
-      #{showStatus,jdbcType=BIT}, #{displayIndex,jdbcType=INTEGER}, #{defaultShow,jdbcType=BIT}, 
-      #{pid,jdbcType=INTEGER})
-  </insert>
+    <insert id="insert" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
+        insert into ehuacui_section (id, name, tab,
+        show_status, display_index, default_show,
+        pid)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tab,jdbcType=VARCHAR},
+        #{showStatus,jdbcType=BIT}, #{displayIndex,jdbcType=INTEGER}, #{defaultShow,jdbcType=BIT},
+        #{pid,jdbcType=INTEGER})
+    </insert>
 
-  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_section
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="tab != null">
-        tab,
-      </if>
-      <if test="showStatus != null">
-        show_status,
-      </if>
-      <if test="displayIndex != null">
-        display_index,
-      </if>
-      <if test="defaultShow != null">
-        default_show,
-      </if>
-      <if test="pid != null">
-        pid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tab != null">
-        #{tab,jdbcType=VARCHAR},
-      </if>
-      <if test="showStatus != null">
-        #{showStatus,jdbcType=BIT},
-      </if>
-      <if test="displayIndex != null">
-        #{displayIndex,jdbcType=INTEGER},
-      </if>
-      <if test="defaultShow != null">
-        #{defaultShow,jdbcType=BIT},
-      </if>
-      <if test="pid != null">
-        #{pid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
+        insert into ehuacui_section
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="tab != null">
+                tab,
+            </if>
+            <if test="showStatus != null">
+                show_status,
+            </if>
+            <if test="displayIndex != null">
+                display_index,
+            </if>
+            <if test="defaultShow != null">
+                default_show,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="tab != null">
+                #{tab,jdbcType=VARCHAR},
+            </if>
+            <if test="showStatus != null">
+                #{showStatus,jdbcType=BIT},
+            </if>
+            <if test="displayIndex != null">
+                #{displayIndex,jdbcType=INTEGER},
+            </if>
+            <if test="defaultShow != null">
+                #{defaultShow,jdbcType=BIT},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Section">
-    update ehuacui_section
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tab != null">
+    <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Section">
+        update ehuacui_section
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="tab != null">
+                tab = #{tab,jdbcType=VARCHAR},
+            </if>
+            <if test="showStatus != null">
+                show_status = #{showStatus,jdbcType=BIT},
+            </if>
+            <if test="displayIndex != null">
+                display_index = #{displayIndex,jdbcType=INTEGER},
+            </if>
+            <if test="defaultShow != null">
+                default_show = #{defaultShow,jdbcType=BIT},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Section">
+        update ehuacui_section
+        set name = #{name,jdbcType=VARCHAR},
         tab = #{tab,jdbcType=VARCHAR},
-      </if>
-      <if test="showStatus != null">
         show_status = #{showStatus,jdbcType=BIT},
-      </if>
-      <if test="displayIndex != null">
         display_index = #{displayIndex,jdbcType=INTEGER},
-      </if>
-      <if test="defaultShow != null">
         default_show = #{defaultShow,jdbcType=BIT},
-      </if>
-      <if test="pid != null">
-        pid = #{pid,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Section">
-    update ehuacui_section
-    set name = #{name,jdbcType=VARCHAR},
-      tab = #{tab,jdbcType=VARCHAR},
-      show_status = #{showStatus,jdbcType=BIT},
-      display_index = #{displayIndex,jdbcType=INTEGER},
-      default_show = #{defaultShow,jdbcType=BIT},
-      pid = #{pid,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        pid = #{pid,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

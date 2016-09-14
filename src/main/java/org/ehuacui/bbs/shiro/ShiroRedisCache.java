@@ -27,6 +27,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     /**
      * Returns the Redis session keys
      * prefix.
+     *
      * @return The prefix
      */
     public String getKeyPrefix() {
@@ -36,6 +37,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     /**
      * Sets the Redis sessions key
      * prefix.
+     *
      * @param keyPrefix The prefix
      */
     public void setKeyPrefix(String keyPrefix) {
@@ -45,7 +47,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     /**
      * 通过一个JedisManager实例构造RedisCache
      */
-    public ShiroRedisCache(RedisManager cache){
+    public ShiroRedisCache(RedisManager cache) {
         if (cache == null) {
             throw new IllegalArgumentException("Cache argument cannot be null.");
         }
@@ -55,13 +57,14 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     /**
      * Constructs a cache instance with the specified
      * Redis manager and using a custom key prefix.
-     * @param cache The cache manager instance
+     *
+     * @param cache  The cache manager instance
      * @param prefix The Redis key prefix
      */
     public ShiroRedisCache(RedisManager cache,
-                           String prefix){
+                           String prefix) {
 
-        this( cache );
+        this(cache);
 
         // set the prefix
         this.keyPrefix = prefix;
@@ -69,14 +72,15 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
     /**
      * 获得byte[]型的key
+     *
      * @param key
      * @return
      */
-    private byte[] getByteKey(K key){
-        if(key instanceof String){
+    private byte[] getByteKey(K key) {
+        if (key instanceof String) {
             String preKey = this.keyPrefix + key;
             return preKey.getBytes();
-        }else{
+        } else {
             return SerializeUtils.serialize(key);
         }
     }
@@ -87,10 +91,10 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         try {
             if (key == null) {
                 return null;
-            }else{
+            } else {
                 byte[] rawValue = cache.get(getByteKey(key));
                 @SuppressWarnings("unchecked")
-                V value = (V)SerializeUtils.deserialize(rawValue);
+                V value = (V) SerializeUtils.deserialize(rawValue);
                 return value;
             }
         } catch (Throwable t) {
@@ -148,10 +152,10 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
             Set<byte[]> keys = cache.keys(this.keyPrefix + "*");
             if (CollectionUtils.isEmpty(keys)) {
                 return Collections.emptySet();
-            }else{
+            } else {
                 Set<K> newKeys = new HashSet<K>();
-                for(byte[] key:keys){
-                    newKeys.add((K)key);
+                for (byte[] key : keys) {
+                    newKeys.add((K) key);
                 }
                 return newKeys;
             }
@@ -168,7 +172,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
                 List<V> values = new ArrayList<V>(keys.size());
                 for (byte[] key : keys) {
                     @SuppressWarnings("unchecked")
-                    V value = get((K)key);
+                    V value = get((K) key);
                     if (value != null) {
                         values.add(value);
                     }
