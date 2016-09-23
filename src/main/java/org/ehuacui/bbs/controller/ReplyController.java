@@ -17,7 +17,10 @@ import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -33,95 +36,91 @@ import java.util.List;
 public class ReplyController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
-    public void save() throws UnsupportedEncodingException {
-        String method = getRequest().getMethod();
-        if (method.equals("GET")) {
-            renderError(404);
-        } else if (method.equals("POST")) {
-            String content = getPara("content");
-            Integer tid = getParaToInt("tid");
-            if (tid == null) {
-                renderText(Constants.OP_ERROR_MESSAGE);
-            } else {
-                Date now = new Date();
-                User user = getUser();
-                Reply reply = new Reply();
-                reply.setTid(tid);
-                reply.setContent(content);
-                reply.setInTime(now);
-                reply.setAuthor(user.getNickname());
-                reply.setIsDelete(false);
-                ServiceHolder.replyService.save(reply);
-                //topic reply_count++
-                Topic topic = ServiceHolder.topicService.findById(tid);
-                topic.setReplyCount(topic.getReplyCount() + 1);
-                topic.setLastReplyTime(now);
-                topic.setLastReplyAuthor(user.getNickname());
-                ServiceHolder.topicService.update(topic);
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String save(HttpServletRequest request,
+                       @RequestParam("tid") Integer tid,
+                       @RequestParam("content") String content) {
+        Date now = new Date();
+        User user = getUser(request);
+        Reply reply = new Reply();
+        reply.setTid(tid);
+        reply.setContent(content);
+        reply.setInTime(now);
+        reply.setAuthor(user.getNickname());
+        reply.setIsDelete(false);
+        ServiceHolder.replyService.save(reply);
+        //topic reply_count++
+        Topic topic = ServiceHolder.topicService.findById(tid);
+        topic.setReplyCount(topic.getReplyCount() + 1);
+        topic.setLastReplyTime(now);
+        topic.setLastReplyAuthor(user.getNickname());
+        ServiceHolder.topicService.update(topic);
 //                user.set("score", user.getInt("score") + 5).update();
-                //发送通知
-                //回复者与话题作者不是一个人的时候发送通知
-                if (!user.getNickname().equals(topic.getAuthor())) {
+        //发送通知
+        //回复者与话题作者不是一个人的时候发送通知
+        if (!user.getNickname().equals(topic.getAuthor())) {
+            ServiceHolder.notificationService.sendNotification(
+                    user.getNickname(),
+                    topic.getAuthor(),
+                    Constants.NotificationEnum.REPLY.name(),
+                    tid,
+                    content
+            );
+        }
+        //检查回复内容里有没有at用户,有就发通知
+        List<String> atUsers = StringUtil.fetchUsers(content);
+        for (String u : atUsers) {
+            if (!u.equals(topic.getAuthor())) {
+                User _user = ServiceHolder.userService.findByNickname(u);
+                if (_user != null) {
                     ServiceHolder.notificationService.sendNotification(
                             user.getNickname(),
-                            topic.getAuthor(),
-                            Constants.NotificationEnum.REPLY.name(),
+                            _user.getNickname(),
+                            Constants.NotificationEnum.AT.name(),
                             tid,
                             content
                     );
                 }
-                //检查回复内容里有没有at用户,有就发通知
-                List<String> atUsers = StringUtil.fetchUsers(content);
-                for (String u : atUsers) {
-                    if (!u.equals(topic.getAuthor())) {
-                        User _user = ServiceHolder.userService.findByNickname(u);
-                        if (_user != null) {
-                            ServiceHolder.notificationService.sendNotification(
-                                    user.getNickname(),
-                                    _user.getNickname(),
-                                    Constants.NotificationEnum.AT.name(),
-                                    tid,
-                                    content
-                            );
-                        }
-                    }
-                }
-                //清理缓存，保持数据最新
-                clearCache(CacheEnum.topic.name() + tid);
-                clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
-                clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
-                redirect("/topic/" + tid + "#reply" + reply.getId());
             }
         }
+        //清理缓存，保持数据最新
+        clearCache(CacheEnum.topic.name() + tid);
+        try {
+            clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+        }
+        clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
+        return redirect("/topic/" + tid + "#reply" + reply.getId());
     }
 
     /**
      * 编辑回复
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class,PermissionInterceptor.class})
-    public void edit() {
-        Integer id = getParaToInt("id");
-        String method = getRequest().getMethod();
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String edit(HttpServletRequest request, @RequestParam("id") Integer id) {
         Reply reply = ServiceHolder.replyService.findById(id);
-        if (method.equals("GET")) {
-            Topic topic = ServiceHolder.topicService.findById(reply.getTid());
-            setAttr("reply", reply);
-            setAttr("topic", topic);
-            render("reply/edit.ftl");
-        } else if (method.equals("POST")) {
-            String content = getPara("content");
-            reply.setContent(content);
-            ServiceHolder.replyService.update(reply);
-            redirect("/topic/" + reply.getTid() + "#reply" + id);
-        }
+        Topic topic = ServiceHolder.topicService.findById(reply.getTid());
+        request.setAttribute("reply", reply);
+        request.setAttribute("topic", topic);
+        return "reply/edit.ftl";
+    }
+
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(@RequestParam("id") Integer id, @RequestParam("content") String content) {
+        Reply reply = ServiceHolder.replyService.findById(id);
+        reply.setContent(content);
+        ServiceHolder.replyService.update(reply);
+        return redirect("/topic/" + reply.getTid() + "#reply" + id);
     }
 
     /**
      * 删除回复
      */
-    @BeforeAdviceController({UserInterceptor.class,UserStatusInterceptor.class,PermissionInterceptor.class})
-    public void delete() throws UnsupportedEncodingException {
-        Integer id = getParaToInt("id");
+    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("id") Integer id) {
         Reply reply = ServiceHolder.replyService.findById(id);
         Topic topic = ServiceHolder.topicService.findById(reply.getTid());
         topic.setReplyCount(topic.getReplyCount() - 1);
@@ -136,17 +135,18 @@ public class ReplyController extends BaseController {
         //清理缓存
 //        clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
 //        clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
-        redirect("/topic/" + topic.getId());
+        return redirect("/topic/" + topic.getId());
     }
 
     /**
      * 回复列表
      */
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
-    public void list() {
-        setAttr("page", ServiceHolder.replyService.findAll(getParaToInt("p", 1), PropKit.getInt("pageSize")));
-        setAttr("formatDate", new FormatDate());
-        setAttr("marked", new Marked());
-        render("reply/list.ftl");
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
+        request.setAttribute("page", ServiceHolder.replyService.findAll(p, PropKit.getInt("pageSize")));
+        request.setAttribute("formatDate", new FormatDate());
+        request.setAttribute("marked", new Marked());
+        return ("reply/list.ftl");
     }
 }

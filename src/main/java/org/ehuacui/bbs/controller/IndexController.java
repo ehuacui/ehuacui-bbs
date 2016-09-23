@@ -3,7 +3,6 @@ package org.ehuacui.bbs.controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
-import com.jfinal.upload.UploadFile;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
@@ -18,18 +17,16 @@ import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.utils.QiniuUploadUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
-import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,25 +93,28 @@ public class IndexController extends BaseController {
      */
     @BeforeAdviceController(UserInterceptor.class)
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
-    public void upload() {
+    public void upload(@RequestParam("file") MultipartFile file) {
         try {
-            List<UploadFile> uploadFiles = getFiles(PropKit.get("static.path"));
-            List<String> urls = new ArrayList<>();
-            for (UploadFile uf : uploadFiles) {
-                String url = "";
-                if (PropKit.get("upload.type").equals("local")) {
-                    url = PropKit.get("file.domain") + "/static/upload/" + uf.getFileName();
-                    urls.add(url);
-                } else if (PropKit.get("upload.type").equals("qiniu")) {
-                    // 将本地文件上传到七牛,并删除本地文件
-                    String filePath = uf.getUploadPath() + uf.getFileName();
-                    Map map = new QiniuUploadUtil().upload(filePath);
-                    new File(filePath).delete();
-                    url = PropKit.get("qiniu.url") + "/" + map.get("key");
-                    urls.add(url);
-                }
+            String path = PropKit.get("static.path");
+            String fileName = file.getOriginalFilename();
+            File targetFile = new File(path, fileName);
+            File parentFile = targetFile.getParentFile();
+            if (parentFile != null) {
+                parentFile.mkdirs();
             }
-            success(urls);
+            //保存
+            file.transferTo(targetFile);
+            String url = "";
+            if (PropKit.get("upload.type").equals("local")) {
+                url = PropKit.get("file.domain") + "/static/upload/" + fileName;
+            } else if (PropKit.get("upload.type").equals("qiniu")) {
+                // 将本地文件上传到七牛,并删除本地文件
+                String filePath = path + fileName;
+                Map map = new QiniuUploadUtil().upload(filePath);
+                targetFile.delete();
+                url = PropKit.get("qiniu.url") + "/" + map.get("key");
+            }
+            success(url);
         } catch (Exception e) {
             e.printStackTrace();
             error("图片上传失败,再试一次吧");

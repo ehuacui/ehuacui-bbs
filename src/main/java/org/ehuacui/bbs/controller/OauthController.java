@@ -11,9 +11,14 @@ import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.StringUtil;
+import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -33,13 +38,12 @@ public class OauthController extends BaseController {
 
     /**
      * github登录
-     *
-     * @throws UnsupportedEncodingException
      */
-    public void githublogin() throws UnsupportedEncodingException {
+    @RequestMapping(value = "/githublogin", method = RequestMethod.GET)
+    public String githublogin(HttpServletResponse response) {
         LogKit.info("githublogin");
         String state = StringUtil.randomString(6);
-        setCookie(STATE, state, 5 * 60, "/", PropKit.get("cookie.domain"), true);
+        WebUtil.setCookie(response, STATE, state, 5 * 60, "/", PropKit.get("cookie.domain"), true);
         StringBuffer sb = new StringBuffer();
         sb.append("https://github.com/login/oauth/authorize")
                 .append("?")
@@ -54,18 +58,17 @@ public class OauthController extends BaseController {
                 .append("scope")
                 .append("=")
                 .append("user");
-        redirect(sb.toString());
+       return redirect(sb.toString());
     }
 
     /**
      * github登录成功后回调
-     *
-     * @throws UnsupportedEncodingException
      */
-    public void githubcallback() throws UnsupportedEncodingException {
-        String code = getPara("code");
-        String state = getPara("state");
-        String cookieState = getCookie(STATE);
+    @RequestMapping(value = "/githubcallback", method = RequestMethod.GET)
+    public String githubcallback(@RequestParam("code") String code, @RequestParam("state") String state,
+                                 @RequestParam("callback") String callback,
+                                 HttpServletRequest request, HttpServletResponse response) {
+        String cookieState = WebUtil.getCookie(request, STATE);
         if (state.equalsIgnoreCase(cookieState)) {
 //            请求access_token
             Map<String, String> map1 = new HashMap<String, String>();
@@ -122,18 +125,21 @@ public class OauthController extends BaseController {
                     ServiceHolder.userRoleService.save(userRole);
                 }
             }
-            setCookie(Constants.USER_ACCESS_TOKEN,
+            WebUtil.setCookie(response, Constants.USER_ACCESS_TOKEN,
                     StringUtil.getEncryptionToken(user.getAccessToken()),
                     30 * 24 * 60 * 60, "/",
                     PropKit.get("cookie.domain"),
                     true);
-            String callback = getPara("callback");
             if (StringUtil.notBlank(callback)) {
-                callback = URLDecoder.decode(callback, "UTF-8");
+                try {
+                    callback = URLDecoder.decode(callback, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    callback = null;
+                }
             }
-            redirect(StringUtil.notBlank(callback) ? callback : "/");
+            return redirect(StringUtil.notBlank(callback) ? callback : "/");
         } else {
-            renderText(Constants.OP_ERROR_MESSAGE);
+            return redirect("/");
         }
     }
 

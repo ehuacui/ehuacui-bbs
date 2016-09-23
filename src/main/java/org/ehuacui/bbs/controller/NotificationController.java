@@ -13,6 +13,10 @@ import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by ehuacui.
@@ -24,15 +28,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class NotificationController extends BaseController {
 
     @BeforeAdviceController(UserInterceptor.class)
-    public void index() {
-        User user = getUser();
-        Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getNickname());
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
+        User user = getUser(request);
+        Page<Notification> page = ServiceHolder.notificationService.pageByAuthor(p, PropKit.getInt("pageSize"), user.getNickname());
         //将通知都设置成已读的
         ServiceHolder.notificationService.makeUnreadToRead(user.getNickname());
-        setAttr("page", page);
-        setAttr("formatDate", new FormatDate());
-        setAttr("getAvatarByNickname", new GetAvatarByNickname());
-        setAttr("marked", new Marked());
-        render("notification/index.ftl");
+        request.setAttribute("page", page);
+        request.setAttribute("formatDate", new FormatDate());
+        request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
+        request.setAttribute("marked", new Marked());
+        return "notification/index.ftl";
     }
 }

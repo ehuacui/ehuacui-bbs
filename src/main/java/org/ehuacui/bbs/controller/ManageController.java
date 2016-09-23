@@ -2,7 +2,6 @@ package org.ehuacui.bbs.controller;
 
 import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
@@ -14,7 +13,10 @@ import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -30,239 +32,239 @@ public class ManageController extends BaseController {
     /**
      * 用户列表
      */
-    public void users() {
-        setAttr("page", ServiceHolder.userService.page(getParaToInt("p", 1), PropKit.getInt("pageSize")));
-        render("system/users.ftl");
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String users(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
+        request.setAttribute("page", ServiceHolder.userService.page(p, PropKit.getInt("pageSize")));
+        return "system/users.ftl";
     }
 
     /**
      * 删除用户
      */
-    public void deleteuser() {
-        Integer id = getParaToInt("id");
+    @RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
+    public String deleteuser(@RequestParam("id") Integer id) {
         //删除与用户关联的角色
         ServiceHolder.userRoleService.deleteByUserId(id);
         //删除用户
         ServiceHolder.userService.deleteById(id);
-        redirect("/manage/users");
+        return redirect("/manage/users");
     }
 
     /**
      * 角色列表
      */
-    public void roles() {
-        setAttr("roles", ServiceHolder.roleService.findAll());
-        render("system/roles.ftl");
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public String roles(HttpServletRequest request) {
+        request.setAttribute("roles", ServiceHolder.roleService.findAll());
+        return "system/roles.ftl";
     }
 
     /**
      * 权限列表
      */
-    public void permissions() {
-        Integer pid = getParaToInt("pid");
+    @RequestMapping(value = "/permissions", method = RequestMethod.GET)
+    public String permissions(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         if (pid == null) {
-            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
-            setAttr("childPermissions", ServiceHolder.permissionService.findAll());
+            request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+            request.setAttribute("childPermissions", ServiceHolder.permissionService.findAll());
         } else {
-            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
-            setAttr("childPermissions", ServiceHolder.permissionService.findByPid(pid));
-            setAttr("pid", pid);
+            request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+            request.setAttribute("childPermissions", ServiceHolder.permissionService.findByPid(pid));
+            request.setAttribute("pid", pid);
         }
-        render("system/permissions.ftl");
+        return "system/permissions.ftl";
     }
 
     /**
      * 处理用户与角色关联
      */
-    public void userrole() {
-        Integer id = getParaToInt("id");
-        String method = getRequest().getMethod();
-        if (method.equals("GET")) {
-            setAttr("user", ServiceHolder.userService.findById(id));
-            //查询所有的权限
-            setAttr("roles", ServiceHolder.roleService.findAll());
-            //当前用户已经存在的角色
-            setAttr("_roles", ServiceHolder.userRoleService.findByUserId(id));
-            render("system/userrole.ftl");
-        } else if (method.equals("POST")) {
-            Integer[] roles = getParaValuesToInt("roles");
-            ServiceHolder.userService.correlationRole(id, roles);
-            //清除缓存
-            clearCache(CacheEnum.userpermissions.name() + id);
-            redirect("/manage/users");
-        }
+    @RequestMapping(value = "/userrole", method = RequestMethod.GET)
+    public String userrole(@RequestParam("id") Integer id, HttpServletRequest request) {
+        request.setAttribute("user", ServiceHolder.userService.findById(id));
+        //查询所有的权限
+        request.setAttribute("roles", ServiceHolder.roleService.findAll());
+        //当前用户已经存在的角色
+        request.setAttribute("_roles", ServiceHolder.userRoleService.findByUserId(id));
+        return "system/userrole.ftl";
+    }
+
+    /**
+     * 处理用户与角色关联
+     */
+    @RequestMapping(value = "/userrole", method = RequestMethod.POST)
+    public String userrole(@RequestParam("id") Integer id,
+                           @RequestParam("roles") Integer[] roles) {
+        ServiceHolder.userService.correlationRole(id, roles);
+        //清除缓存
+        clearCache(CacheEnum.userpermissions.name() + id);
+        return redirect("/manage/users");
     }
 
     /**
      * 禁用账户
      */
-    public void userblock() {
-        Integer id = getParaToInt("id");
+    @RequestMapping(value = "/userblock", method = RequestMethod.GET)
+    public String userblock(@RequestParam("id") Integer id) {
         User user = ServiceHolder.userService.findById(id);
         user.setIsBlock(!user.getIsBlock());
         ServiceHolder.userService.update(user);
         clearCache(CacheEnum.usernickname.name() + user.getNickname());
         clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
-        redirect("/manage/users");
+        return redirect("/manage/users");
     }
 
     /**
      * 添加角色
      */
-    public void addrole() {
-        String method = getRequest().getMethod();
-        if (method.equals("GET")) {
-            //查询所有的权限
-            setAttr("permissions", ServiceHolder.permissionService.findWithChild());
-            render("system/addrole.ftl");
-        } else if (method.equals("POST")) {
-            String name = getPara("name");
-            String description = getPara("description");
-            Role role = new Role();
-            role.setName(name);
-            role.setDescription(description);
-            ServiceHolder.roleService.save(role);
-            //保存关联数据
-            Integer[] roles = getParaValuesToInt("roles");
-            ServiceHolder.roleService.correlationPermission(role.getId(), roles);
-            redirect("/manage/roles");
-        }
+    @RequestMapping(value = "/addrole", method = RequestMethod.GET)
+    public String addrole(HttpServletRequest request) {
+        //查询所有的权限
+        request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
+        return "system/addrole.ftl";
+    }
+
+    /**
+     * 添加角色
+     */
+    @RequestMapping(value = "/addrole", method = RequestMethod.POST)
+    public String addrole(@RequestParam("name") String name,
+                          @RequestParam("description") String description,
+                          @RequestParam("id") Integer[] roles) {
+        Role role = new Role();
+        role.setName(name);
+        role.setDescription(description);
+        ServiceHolder.roleService.save(role);
+        //保存关联数据
+        ServiceHolder.roleService.correlationPermission(role.getId(), roles);
+        return redirect("/manage/roles");
     }
 
     /**
      * 添加权限
      */
-    public void addpermission() {
-        Integer pid = getParaToInt("pid");
-        String method = getRequest().getMethod();
-        if (method.equals("GET")) {
-            setAttr("pid", pid);
-            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
-            render("system/addpermission.ftl");
-        } else if (method.equals("POST")) {
-            String name = getPara("name");
-            String url = getPara("url");
-            String description = getPara("description");
-            Permission permission = new Permission();
-            permission.setName(name);
-            permission.setUrl(pid == 0 ? "" : url);
-            permission.setDescription(description);
-            permission.setPid(pid);
-            ServiceHolder.permissionService.save(permission);
-            String _url = "/manage/permissions?pid=" + pid;
-            if (pid == 0) {
-                _url = "/manage/permissions";
-            }
-            redirect(_url);
+    @RequestMapping(value = "/addpermission", method = RequestMethod.GET)
+    public String addpermission(@RequestParam("pid") Integer pid, HttpServletRequest request) {
+        request.setAttribute("pid", pid);
+        request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+        return "system/addpermission.ftl";
+    }
+
+    @RequestMapping(value = "/addpermission", method = RequestMethod.POST)
+    public String addpermission(@RequestParam("pid") Integer pid,
+                                @RequestParam("name") String name,
+                                @RequestParam("url") String url,
+                                @RequestParam("description") String description) {
+        Permission permission = new Permission();
+        permission.setName(name);
+        permission.setUrl(pid == 0 ? "" : url);
+        permission.setDescription(description);
+        permission.setPid(pid);
+        ServiceHolder.permissionService.save(permission);
+        String _url = "/manage/permissions?pid=" + pid;
+        if (pid == 0) {
+            _url = "/manage/permissions";
         }
+        return redirect(_url);
     }
 
     /**
      * 编辑权限
      */
-    public void editpermission() {
-        Integer id = getParaToInt("id");
-        String method = getRequest().getMethod();
-        if (method.equals("GET")) {
-            setAttr("_permission", ServiceHolder.permissionService.findById(id));
-            setAttr("permissions", ServiceHolder.permissionService.findByPid(0));
-            render("system/editpermission.ftl");
-        } else if (method.equals("POST")) {
-            Integer pid = getParaToInt("pid");
-            String name = getPara("name");
-            String url = getPara("url");
-            String description = getPara("description");
-            Permission permission = ServiceHolder.permissionService.findById(id);
-            permission.setName(name);
-            permission.setUrl(url);
-            permission.setDescription(description);
-            permission.setPid(pid);
-            ServiceHolder.permissionService.update(permission);
-            //清除缓存
-            List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
-            for (User u : userpermissions) {
-                clearCache(CacheEnum.userpermissions.name() + u.getId());
-            }
-            redirect("/manage/permissions?pid=" + pid);
+    @RequestMapping(value = "/editpermission", method = RequestMethod.GET)
+    public String editpermission(@RequestParam("id") Integer id, HttpServletRequest request) {
+        request.setAttribute("_permission", ServiceHolder.permissionService.findById(id));
+        request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+        return "system/editpermission.ftl";
+    }
+
+    @RequestMapping(value = "/editpermission", method = RequestMethod.POST)
+    public String editpermission(@RequestParam("id") Integer id, @RequestParam("pid") Integer pid,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("url") String url,
+                                 @RequestParam("description") String description) {
+        Permission permission = ServiceHolder.permissionService.findById(id);
+        permission.setName(name);
+        permission.setUrl(url);
+        permission.setDescription(description);
+        permission.setPid(pid);
+        ServiceHolder.permissionService.update(permission);
+        //清除缓存
+        List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
+        for (User u : userpermissions) {
+            clearCache(CacheEnum.userpermissions.name() + u.getId());
         }
+        return redirect("/manage/permissions?pid=" + pid);
     }
 
     /**
      * 处理角色与权限关系
      */
-    public void rolepermission() {
-        Integer roleId = getParaToInt("id");
-        String method = getRequest().getMethod();
-        Role role = ServiceHolder.roleService.findById(roleId);
-        if (method.equals("GET")) {
-            setAttr("role", role);
-            //查询所有的权限
-            setAttr("permissions", ServiceHolder.permissionService.findWithChild());
-            //查询角色已经配置的权限
-            setAttr("_permissions", ServiceHolder.rolePermissionService.findByRoleId(roleId));
-            render("system/rolepermission.ftl");
-        } else if (method.equals("POST")) {
-            String name = getPara("name");
-            String description = getPara("description");
-            role.setName(name);
-            role.setDescription(description);
-            ServiceHolder.roleService.update(role);
-            Integer[] permissions = getParaValuesToInt("permissions");
-            ServiceHolder.roleService.correlationPermission(roleId, permissions);
-            //清除缓存
-            List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(roleId);
-            for (UserRole ur : userRoles) {
-                clearCache(CacheEnum.userpermissions.name() + ur.getUid());
-            }
-            redirect("/manage/roles");
+    @RequestMapping(value = "/rolepermission", method = RequestMethod.GET)
+    public String rolepermission(@RequestParam("id") Integer id, HttpServletRequest request) {
+        Role role = ServiceHolder.roleService.findById(id);
+        request.setAttribute("role", role);
+        //查询所有的权限
+        request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
+        //查询角色已经配置的权限
+        request.setAttribute("_permissions", ServiceHolder.rolePermissionService.findByRoleId(id));
+        return "system/rolepermission.ftl";
+    }
+
+    @RequestMapping(value = "/rolepermission", method = RequestMethod.POST)
+    public String rolepermission(@RequestParam("id") Integer id,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("permissions") Integer[] permissions) {
+        Role role = ServiceHolder.roleService.findById(id);
+        role.setName(name);
+        role.setDescription(description);
+        ServiceHolder.roleService.update(role);
+        ServiceHolder.roleService.correlationPermission(id, permissions);
+        //清除缓存
+        List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
+        for (UserRole ur : userRoles) {
+            clearCache(CacheEnum.userpermissions.name() + ur.getUid());
         }
+        return redirect("/manage/roles");
     }
 
     /**
      * 删除角色
      */
-    public void deleterole() {
-        Integer id = getParaToInt("id");
-        if (id == null) {
-            renderText(Constants.OP_ERROR_MESSAGE);
-        } else {
-            ServiceHolder.userRoleService.deleteByRoleId(id);
-            ServiceHolder.rolePermissionService.deleteByRoleId(id);
-            ServiceHolder.roleService.deleteById(id);
-            //清除缓存
-            List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
-            for (UserRole ur : userRoles) {
-                clearCache(CacheEnum.userpermissions.name() + ur.getUid());
-            }
-            redirect("/manage/roles");
+    @RequestMapping(value = "/deleterole", method = RequestMethod.GET)
+    public String deleterole(@RequestParam("id") Integer id) {
+        ServiceHolder.userRoleService.deleteByRoleId(id);
+        ServiceHolder.rolePermissionService.deleteByRoleId(id);
+        ServiceHolder.roleService.deleteById(id);
+        //清除缓存
+        List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
+        for (UserRole ur : userRoles) {
+            clearCache(CacheEnum.userpermissions.name() + ur.getUid());
         }
+        return redirect("/manage/roles");
     }
 
     /**
      * 删除权限
      */
-    public void deletepermission() {
-        Integer id = getParaToInt("id");
-        if (id == null) {
-            renderText(Constants.OP_ERROR_MESSAGE);
-        } else {
-            Permission permission = ServiceHolder.permissionService.findById(id);
-            Integer pid = permission.getPid();
-            String url = "/manage/permissions?pid=" + pid;
-            //如果是父节点，就删除父节点下的所有权限
-            if (pid == 0) {
-                ServiceHolder.permissionService.deleteByPid(id);
-                url = "/manage/permissions";
-            }
-            //删除与角色关联的数据
-            ServiceHolder.rolePermissionService.deleteByPermissionId(id);
-            ServiceHolder.permissionService.deleteById(id);
-            //清除缓存
-            List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
-            for (User u : userpermissions) {
-                clearCache(CacheEnum.userpermissions.name() + u.getId());
-            }
-            redirect(url);
+    @RequestMapping(value = "/deletepermission", method = RequestMethod.GET)
+    public String deletepermission(@RequestParam("id") Integer id) {
+        Permission permission = ServiceHolder.permissionService.findById(id);
+        Integer pid = permission.getPid();
+        String url = "/manage/permissions?pid=" + pid;
+        //如果是父节点，就删除父节点下的所有权限
+        if (pid == 0) {
+            ServiceHolder.permissionService.deleteByPid(id);
+            url = "/manage/permissions";
         }
+        //删除与角色关联的数据
+        ServiceHolder.rolePermissionService.deleteByPermissionId(id);
+        ServiceHolder.permissionService.deleteById(id);
+        //清除缓存
+        List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
+        for (User u : userpermissions) {
+            clearCache(CacheEnum.userpermissions.name() + u.getId());
+        }
+        return redirect(url);
     }
 }

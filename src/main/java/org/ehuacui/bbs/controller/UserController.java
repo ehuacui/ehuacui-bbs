@@ -20,7 +20,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -36,106 +39,97 @@ public class UserController extends BaseController {
     /**
      * 用户个人主页
      */
-    public void index() throws UnsupportedEncodingException {
-        String nickname = getPara(0);
-        if (StringUtil.isBlank(nickname)) {
-            renderText(Constants.OP_ERROR_MESSAGE);
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(HttpServletRequest request, @RequestParam("nickname") String nickname) {
+        User currentUser = ServiceHolder.userService.findByNickname(nickname);
+        if (currentUser != null) {
+            Long collectCount = ServiceHolder.collectService.countByUid(currentUser.getId());
+            currentUser.setCollectCount(collectCount);
+            Page<Topic> topicPage = ServiceHolder.topicService.pageByAuthor(1, 7, nickname);
+            Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
+            request.setAttribute("topicPage", topicPage);
+            request.setAttribute("replyPage", replyPage);
+            request.setAttribute("currentUser", currentUser);
+            request.setAttribute("formatDate", new FormatDate());
+            request.setAttribute("getNameByTab", new GetNameByTab());
+            request.setAttribute("marked", new Marked());
+            request.setAttribute("pageTitle", currentUser.getNickname() + " 个人主页");
         } else {
-            User currentUser = ServiceHolder.userService.findByNickname(nickname);
-            if (currentUser != null) {
-                Long collectCount = ServiceHolder.collectService.countByUid(currentUser.getId());
-                currentUser.setCollectCount(collectCount);
-                Page<Topic> topicPage = ServiceHolder.topicService.pageByAuthor(1, 7, nickname);
-                Page<Reply> replyPage = ServiceHolder.replyService.pageByAuthor(1, 7, nickname);
-                setAttr("topicPage", topicPage);
-                setAttr("replyPage", replyPage);
-                setAttr("currentUser", currentUser);
-                setAttr("formatDate", new FormatDate());
-                setAttr("getNameByTab", new GetNameByTab());
-                setAttr("marked", new Marked());
-                setAttr("pageTitle", currentUser.getNickname() + " 个人主页");
-            } else {
-                setAttr("pageTitle", "用户未找到");
-            }
-            render("user/info.ftl");
+            request.setAttribute("pageTitle", "用户未找到");
         }
+        return "user/info.ftl";
     }
 
     /**
      * 用户的话题列表
      */
-    public void topics() throws UnsupportedEncodingException {
-        String nickname = getPara(0);
+    @RequestMapping(value = "/topics", method = RequestMethod.GET)
+    public String topics(HttpServletRequest request,
+                         @RequestParam("nickname") String nickname,
+                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
-        if (user == null) {
-            renderText(Constants.OP_ERROR_MESSAGE);
-        } else {
-            setAttr("currentUser", user);
-            Page<Topic> page = ServiceHolder.topicService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
-            setAttr("page", page);
-            setAttr("formatDate", new FormatDate());
-            setAttr("getNameByTab", new GetNameByTab());
-            render("user/topics.ftl");
-        }
+        request.setAttribute("currentUser", user);
+        Page<Topic> page = ServiceHolder.topicService.pageByAuthor(p, PropKit.getInt("pageSize"), nickname);
+        request.setAttribute("page", page);
+        request.setAttribute("formatDate", new FormatDate());
+        request.setAttribute("getNameByTab", new GetNameByTab());
+        return "user/topics.ftl";
+
     }
 
     /**
      * 用户的回复列表
      */
-    public void replies() throws UnsupportedEncodingException {
-        String nickname = getPara(0);
+    @RequestMapping(value = "/replies", method = RequestMethod.GET)
+    public String replies(HttpServletRequest request,
+                          @RequestParam("nickname") String nickname,
+                          @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
-        if (user == null) {
-            renderText(Constants.OP_ERROR_MESSAGE);
-        } else {
-            setAttr("currentUser", user);
-            Page<Reply> page = ServiceHolder.replyService.pageByAuthor(getParaToInt("p", 1), PropKit.getInt("pageSize"), nickname);
-            setAttr("page", page);
-            setAttr("marked", new Marked());
-            setAttr("formatDate", new FormatDate());
-            render("user/replies.ftl");
-        }
+        request.setAttribute("currentUser", user);
+        Page<Reply> page = ServiceHolder.replyService.pageByAuthor(p, PropKit.getInt("pageSize"), nickname);
+        request.setAttribute("page", page);
+        request.setAttribute("marked", new Marked());
+        request.setAttribute("formatDate", new FormatDate());
+        return "user/replies.ftl";
     }
 
     /**
      * 用户的话题列表
      */
-    public void collects() throws UnsupportedEncodingException {
-        String nickname = getPara(0);
+    @RequestMapping(value = "/collects", method = RequestMethod.GET)
+    public String collects(HttpServletRequest request, @RequestParam("nickname") String nickname,
+                           @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
-        if (user == null) {
-            renderText(Constants.OP_ERROR_MESSAGE);
-        } else {
-            setAttr("currentUser", user);
-            Page<Collect> page = ServiceHolder.collectService.findByUid(getParaToInt("p", 1), PropKit.getInt("pageSize"), user.getId());
-            setAttr("page", page);
-            setAttr("formatDate", new FormatDate());
-            setAttr("getNameByTab", new GetNameByTab());
-            render("user/collects.ftl");
-        }
+        request.setAttribute("currentUser", user);
+        Page<Collect> page = ServiceHolder.collectService.findByUid(p, PropKit.getInt("pageSize"), user.getId());
+        request.setAttribute("page", page);
+        request.setAttribute("formatDate", new FormatDate());
+        request.setAttribute("getNameByTab", new GetNameByTab());
+        return "user/collects.ftl";
     }
 
     /**
      * 用户设置
      */
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
-    public void setting() throws UnsupportedEncodingException {
-        String method = getRequest().getMethod();
-        if (method.equals("POST")) {
-            String url = getPara("url");
-            String signature = getPara("signature");
-            Integer receive_msg = getParaToInt("receive_msg", 0);
-            User user = getUser();
-            user.setSignature(StringUtil.notBlank(signature) ? Jsoup.clean(signature, Whitelist.basic()) : null);
-            user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
-            user.setReceiveMsg(receive_msg == 1);
-            ServiceHolder.userService.update(user);
-            //清理缓存
+    @RequestMapping(value = "/setting", method = RequestMethod.POST)
+    public String setting(HttpServletRequest request,
+                          @RequestParam("url") String url,
+                          @RequestParam("signature") String signature,
+                          @RequestParam(value = "receive_msg", defaultValue = "0") Integer receive_msg) {
+        User user = getUser(request);
+        user.setSignature(StringUtil.notBlank(signature) ? Jsoup.clean(signature, Whitelist.basic()) : null);
+        user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
+        user.setReceiveMsg(receive_msg == 1);
+        ServiceHolder.userService.update(user);
+        //清理缓存
+        try {
             clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
-            clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
-            setAttr("msg", "保存成功。");
+        } catch (UnsupportedEncodingException e) {
         }
-        render("user/setting.ftl");
-    }
+        clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
+        request.setAttribute("msg", "保存成功。");
 
+        return "user/setting.ftl";
+    }
 }
