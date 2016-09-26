@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
@@ -15,6 +14,7 @@ import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.template.Marked;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -57,7 +57,7 @@ public class UserController extends BaseController {
         } else {
             request.setAttribute("pageTitle", "用户未找到");
         }
-        return "user/info.ftl";
+        return "user/info";
     }
 
     /**
@@ -69,11 +69,11 @@ public class UserController extends BaseController {
                          @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Topic> page = ServiceHolder.topicService.pageByAuthor(p, PropKit.getInt("pageSize"), nickname);
+        Page<Topic> page = ServiceHolder.topicService.pageByAuthor(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), nickname);
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getNameByTab", new GetNameByTab());
-        return "user/topics.ftl";
+        return "user/topics";
 
     }
 
@@ -86,11 +86,11 @@ public class UserController extends BaseController {
                           @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Reply> page = ServiceHolder.replyService.pageByAuthor(p, PropKit.getInt("pageSize"), nickname);
+        Page<Reply> page = ServiceHolder.replyService.pageByAuthor(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), nickname);
         request.setAttribute("page", page);
         request.setAttribute("marked", new Marked());
         request.setAttribute("formatDate", new FormatDate());
-        return "user/replies.ftl";
+        return "user/replies";
     }
 
     /**
@@ -101,11 +101,11 @@ public class UserController extends BaseController {
                            @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = ServiceHolder.userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Collect> page = ServiceHolder.collectService.findByUid(p, PropKit.getInt("pageSize"), user.getId());
+        Page<Collect> page = ServiceHolder.collectService.findByUid(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), user.getId());
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getNameByTab", new GetNameByTab());
-        return "user/collects.ftl";
+        return "user/collects";
     }
 
     /**
@@ -130,6 +130,6 @@ public class UserController extends BaseController {
         clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
         request.setAttribute("msg", "保存成功。");
 
-        return "user/setting.ftl";
+        return "user/setting";
     }
 }

@@ -1,8 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.kit.HttpKit;
-import com.jfinal.kit.LogKit;
-import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.ServiceHolder;
@@ -10,6 +7,7 @@ import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.utils.DateUtil;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.stereotype.Controller;
@@ -41,15 +39,14 @@ public class OauthController extends BaseController {
      */
     @RequestMapping(value = "/githublogin", method = RequestMethod.GET)
     public String githublogin(HttpServletResponse response) {
-        LogKit.info("githublogin");
         String state = StringUtil.randomString(6);
-        WebUtil.setCookie(response, STATE, state, 5 * 60, "/", PropKit.get("cookie.domain"), true);
+        WebUtil.setCookie(response, STATE, state, 5 * 60, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"), true);
         StringBuffer sb = new StringBuffer();
         sb.append("https://github.com/login/oauth/authorize")
                 .append("?")
                 .append("client_id")
                 .append("=")
-                .append(PropKit.get("github.client_id"))
+                .append(ResourceUtil.getWebConfigValueByKey("github.client_id"))
                 .append("&")
                 .append("state")
                 .append("=")
@@ -58,7 +55,7 @@ public class OauthController extends BaseController {
                 .append("scope")
                 .append("=")
                 .append("user");
-       return redirect(sb.toString());
+        return redirect(sb.toString());
     }
 
     /**
@@ -72,19 +69,21 @@ public class OauthController extends BaseController {
         if (state.equalsIgnoreCase(cookieState)) {
 //            请求access_token
             Map<String, String> map1 = new HashMap<String, String>();
-            map1.put("client_id", PropKit.get("github.client_id"));
-            map1.put("client_secret", PropKit.get("github.client_secret"));
+            map1.put("client_id", ResourceUtil.getWebConfigValueByKey("github.client_id"));
+            map1.put("client_secret", ResourceUtil.getWebConfigValueByKey("github.client_secret"));
             map1.put("code", code);
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Accept", "application/json");
-            String resp1 = HttpKit.post("https://github.com/login/oauth/access_token", map1, "", headers);
+            //String resp1 = HttpKit.post("https://github.com/login/oauth/access_token", map1, "", headers);
+            String resp1 = "";
             Map respMap1 = StringUtil.parseToMap(resp1);
             //access_token, scope, token_type
             String github_access_token = (String) respMap1.get("access_token");
             //获取用户信息
             Map<String, String> map2 = new HashMap<String, String>();
             map2.put("access_token", github_access_token);
-            String resp2 = HttpKit.get("https://api.github.com/user", map2);
+            //String resp2 = HttpKit.get("https://api.github.com/user", map2);
+            String resp2 = "";
             Map respMap2 = StringUtil.parseToMap(resp2);
             Double githubId = (Double) respMap2.get("id");
             String login = (String) respMap2.get("login");
@@ -128,7 +127,7 @@ public class OauthController extends BaseController {
             WebUtil.setCookie(response, Constants.USER_ACCESS_TOKEN,
                     StringUtil.getEncryptionToken(user.getAccessToken()),
                     30 * 24 * 60 * 60, "/",
-                    PropKit.get("cookie.domain"),
+                    ResourceUtil.getWebConfigValueByKey("cookie.domain"),
                     true);
             if (StringUtil.notBlank(callback)) {
                 try {

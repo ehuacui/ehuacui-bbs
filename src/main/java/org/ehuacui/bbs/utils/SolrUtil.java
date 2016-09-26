@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.utils;
 
-import com.jfinal.kit.PropKit;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -28,11 +27,7 @@ import java.util.Map;
  */
 public class SolrUtil {
 
-    static {
-        PropKit.use("config.properties");
-    }
-
-    private final static String URL = PropKit.get("solr.url");
+    private final static String URL = ResourceUtil.getWebConfigValueByKey("solr.url");
     private final static SolrClient client = new HttpSolrClient(URL);
 
     /**
@@ -104,8 +99,8 @@ public class SolrUtil {
      */
     public Page indexQuery(Integer pageNumber, String q) {
         try {
-            String URL = PropKit.get("solr.url");
-            Integer pageSize = PropKit.getInt("solr.pageSize");
+            String URL = ResourceUtil.getWebConfigValueByKey("solr.url");
+            Integer pageSize = ResourceUtil.getWebConfigIntegerValueByKey("solr.pageSize");
             SolrClient solrClient = new HttpSolrClient(URL);
             SolrQuery query = new SolrQuery(q);
             query.setStart((pageNumber - 1) * pageSize);

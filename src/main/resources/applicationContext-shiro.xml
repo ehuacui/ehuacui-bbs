@@ -34,7 +34,7 @@
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="sessionDAO" ref="redisSessionDAO"/>
         <property name="globalSessionTimeout" value="3600000"/>
-        <!--<property name="sessionIdCookie.path" value="/qsboss"/>
+        <!--<property name="sessionIdCookie.path" value="/"/>
         <property name="sessionIdCookie.name" value="JSESSIONID"/>-->
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
     </bean>
@@ -52,7 +52,7 @@
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/toLogin"/>
+        <property name="loginUrl" value="/"/>
         <property name="successUrl" value="/"/>
         <property name="filters">
             <map>

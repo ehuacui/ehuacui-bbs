@@ -1,6 +1,7 @@
 package org.ehuacui.bbs.template;
 
 import freemarker.ext.beans.DateModel;
+import freemarker.template.SimpleDate;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -20,7 +21,7 @@ public class FormatDate implements TemplateMethodModelEx {
         if (list == null || list.size() != 1) {
             throw new TemplateModelException("Wrong arguments");
         }
-        DateModel simpleDate = (DateModel) list.get(0);
+        SimpleDate simpleDate = (SimpleDate) list.get(0);
         Date date = simpleDate.getAsDate();
         PrettyTime prettyTime = new PrettyTime(Locale.CHINA);
         return prettyTime.format(date).replace(" ", "");

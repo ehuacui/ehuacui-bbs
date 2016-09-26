@@ -30,7 +30,7 @@ public class SectionController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(HttpServletRequest request) {
         request.setAttribute("sections", ServiceHolder.sectionService.findAll());
-        return "section/list.ftl";
+        return "section/list";
     }
 
     /**
@@ -65,7 +65,7 @@ public class SectionController extends BaseController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add() {
-        return "section/add.ftl";
+        return "section/add";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -89,10 +89,10 @@ public class SectionController extends BaseController {
     public String edit(HttpServletRequest request, @RequestParam("id") Integer id) {
         Section section = ServiceHolder.sectionService.findById(id);
         request.setAttribute("section", section);
-        return "section/edit.ftl";
+        return "section/edit";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@RequestParam("id") Integer id,
                        @RequestParam("name") String name,
                        @RequestParam("tab") String tab,

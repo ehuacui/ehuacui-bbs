@@ -336,17 +336,6 @@
             <artifactId>solr-solrj</artifactId>
             <version>6.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.jfinal</groupId>
-            <artifactId>jfinal</artifactId>
-            <version>2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jfinal</groupId>
-            <artifactId>cos</artifactId>
-            <version>26Dec2008</version>
-        </dependency>
-
     </dependencies>
 
     <build>

@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
 import org.ehuacui.bbs.common.ServiceHolder;
@@ -11,6 +10,7 @@ import org.ehuacui.bbs.model.Permission;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +34,7 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
-        request.setAttribute("page", ServiceHolder.userService.page(p, PropKit.getInt("pageSize")));
+        request.setAttribute("page", ServiceHolder.userService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
         return "system/users.ftl";
     }
 
@@ -72,7 +72,7 @@ public class ManageController extends BaseController {
             request.setAttribute("childPermissions", ServiceHolder.permissionService.findByPid(pid));
             request.setAttribute("pid", pid);
         }
-        return "system/permissions.ftl";
+        return "system/permissions";
     }
 
     /**
@@ -85,7 +85,7 @@ public class ManageController extends BaseController {
         request.setAttribute("roles", ServiceHolder.roleService.findAll());
         //当前用户已经存在的角色
         request.setAttribute("_roles", ServiceHolder.userRoleService.findByUserId(id));
-        return "system/userrole.ftl";
+        return "system/userrole";
     }
 
     /**
@@ -120,7 +120,7 @@ public class ManageController extends BaseController {
     public String addrole(HttpServletRequest request) {
         //查询所有的权限
         request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
-        return "system/addrole.ftl";
+        return "system/addrole";
     }
 
     /**
@@ -146,7 +146,7 @@ public class ManageController extends BaseController {
     public String addpermission(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         request.setAttribute("pid", pid);
         request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
-        return "system/addpermission.ftl";
+        return "system/addpermission";
     }
 
     @RequestMapping(value = "/addpermission", method = RequestMethod.POST)
@@ -174,7 +174,7 @@ public class ManageController extends BaseController {
     public String editpermission(@RequestParam("id") Integer id, HttpServletRequest request) {
         request.setAttribute("_permission", ServiceHolder.permissionService.findById(id));
         request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
-        return "system/editpermission.ftl";
+        return "system/editpermission";
     }
 
     @RequestMapping(value = "/editpermission", method = RequestMethod.POST)
@@ -207,7 +207,7 @@ public class ManageController extends BaseController {
         request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
         //查询角色已经配置的权限
         request.setAttribute("_permissions", ServiceHolder.rolePermissionService.findByRoleId(id));
-        return "system/rolepermission.ftl";
+        return "system/rolepermission";
     }
 
     @RequestMapping(value = "/rolepermission", method = RequestMethod.POST)

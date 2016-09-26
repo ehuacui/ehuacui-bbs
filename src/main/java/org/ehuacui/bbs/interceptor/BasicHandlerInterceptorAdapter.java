@@ -17,13 +17,17 @@ public class BasicHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
-            BeforeAdviceController authPassport = ((HandlerMethod) handler).getMethodAnnotation(BeforeAdviceController.class);
-            Class<? extends Interceptor>[] interceptors = authPassport.value();
-            for (int i = 0; i < interceptors.length; i++) {
-                Class<? extends Interceptor> interceptor = interceptors[i];
-                Object object = WebApplicationContextHolder.getBean(interceptor);
-                Method method = interceptor.getDeclaredMethod("invoke", HttpServletRequest.class, HttpServletResponse.class);
-                method.invoke(object, request, response);
+            BeforeAdviceController beforeAdviceController = ((HandlerMethod) handler).getMethodAnnotation(BeforeAdviceController.class);
+            if (beforeAdviceController != null) {
+                Class<? extends Interceptor>[] interceptors = beforeAdviceController.value();
+                if (interceptors != null) {
+                    for (int i = 0; i < interceptors.length; i++) {
+                        Class<? extends Interceptor> interceptor = interceptors[i];
+                        Object object = WebApplicationContextHolder.getBean(interceptor);
+                        Method method = interceptor.getDeclaredMethod("invoke", HttpServletRequest.class, HttpServletResponse.class);
+                        method.invoke(object, request, response);
+                    }
+                }
             }
         }
         return true;

@@ -1,7 +1,5 @@
 package org.ehuacui.bbs.utils;
 
-import com.jfinal.kit.LogKit;
-import com.jfinal.kit.PropKit;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
@@ -18,15 +16,11 @@ import java.util.Map;
  */
 public class QiniuUploadUtil {
 
-    static {
-        PropKit.use("config.properties");
-    }
-
     //设置好账号的ACCESS_KEY和SECRET_KEY
-    String ACCESS_KEY = PropKit.get("qiniu.access_key");
-    String SECRET_KEY = PropKit.get("qiniu.secret_key");
+    String ACCESS_KEY = ResourceUtil.getWebConfigValueByKey("qiniu.access_key");
+    String SECRET_KEY = ResourceUtil.getWebConfigValueByKey("qiniu.secret_key");
     //要上传的空间
-    String bucketname = PropKit.get("qiniu.bucketname");
+    String bucketname = ResourceUtil.getWebConfigValueByKey("qiniu.bucketname");
     //上传到七牛后保存的文件名
     String key = DateUtil.formatDateTime(new Date(), "yyyyMMddHHmmss") + StringUtil.randomString(6);
 
@@ -50,13 +44,9 @@ public class QiniuUploadUtil {
         } catch (QiniuException e) {
             Response r = e.response;
             // 请求失败时打印的异常的信息
-            LogKit.error(r.toString());
-            try {
-                //响应的文本信息
-                LogKit.info(r.bodyString());
-            } catch (QiniuException e1) {
-                //ignore
-            }
+            //LogKit.error(r.toString());
+            //响应的文本信息
+            //LogKit.info(r.bodyString());
             return null;
         }
     }

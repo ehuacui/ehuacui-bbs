@@ -35,6 +35,7 @@
     </mvc:interceptors>
 
     <bean id="basicInterceptor" class="org.ehuacui.bbs.interceptor.BasicInterceptor"/>
+    <bean id="commonInterceptor" class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
@@ -53,33 +54,16 @@
         <property name="maxUploadSize" value="2147483648"/>
     </bean>
 
-    <bean id="viewResolver" class="org.ehuacui.bbs.common.MultiViewResolver">
-        <property name="defaultViewResolver">
-            <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-                <property name="prefix" value="/WEB-INF/jsp/"/>
-                <property name="suffix" value=".jsp"/>
-                <property name="cache" value="true"/>
-            </bean>
-        </property>
-        <property name="resolvers">
-            <map>
-                <entry key="ftl">
-                    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-                        <property name="viewClass"
-                                  value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
-                        <!--
-                        与父配置(applicationContext.xml.freeMarkerConfigurer.templateLoaderPath)冲突
-                        <property name="prefix" value="/WEB-INF/ftl/"/>
-                        -->
-                        <property name="suffix" value=".ftl"/>
-                        <property name="cache" value="true"/>
-                        <property name="cacheLimit" value="2048"/>
-                        <property name="contentType" value="text/html;charset=UTF-8"/>
-                    </bean>
-                </entry>
-            </map>
-        </property>
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <!--
+        与父配置(applicationContext.xml.freeMarkerConfigurer.templateLoaderPath)冲突
+        <property name="prefix" value="/WEB-INF/ftl/"/>
+        -->
+        <property name="suffix" value=".ftl"/>
+        <property name="cache" value="true"/>
+        <property name="cacheLimit" value="2048"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
     </bean>
 
     <!-- webApplicationContextHolder -->

@@ -1,13 +1,11 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.redis.Cache;
-import com.jfinal.plugin.redis.Redis;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
 import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
+import org.ehuacui.bbs.interceptor.CommonInterceptor;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
@@ -16,6 +14,7 @@ import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.utils.QiniuUploadUtil;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.stereotype.Controller;
@@ -40,6 +39,7 @@ public class IndexController extends BaseController {
     /**
      * 首页
      */
+    @BeforeAdviceController(CommonInterceptor.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request, @RequestParam(value = "tab", defaultValue = "all") String tab,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
@@ -49,14 +49,14 @@ public class IndexController extends BaseController {
         } else {
             request.setAttribute("sectionName", "版块");
         }
-        Page<Topic> page = ServiceHolder.topicService.page(p, PropKit.getInt("pageSize", 20), tab);
+        Page<Topic> page = ServiceHolder.topicService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize", 20), tab);
         request.setAttribute("tab", tab);
         request.setAttribute("sections", ServiceHolder.sectionService.findByShowStatus(true));
         request.setAttribute("page", page);
         request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
         request.setAttribute("getNameByTab", new GetNameByTab());
         request.setAttribute("formatDate", new FormatDate());
-        return "index_ftl";
+        return "index";
     }
 
     /**
@@ -65,7 +65,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
         if (getUser(request) == null) {
-            return "login_ftl";
+            return "login";
         } else {
             return redirect("/");
         }
@@ -76,7 +76,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpServletResponse response) {
-        WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", PropKit.get("cookie.domain"));
+        WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"));
         return redirect("/");
     }
 
@@ -85,7 +85,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/about", method = RequestMethod.GET)
     public String about() {
-        return "about_ftl";
+        return "about";
     }
 
     /**
@@ -95,7 +95,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public void upload(@RequestParam("file") MultipartFile file) {
         try {
-            String path = PropKit.get("static.path");
+            String path = ResourceUtil.getWebConfigValueByKey("static.path");
             String fileName = file.getOriginalFilename();
             File targetFile = new File(path, fileName);
             File parentFile = targetFile.getParentFile();
@@ -105,14 +105,14 @@ public class IndexController extends BaseController {
             //保存
             file.transferTo(targetFile);
             String url = "";
-            if (PropKit.get("upload.type").equals("local")) {
-                url = PropKit.get("file.domain") + "/static/upload/" + fileName;
-            } else if (PropKit.get("upload.type").equals("qiniu")) {
+            if (ResourceUtil.getWebConfigValueByKey("upload.type").equals("local")) {
+                url = ResourceUtil.getWebConfigValueByKey("file.domain") + "/static/upload/" + fileName;
+            } else if (ResourceUtil.getWebConfigValueByKey("upload.type").equals("qiniu")) {
                 // 将本地文件上传到七牛,并删除本地文件
                 String filePath = path + fileName;
                 Map map = new QiniuUploadUtil().upload(filePath);
                 targetFile.delete();
-                url = PropKit.get("qiniu.url") + "/" + map.get("key");
+                url = ResourceUtil.getWebConfigValueByKey("qiniu.url") + "/" + map.get("key");
             }
             success(url);
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class IndexController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/solr", method = RequestMethod.GET)
     public String solr() {
-        if (PropKit.getBoolean("solr.status")) {
+        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.indexAll();
         }
@@ -139,19 +139,19 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(HttpServletRequest request, @RequestParam(value = "p", defaultValue = "1") Integer p, @RequestParam("q") String q) {
-        if (PropKit.getBoolean("solr.status")) {
+        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
             Page page = solrUtil.indexQuery(p, q);
             request.setAttribute("q", q);
             request.setAttribute("page", page);
         }
-        return "search_ftl";
+        return "search";
     }
 
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/delete-all-index", method = RequestMethod.GET)
     public String deleteAllIndex() {
-        if (PropKit.getBoolean("solr.status")) {
+        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.deleteAll();
         }
@@ -163,7 +163,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/top100", method = RequestMethod.GET)
     public String top100() {
-        return "top100_ftl";
+        return "top100";
     }
 
     /**
@@ -172,10 +172,12 @@ public class IndexController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/clear", method = RequestMethod.GET)
     public String clear() {
+        /*
         Cache cache = Redis.use();
         if (cache != null) {
             cache.getJedis().flushDB();
         }
+        */
         return redirect("/");
     }
 

@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import com.jfinal.kit.PropKit;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
@@ -14,6 +13,7 @@ import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,7 +103,7 @@ public class ReplyController extends BaseController {
         Topic topic = ServiceHolder.topicService.findById(reply.getTid());
         request.setAttribute("reply", reply);
         request.setAttribute("topic", topic);
-        return "reply/edit.ftl";
+        return "reply/edit";
     }
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
@@ -144,9 +144,9 @@ public class ReplyController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
-        request.setAttribute("page", ServiceHolder.replyService.findAll(p, PropKit.getInt("pageSize")));
+        request.setAttribute("page", ServiceHolder.replyService.findAll(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("marked", new Marked());
-        return ("reply/list.ftl");
+        return ("reply/list");
     }
 }

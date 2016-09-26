@@ -61,4 +61,31 @@ public class ResourceUtil {
             return null;
         }
     }
+
+    public static Integer getWebConfigIntegerValueByKey(String key) {
+        Map<String, String> data = readWebConfigProperties();
+        if (data != null) {
+            return Integer.valueOf(data.get(key));
+        } else {
+            return 0;
+        }
+    }
+
+    public static Integer getWebConfigIntegerValueByKey(String key,Integer defaultValue) {
+        Map<String, String> data = readWebConfigProperties();
+        if (data != null) {
+            return Integer.valueOf(data.get(key));
+        } else {
+            return defaultValue;
+        }
+    }
+
+    public static Boolean getWebConfigBooleanValueByKey(String key) {
+        Map<String, String> data = readWebConfigProperties();
+        if (data != null) {
+            return Boolean.valueOf(data.get(key));
+        } else {
+            return false;
+        }
+    }
 }

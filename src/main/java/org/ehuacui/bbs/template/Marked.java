@@ -1,9 +1,9 @@
 package org.ehuacui.bbs.template;
 
-import com.jfinal.kit.PropKit;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ehuacui.bbs.utils.MarkdownUtil;
+import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -25,7 +25,7 @@ public class Marked implements TemplateMethodModelEx {
         //处理@
         List<String> users = StringUtil.fetchUsers(content);
         for (String user : users) {
-            content = content.replace("@" + user, "[@" + user + "](" + PropKit.get("site.domain") + "/user/" + user + ")");
+            content = content.replace("@" + user, "[@" + user + "](" + ResourceUtil.getWebConfigValueByKey("site.domain") + "/user/" + user + ")");
         }
         //markdown 转 html 并返回
         return Jsoup.clean(MarkdownUtil.pegDown(content), Whitelist.relaxed().addTags("input").addAttributes("input", "checked", "type"));
