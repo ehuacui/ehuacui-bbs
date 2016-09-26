@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- 默认缓存 -->
+    <defaultCache
+            maxElementsInMemory="1000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"/>
+
+    <!-- 业务接口层  缓存配置
+        timeToIdleSeconds,多长时间不访问该缓存,那么ehcache 就会清除该缓存.
+        timeToLiveSeconds,缓存的存活时间,从开始创建的时间算起.
+        maxElementsInMemory 表示内存中元素的最大数量,
+        maxElementsOnDisk 是指持久化该缓存的元素到硬盘上的最大数量,
+        eternal=false 意味着该缓存会死亡.
+        overflowToDisk=true 意思是表示当缓存中元素的数量超过限制时,就把这些元素持久化到硬盘,如果overflowToDisk是false ,那么maxElementsOnDisk 的设置就没有什么意义了.
+        memoryStoreEvictionPolicy=LFU 是指按照缓存的hit 值来清除,也就是说缓存满了之后,新的对象需要缓存时,将会将缓存中hit 值最小的对象清除出缓存
+        diskExpiryThreadIntervalSeconds：失效
+        Ehcache 有一个后台线程专门做Ellment 失效监测以及清除工作. 设置线程运行间隔时间, 可通过设置diskExpiryThreadIntervalSeconds 属性来完成,
+        此值不宜设置过低, 否则会导致清理线程占用大量CPU 资源. 默认值是120 秒.
+     -->
+    <!-- 系统常量缓存  -->
+    <cache name="bbsCache"
+           eternal="false"
+           maxElementsInMemory="500"
+           maxElementsOnDisk="1000"
+           overflowToDisk="true"
+           diskPersistent="true"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="300"
+           memoryStoreEvictionPolicy="LRU">
+    </cache>
+</ehcache> 

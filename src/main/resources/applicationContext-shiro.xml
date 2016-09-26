@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd"
-       default-lazy-init="true">
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <description>Shiro安全配置</description>
 
@@ -15,13 +14,20 @@
 
     <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
     <bean id="shiroDbRealm" class="org.ehuacui.bbs.shiro.ShiroRealm">
-        <property name="cacheManager" ref="redisCacheManager"/>
+        <property name="cacheManager" ref="ehCacheManager"/>
+    </bean>
+
+    <!-- ehCacheManager -->
+    <bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManager" ref="ehCacheManagerFactory"/>
     </bean>
 
     <!-- redisCacheManager -->
+    <!--
     <bean id="redisCacheManager" class="org.ehuacui.bbs.shiro.ShiroRedisCacheManager">
         <property name="redisManager" ref="redisManager"/>
     </bean>
+    -->
 
     <!-- 每60秒检查一下Session的有效性  -->
     <bean id="sessionValidationScheduler"
@@ -32,16 +38,24 @@
 
     <!-- 主要是为了注入SessionDAO -->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <property name="sessionDAO" ref="redisSessionDAO"/>
-        <property name="globalSessionTimeout" value="3600000"/>
-        <!--<property name="sessionIdCookie.path" value="/"/>
-        <property name="sessionIdCookie.name" value="JSESSIONID"/>-->
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="sessionIdCookie.path" value="/"/>
+        <property name="sessionIdCookie.name" value="JSESSIONID"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
     </bean>
 
     <!-- redisSessionDAO -->
+    <!--
     <bean id="redisSessionDAO" class="org.ehuacui.bbs.shiro.ShiroRedisSessionDAO">
-        <property name="redisManager" ref="redisManager"/>
+            <property name="redisManager" ref="redisManager"/>
+     </bean>
+     -->
+
+    <!-- SessionDAO用shiro提供的默认实现 -->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <property name="activeSessionsCacheName" value="bbs_session"/>
+        <property name="cacheManager" ref="ehCacheManager"/>
     </bean>
 
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
