@@ -17,12 +17,15 @@ public class BasicHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
-            BeforeAdviceController beforeAdviceController = ((HandlerMethod) handler).getMethodAnnotation(BeforeAdviceController.class);
-            if (beforeAdviceController != null) {
-                Class<? extends Interceptor>[] interceptors = beforeAdviceController.value();
-                if (interceptors != null) {
-                    for (int i = 0; i < interceptors.length; i++) {
-                        Class<? extends Interceptor> interceptor = interceptors[i];
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Class<?> classController = handlerMethod.getBeanType();
+            BeforeAdviceController beforeAdviceControllerClass = classController.getAnnotation(BeforeAdviceController.class);
+            BeforeAdviceController beforeAdviceControllerMethod = handlerMethod.getMethodAnnotation(BeforeAdviceController.class);
+            if (beforeAdviceControllerMethod != null) {
+                Class<? extends Interceptor>[] methodInterceptors = beforeAdviceControllerMethod.value();
+                if (methodInterceptors != null) {
+                    for (int i = 0; i < methodInterceptors.length; i++) {
+                        Class<? extends Interceptor> interceptor = methodInterceptors[i];
                         Object object = WebApplicationContextHolder.getBean(interceptor);
                         Method method = interceptor.getDeclaredMethod("invoke", HttpServletRequest.class, HttpServletResponse.class);
                         method.invoke(object, request, response);
