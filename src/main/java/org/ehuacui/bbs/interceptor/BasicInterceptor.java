@@ -11,12 +11,5 @@ import java.io.OutputStream;
 public class BasicInterceptor implements Interceptor {
     @Override
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.err.println("=========BasicInterceptor==========");
-        response.setCharacterEncoding("UTF-8");
-        OutputStream out = response.getOutputStream();
-        String strJsonFormat = "{\"code\":%d,\"url\": \"%s\"}";
-        out.write(String.format(strJsonFormat, 400, "/report/home").getBytes());
-        out.flush();
-        out.close();
     }
 }

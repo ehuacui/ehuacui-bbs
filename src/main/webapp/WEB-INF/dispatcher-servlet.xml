@@ -30,12 +30,16 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="org.ehuacui.bbs.interceptor.BasicHandlerInterceptorAdapter"/>
+            <bean class="org.ehuacui.bbs.interceptor.BasicHandlerInterceptorAdapter">
+                <property name="defaultInterceptors">
+                    <set>
+                        <!--基础拦截器-->
+                        <bean class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>
+                    </set>
+                </property>
+            </bean>
         </mvc:interceptor>
     </mvc:interceptors>
-
-    <bean id="basicInterceptor" class="org.ehuacui.bbs.interceptor.BasicInterceptor"/>
-    <bean id="commonInterceptor" class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
