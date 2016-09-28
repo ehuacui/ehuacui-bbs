@@ -5,8 +5,6 @@
 -------------
 
  - 前端代码引用整理
- - 使用Shiro重写拦截器
- - Controller使用SpringMVC重写
  - Controller业务逻辑实现统一放到Service
  - 异常统一处理
  - 增加缓存
@@ -31,3 +29,4 @@
   - 模板之前存放的目录是page现切换未ftl
   - 基础数据模型建立
   - 文章加入收藏失败
+  - Controller使用SpringMVC重写

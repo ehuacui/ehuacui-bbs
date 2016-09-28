@@ -311,6 +311,13 @@
             <version>1.9.2</version>
         </dependency>
 
+        <!--access oauth2.0-->
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
         <!--pretty-time-->
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
