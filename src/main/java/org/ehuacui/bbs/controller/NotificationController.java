@@ -2,7 +2,6 @@ package org.ehuacui.bbs.controller;
 
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Page;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Notification;

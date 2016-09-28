@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.common;
+package org.ehuacui.bbs.test;
 
 import org.ehuacui.bbs.service.ICollectService;
 import org.slf4j.Logger;

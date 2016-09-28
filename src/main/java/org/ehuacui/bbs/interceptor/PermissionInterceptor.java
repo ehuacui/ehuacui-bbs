@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.interceptor;
 
 import org.ehuacui.bbs.common.Constants;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.IPermissionService;
 import org.ehuacui.bbs.service.IUserService;
