@@ -3,12 +3,12 @@ package org.ehuacui.bbs.controller;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.*;
+import org.ehuacui.bbs.service.*;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
@@ -18,7 +18,9 @@ import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,22 +40,35 @@ import java.util.List;
 @RequestMapping("/topic")
 public class TopicController extends BaseController {
 
+    @Autowired
+    private ITopicService topicService;
+    @Autowired
+    private ITopicAppendService topicAppendService;
+    @Autowired
+    private ISectionService sectionService;
+    @Autowired
+    private IReplyService replyService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private ICollectService collectService;
+
     /**
      * 话题详情
      */
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/{tid}", method = RequestMethod.GET)
     public String index(HttpServletRequest request,
-                        @RequestParam("tid") Integer tid,
+                        @PathVariable("tid") Integer tid,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
-        Topic topic = ServiceHolder.topicService.findById(tid);
+        Topic topic = topicService.findById(tid);
         //处理一下置顶，精华
         topic.setIsTop(topic.getTop() ? "取消置顶" : "置顶");
         topic.setIsGood(topic.getGood() ? "取消精华" : "精华");
         //查询追加内容
-        List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(tid);
+        List<TopicAppend> topicAppends = topicAppendService.findByTid(tid);
         //话题浏览次数+1
         topic.setView(topic.getView() + 1);
-        ServiceHolder.topicService.update(topic);
+        topicService.update(topic);
             /*
             //更新redis里的topic数据
             Cache cache = Redis.use();
@@ -64,20 +79,20 @@ public class TopicController extends BaseController {
             }
             */
         //查询版块名称
-        Section section = ServiceHolder.sectionService.findByTab(topic.getTab());
+        Section section = sectionService.findByTab(topic.getTab());
         //查询话题作者信息
-        User authorinfo = ServiceHolder.userService.findByNickname(topic.getAuthor());
+        User authorinfo = userService.findByNickname(topic.getAuthor());
         //查询作者其他话题
-        List<Topic> otherTopics = ServiceHolder.topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
+        List<Topic> otherTopics = topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
         //查询回复
         Integer replyPageSize = ResourceUtil.getWebConfigIntegerValueByKey("replyPageSize");
-        Page<Reply> page = ServiceHolder.replyService.page(p, replyPageSize, tid);
+        Page<Reply> page = replyService.page(p, replyPageSize, tid);
         //查询收藏数量
-        long collectCount = ServiceHolder.collectService.countByTid(tid);
+        long collectCount = collectService.countByTid(tid);
         //查询当前用户是否收藏了该话题
         User user = getUser(request);
         if (user != null) {
-            Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getId());
+            Collect collect = collectService.findByTidAndUid(tid, user.getId());
             request.setAttribute("collect", collect);
         }
         request.setAttribute("topic", topic);
@@ -101,7 +116,7 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(HttpServletRequest request) {
-        request.setAttribute("sections", ServiceHolder.sectionService.findByShowStatus(true));
+        request.setAttribute("sections", sectionService.findByShowStatus(true));
         return "topic/create";
     }
 
@@ -130,7 +145,7 @@ public class TopicController extends BaseController {
             topic.setShowStatus(true);
             topic.setReplyCount(0);
             topic.setIsDelete(false);
-            ServiceHolder.topicService.save(topic);
+            topicService.save(topic);
             //索引话题
             if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
                 SolrUtil solrUtil = new SolrUtil();
@@ -151,8 +166,8 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request, @RequestParam("id") Integer id) {
-        Topic topic = ServiceHolder.topicService.findById(id);
-        request.setAttribute("sections", ServiceHolder.sectionService.findByShowStatus(true));
+        Topic topic = topicService.findById(id);
+        request.setAttribute("sections", sectionService.findByShowStatus(true));
         request.setAttribute("topic", topic);
         return "topic/edit";
     }
@@ -163,11 +178,11 @@ public class TopicController extends BaseController {
                        @RequestParam("title") String title,
                        @RequestParam("content") String content,
                        @RequestParam("tab") String tab) throws UnsupportedEncodingException {
-        Topic topic = ServiceHolder.topicService.findById(id);
+        Topic topic = topicService.findById(id);
         topic.setTab(tab);
         topic.setTitle(Jsoup.clean(title, Whitelist.basic()));
         topic.setContent(content);
-        ServiceHolder.topicService.update(topic);
+        topicService.update(topic);
         //索引话题
         if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
@@ -183,9 +198,9 @@ public class TopicController extends BaseController {
      * 话题追加
      */
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
-    @RequestMapping(value = "/append", method = RequestMethod.GET)
-    public String append(HttpServletRequest request, @RequestParam("tid") Integer tid) {
-        Topic topic = ServiceHolder.topicService.findById(tid);
+    @RequestMapping(value = "/append/{tid}", method = RequestMethod.GET)
+    public String append(HttpServletRequest request, @PathVariable("tid") Integer tid) {
+        Topic topic = topicService.findById(tid);
         User user = getUser(request);
         if (topic.getAuthor().equals(user.getNickname())) {
             request.setAttribute("topic", topic);
@@ -198,7 +213,7 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/append", method = RequestMethod.POST)
     public String append(HttpServletRequest request, @RequestParam("tid") Integer tid, @RequestParam("content") String content) {
-        Topic topic = ServiceHolder.topicService.findById(tid);
+        Topic topic = topicService.findById(tid);
         User user = getUser(request);
         if (topic.getAuthor().equals(user.getNickname())) {
             Date now = new Date();
@@ -207,7 +222,7 @@ public class TopicController extends BaseController {
             topicAppend.setContent(content);
             topicAppend.setInTime(now);
             topicAppend.setIsDelete(false);
-            ServiceHolder.topicAppendService.save(topicAppend);
+            topicAppendService.save(topicAppend);
             //索引话题
             if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
                 topic.setContent(topic.getContent() + "\n" + content);
@@ -228,8 +243,8 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/appendedit", method = RequestMethod.GET)
     public String appendedit(HttpServletRequest request, @RequestParam("id") Integer id) {
-        TopicAppend topicAppend = ServiceHolder.topicAppendService.findById(id);
-        Topic topic = ServiceHolder.topicService.findById(topicAppend.getTid());
+        TopicAppend topicAppend = topicAppendService.findById(id);
+        Topic topic = topicService.findById(topicAppend.getTid());
         request.setAttribute("topicAppend", topicAppend);
         request.setAttribute("topic", topic);
         return "topic/appendedit";
@@ -238,10 +253,10 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/appendedit", method = RequestMethod.POST)
     public String appendedit(@RequestParam("id") Integer id, String content) {
-        TopicAppend topicAppend = ServiceHolder.topicAppendService.findById(id);
-        Topic topic = ServiceHolder.topicService.findById(topicAppend.getTid());
+        TopicAppend topicAppend = topicAppendService.findById(id);
+        Topic topic = topicService.findById(topicAppend.getTid());
         topicAppend.setContent(content);
-        ServiceHolder.topicAppendService.update(topicAppend);
+        topicAppendService.update(topicAppend);
         //索引话题
         if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             topic.setContent(topic.getContent() + "\n" + content);
@@ -259,16 +274,16 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam("id") Integer id) {
-        ServiceHolder.topicAppendService.deleteByTid(id);
-        ServiceHolder.replyService.deleteByTid(id);
-        Topic topic = ServiceHolder.topicService.findById(id);
+        topicAppendService.deleteByTid(id);
+        replyService.deleteByTid(id);
+        Topic topic = topicService.findById(id);
         //删除用户积分
-//            User user = ServiceHolder.userService.findByNickname(topic.getStr("author"));
+//            User user = userService.findByNickname(topic.getStr("author"));
 //            Integer score = user.getInt("score");
 //            score = score > 7 ? score - 7 : 0;
 //            user.set("score", score).update();
         //删除话题（非物理删除）
-        ServiceHolder.topicService.deleteById(id);
+        topicService.deleteById(id);
         //删除索引
         if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
             SolrUtil solrUtil = new SolrUtil();
@@ -286,7 +301,7 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/top", method = RequestMethod.GET)
     public String top(@RequestParam("id") Integer id) {
-        ServiceHolder.topicService.top(id);
+        topicService.top(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
         return redirect("/topic/" + id);
     }
@@ -297,7 +312,7 @@ public class TopicController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/good", method = RequestMethod.GET)
     public String good(@RequestParam("id") Integer id) {
-        ServiceHolder.topicService.good(id);
+        topicService.good(id);
         clearCache(Constants.CacheEnum.topic.name() + id);
         return redirect("/topic/" + id);
     }

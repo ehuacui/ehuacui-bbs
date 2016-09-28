@@ -6,7 +6,7 @@
                 <a href="/topic/${topic.id!}">${topic.title!}</a>
             </div>
             <p>
-                <a href="#">${getNameByTab(topic.tab)!}</a>
+                <a href="/?tab=${topic.tab!}">${getNameByTab(topic.tab)!}</a>
                 <span>•</span>
                 <span><a href="/user/${topic.author!}">${topic.author!}</a></span>
                 <span class="hidden-sm hidden-xs">•</span>

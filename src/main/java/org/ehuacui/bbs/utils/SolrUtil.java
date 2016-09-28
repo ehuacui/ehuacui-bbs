@@ -9,9 +9,11 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.ehuacui.bbs.common.Page;
-import org.ehuacui.bbs.common.ServiceHolder;
+import org.ehuacui.bbs.common.SpringContextHolder;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.TopicAppend;
+import org.ehuacui.bbs.service.ITopicAppendService;
+import org.ehuacui.bbs.service.ITopicService;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -30,6 +32,9 @@ public class SolrUtil {
     private final static String URL = ResourceUtil.getWebConfigValueByKey("solr.url");
     private final static SolrClient client = new HttpSolrClient(URL);
 
+    private ITopicService topicService = SpringContextHolder.getBean(ITopicService.class);
+    private ITopicAppendService topicAppendService = SpringContextHolder.getBean(ITopicAppendService.class);
+
     /**
      * 将所有的topic都索引
      *
@@ -37,7 +42,7 @@ public class SolrUtil {
      */
     public boolean indexAll() {
         try {
-            List<Topic> topics = ServiceHolder.topicService.findAll();
+            List<Topic> topics = topicService.findAll();
             List<SolrInputDocument> docs = new ArrayList<>();
             for (Topic topic : topics) {
                 SolrInputDocument doc = new SolrInputDocument();
@@ -74,7 +79,7 @@ public class SolrUtil {
             doc.addField("id", topic.getId());
             doc.addField("title", topic.getTitle());
             doc.addField("in_time", topic.getInTime());
-            List<TopicAppend> topicAppends = ServiceHolder.topicAppendService.findByTid(topic.getId());
+            List<TopicAppend> topicAppends = topicAppendService.findByTid(topic.getId());
             StringBuffer content = new StringBuffer(topic.getContent());
             for (TopicAppend ta : topicAppends) {
                 content.append("\n")//换行

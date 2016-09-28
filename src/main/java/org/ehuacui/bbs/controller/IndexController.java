@@ -3,10 +3,13 @@ package org.ehuacui.bbs.controller;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Page;
-import org.ehuacui.bbs.common.ServiceHolder;
-import org.ehuacui.bbs.interceptor.*;
+import org.ehuacui.bbs.interceptor.BeforeAdviceController;
+import org.ehuacui.bbs.interceptor.PermissionInterceptor;
+import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.service.ISectionService;
+import org.ehuacui.bbs.service.ITopicService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
@@ -14,6 +17,7 @@ import org.ehuacui.bbs.utils.QiniuUploadUtil;
 import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.WebUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +35,12 @@ import java.util.Map;
  * http://www.ehuacui.org
  */
 @Controller
-@BeforeAdviceController(BasicInterceptor.class)
 public class IndexController extends BaseController {
+
+    @Autowired
+    private ISectionService sectionService;
+    @Autowired
+    private ITopicService topicService;
 
     /**
      * 首页
@@ -41,14 +49,14 @@ public class IndexController extends BaseController {
     public String index(HttpServletRequest request, @RequestParam(value = "tab", defaultValue = "all") String tab,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
         if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
-            Section section = ServiceHolder.sectionService.findByTab(tab);
+            Section section = sectionService.findByTab(tab);
             request.setAttribute("sectionName", section.getName());
         } else {
             request.setAttribute("sectionName", "版块");
         }
-        Page<Topic> page = ServiceHolder.topicService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize", 20), tab);
+        Page<Topic> page = topicService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize", 20), tab);
         request.setAttribute("tab", tab);
-        request.setAttribute("sections", ServiceHolder.sectionService.findByShowStatus(true));
+        request.setAttribute("sections", sectionService.findByShowStatus(true));
         request.setAttribute("page", page);
         request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
         request.setAttribute("getNameByTab", new GetNameByTab());

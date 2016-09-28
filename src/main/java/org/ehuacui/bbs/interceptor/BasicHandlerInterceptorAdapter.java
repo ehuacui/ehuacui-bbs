@@ -7,7 +7,10 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * 基础拦截器
@@ -15,9 +18,9 @@ import java.util.*;
  */
 public class BasicHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
 
-    private Set<Class<? extends Interceptor>> defaultInterceptors;//默认拦截器集合
+    private Set<? extends Interceptor> defaultInterceptors;//默认拦截器集合
 
-    public void setDefaultInterceptors(Set<Class<? extends Interceptor>> defaultInterceptors) {
+    public void setDefaultInterceptors(Set<? extends Interceptor> defaultInterceptors) {
         this.defaultInterceptors = defaultInterceptors;
     }
 
@@ -29,7 +32,10 @@ public class BasicHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
             Method controllerMethod = handlerMethod.getMethod();
             Set<Class<? extends Interceptor>> interceptors = new LinkedHashSet<>();//拦截器集合
             if (defaultInterceptors != null && defaultInterceptors.size() > 0) {
-                interceptors.addAll(defaultInterceptors);
+                Iterator<? extends Interceptor> iterator = defaultInterceptors.iterator();
+                while (iterator.hasNext()) {
+                    interceptors.add(iterator.next().getClass());
+                }
             }
             //配置在类上的拦截器注解
             BeforeAdviceController beforeAdviceControllerClass = classController.getAnnotation(BeforeAdviceController.class);

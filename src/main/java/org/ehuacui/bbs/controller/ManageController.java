@@ -2,7 +2,6 @@ package org.ehuacui.bbs.controller;
 
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -10,7 +9,9 @@ import org.ehuacui.bbs.model.Permission;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.service.*;
 import org.ehuacui.bbs.utils.ResourceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,12 +30,23 @@ import java.util.List;
 @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
 public class ManageController extends BaseController {
 
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IUserRoleService userRoleService;
+    @Autowired
+    private IRoleService roleService;
+    @Autowired
+    private IPermissionService permissionService;
+    @Autowired
+    private IRolePermissionService rolePermissionService;
+
     /**
      * 用户列表
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
-        request.setAttribute("page", ServiceHolder.userService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
+        request.setAttribute("page", userService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
         return "system/users.ftl";
     }
 
@@ -44,9 +56,9 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
     public String deleteuser(@RequestParam("id") Integer id) {
         //删除与用户关联的角色
-        ServiceHolder.userRoleService.deleteByUserId(id);
+        userRoleService.deleteByUserId(id);
         //删除用户
-        ServiceHolder.userService.deleteById(id);
+        userService.deleteById(id);
         return redirect("/manage/users");
     }
 
@@ -55,7 +67,7 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public String roles(HttpServletRequest request) {
-        request.setAttribute("roles", ServiceHolder.roleService.findAll());
+        request.setAttribute("roles", roleService.findAll());
         return "system/roles.ftl";
     }
 
@@ -65,11 +77,11 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     public String permissions(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         if (pid == null) {
-            request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
-            request.setAttribute("childPermissions", ServiceHolder.permissionService.findAll());
+            request.setAttribute("permissions", permissionService.findByPid(0));
+            request.setAttribute("childPermissions", permissionService.findAll());
         } else {
-            request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
-            request.setAttribute("childPermissions", ServiceHolder.permissionService.findByPid(pid));
+            request.setAttribute("permissions", permissionService.findByPid(0));
+            request.setAttribute("childPermissions", permissionService.findByPid(pid));
             request.setAttribute("pid", pid);
         }
         return "system/permissions";
@@ -80,11 +92,11 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/userrole", method = RequestMethod.GET)
     public String userrole(@RequestParam("id") Integer id, HttpServletRequest request) {
-        request.setAttribute("user", ServiceHolder.userService.findById(id));
+        request.setAttribute("user", userService.findById(id));
         //查询所有的权限
-        request.setAttribute("roles", ServiceHolder.roleService.findAll());
+        request.setAttribute("roles", roleService.findAll());
         //当前用户已经存在的角色
-        request.setAttribute("_roles", ServiceHolder.userRoleService.findByUserId(id));
+        request.setAttribute("_roles", userRoleService.findByUserId(id));
         return "system/userrole";
     }
 
@@ -94,7 +106,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/userrole", method = RequestMethod.POST)
     public String userrole(@RequestParam("id") Integer id,
                            @RequestParam("roles") Integer[] roles) {
-        ServiceHolder.userService.correlationRole(id, roles);
+        userService.correlationRole(id, roles);
         //清除缓存
         clearCache(CacheEnum.userpermissions.name() + id);
         return redirect("/manage/users");
@@ -105,9 +117,9 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/userblock", method = RequestMethod.GET)
     public String userblock(@RequestParam("id") Integer id) {
-        User user = ServiceHolder.userService.findById(id);
+        User user = userService.findById(id);
         user.setIsBlock(!user.getIsBlock());
-        ServiceHolder.userService.update(user);
+        userService.update(user);
         clearCache(CacheEnum.usernickname.name() + user.getNickname());
         clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
         return redirect("/manage/users");
@@ -119,7 +131,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/addrole", method = RequestMethod.GET)
     public String addrole(HttpServletRequest request) {
         //查询所有的权限
-        request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
+        request.setAttribute("permissions", permissionService.findWithChild());
         return "system/addrole";
     }
 
@@ -133,9 +145,9 @@ public class ManageController extends BaseController {
         Role role = new Role();
         role.setName(name);
         role.setDescription(description);
-        ServiceHolder.roleService.save(role);
+        roleService.save(role);
         //保存关联数据
-        ServiceHolder.roleService.correlationPermission(role.getId(), roles);
+        roleService.correlationPermission(role.getId(), roles);
         return redirect("/manage/roles");
     }
 
@@ -145,7 +157,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/addpermission", method = RequestMethod.GET)
     public String addpermission(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         request.setAttribute("pid", pid);
-        request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+        request.setAttribute("permissions", permissionService.findByPid(0));
         return "system/addpermission";
     }
 
@@ -159,7 +171,7 @@ public class ManageController extends BaseController {
         permission.setUrl(pid == 0 ? "" : url);
         permission.setDescription(description);
         permission.setPid(pid);
-        ServiceHolder.permissionService.save(permission);
+        permissionService.save(permission);
         String _url = "/manage/permissions?pid=" + pid;
         if (pid == 0) {
             _url = "/manage/permissions";
@@ -172,8 +184,8 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/editpermission", method = RequestMethod.GET)
     public String editpermission(@RequestParam("id") Integer id, HttpServletRequest request) {
-        request.setAttribute("_permission", ServiceHolder.permissionService.findById(id));
-        request.setAttribute("permissions", ServiceHolder.permissionService.findByPid(0));
+        request.setAttribute("_permission", permissionService.findById(id));
+        request.setAttribute("permissions", permissionService.findByPid(0));
         return "system/editpermission";
     }
 
@@ -182,14 +194,14 @@ public class ManageController extends BaseController {
                                  @RequestParam("name") String name,
                                  @RequestParam("url") String url,
                                  @RequestParam("description") String description) {
-        Permission permission = ServiceHolder.permissionService.findById(id);
+        Permission permission = permissionService.findById(id);
         permission.setName(name);
         permission.setUrl(url);
         permission.setDescription(description);
         permission.setPid(pid);
-        ServiceHolder.permissionService.update(permission);
+        permissionService.update(permission);
         //清除缓存
-        List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
+        List<User> userpermissions = userService.findByPermissionId(id);
         for (User u : userpermissions) {
             clearCache(CacheEnum.userpermissions.name() + u.getId());
         }
@@ -201,12 +213,12 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/rolepermission", method = RequestMethod.GET)
     public String rolepermission(@RequestParam("id") Integer id, HttpServletRequest request) {
-        Role role = ServiceHolder.roleService.findById(id);
+        Role role = roleService.findById(id);
         request.setAttribute("role", role);
         //查询所有的权限
-        request.setAttribute("permissions", ServiceHolder.permissionService.findWithChild());
+        request.setAttribute("permissions", permissionService.findWithChild());
         //查询角色已经配置的权限
-        request.setAttribute("_permissions", ServiceHolder.rolePermissionService.findByRoleId(id));
+        request.setAttribute("_permissions", rolePermissionService.findByRoleId(id));
         return "system/rolepermission";
     }
 
@@ -215,13 +227,13 @@ public class ManageController extends BaseController {
                                  @RequestParam("name") String name,
                                  @RequestParam("description") String description,
                                  @RequestParam("permissions") Integer[] permissions) {
-        Role role = ServiceHolder.roleService.findById(id);
+        Role role = roleService.findById(id);
         role.setName(name);
         role.setDescription(description);
-        ServiceHolder.roleService.update(role);
-        ServiceHolder.roleService.correlationPermission(id, permissions);
+        roleService.update(role);
+        roleService.correlationPermission(id, permissions);
         //清除缓存
-        List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
+        List<UserRole> userRoles = userRoleService.findByRoleId(id);
         for (UserRole ur : userRoles) {
             clearCache(CacheEnum.userpermissions.name() + ur.getUid());
         }
@@ -233,11 +245,11 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/deleterole", method = RequestMethod.GET)
     public String deleterole(@RequestParam("id") Integer id) {
-        ServiceHolder.userRoleService.deleteByRoleId(id);
-        ServiceHolder.rolePermissionService.deleteByRoleId(id);
-        ServiceHolder.roleService.deleteById(id);
+        userRoleService.deleteByRoleId(id);
+        rolePermissionService.deleteByRoleId(id);
+        roleService.deleteById(id);
         //清除缓存
-        List<UserRole> userRoles = ServiceHolder.userRoleService.findByRoleId(id);
+        List<UserRole> userRoles = userRoleService.findByRoleId(id);
         for (UserRole ur : userRoles) {
             clearCache(CacheEnum.userpermissions.name() + ur.getUid());
         }
@@ -249,19 +261,19 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/deletepermission", method = RequestMethod.GET)
     public String deletepermission(@RequestParam("id") Integer id) {
-        Permission permission = ServiceHolder.permissionService.findById(id);
+        Permission permission = permissionService.findById(id);
         Integer pid = permission.getPid();
         String url = "/manage/permissions?pid=" + pid;
         //如果是父节点，就删除父节点下的所有权限
         if (pid == 0) {
-            ServiceHolder.permissionService.deleteByPid(id);
+            permissionService.deleteByPid(id);
             url = "/manage/permissions";
         }
         //删除与角色关联的数据
-        ServiceHolder.rolePermissionService.deleteByPermissionId(id);
-        ServiceHolder.permissionService.deleteById(id);
+        rolePermissionService.deleteByPermissionId(id);
+        permissionService.deleteById(id);
         //清除缓存
-        List<User> userpermissions = ServiceHolder.userService.findByPermissionId(id);
+        List<User> userpermissions = userService.findByPermissionId(id);
         for (User u : userpermissions) {
             clearCache(CacheEnum.userpermissions.name() + u.getId());
         }

@@ -1,8 +1,10 @@
 package org.ehuacui.bbs.common;
 
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class BaseController {
+
+    @Autowired
+    private IUserService userService;
 
     // 接口返回状态码
     private static final String CODE_SUCCESS = "200";
@@ -31,7 +36,7 @@ public class BaseController {
     public User getUser(HttpServletRequest request) {
         String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
         if (StringUtil.notBlank(user_cookie)) {
-            return ServiceHolder.userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
+            return userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
         } else {
             return null;
         }

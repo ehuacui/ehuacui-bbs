@@ -2,8 +2,9 @@ package org.ehuacui.bbs.template;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import org.ehuacui.bbs.common.ServiceHolder;
+import org.ehuacui.bbs.common.SpringContextHolder;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.service.IUserService;
 
 import java.util.List;
 
@@ -12,13 +13,16 @@ import java.util.List;
  * Created by jianwei.zhou on 2016/9/7.
  */
 public class GetAvatarByNickname implements TemplateMethodModelEx {
+
+    private IUserService userService = SpringContextHolder.getBean(IUserService.class);
+
     @Override
     public Object exec(List list) throws TemplateModelException {
         if (list == null || list.size() != 1) {
             throw new TemplateModelException("Wrong arguments");
         }
         String nickname = list.get(0).toString();
-        User user = ServiceHolder.userService.findByNickname(nickname);
+        User user = userService.findByNickname(nickname);
         if (user != null) {
             return user.getAvatar();
         }

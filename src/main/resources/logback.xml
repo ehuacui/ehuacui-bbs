@@ -67,9 +67,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     -->
 
     <logger name="jndi" level="error" additivity="true"/>
-    <logger name="org.eclipse.jetty" level="error" additivity="true"/>
     <logger name="com.alibaba.druid" level="error" additivity="true"/>
-    <logger name="org.apache.shiro" level="error" additivity="true"/>
     <logger name="org.quartz" level="error" additivity="true"/>
     <logger name="org.springframework" level="error" additivity="true"/>
     <logger name="org.mybatis" level="error" additivity="true"/>

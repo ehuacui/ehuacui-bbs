@@ -2,8 +2,9 @@ package org.ehuacui.bbs.template;
 
 import freemarker.core.Environment;
 import freemarker.template.*;
-import org.ehuacui.bbs.common.ServiceHolder;
+import org.ehuacui.bbs.common.SpringContextHolder;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.service.IUserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,13 +18,15 @@ import java.util.Map;
  */
 public class ScoresDirective implements TemplateDirectiveModel {
 
+    private IUserService userService = SpringContextHolder.getBean(IUserService.class);
+
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels,
                         TemplateDirectiveBody templateDirectiveBody)
             throws TemplateException, IOException {
         List<User> scores = new ArrayList<User>();
         if (map.containsKey("limit") && map.get("limit") != null) {
-            scores = ServiceHolder.userService.scores(Integer.parseInt(map.get("limit").toString()));
+            scores = userService.scores(Integer.parseInt(map.get("limit").toString()));
         }
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_23);
         environment.setVariable("list", builder.build().wrap(scores));

@@ -31,11 +31,11 @@
 
     <bean id="ehCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="cacheManagerName" value="bbs_cache"/>
-        <property name="configLocation" value="classpath:ehcache.xml" />
+        <property name="configLocation" value="classpath:ehcache.xml"/>
     </bean>
 
     <bean id="ehCacheCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager"  ref="ehCacheManagerFactory"/>
+        <property name="cacheManager" ref="ehCacheManagerFactory"/>
     </bean>
 
     <!-- 配置数据源 -->
@@ -205,7 +205,6 @@
         </property>
     </bean>
 
-    <import resource="applicationContext-shiro.xml"/>
     <import resource="applicationContext-scheduler.xml"/>
 
 </beans>

@@ -2,14 +2,17 @@ package org.ehuacui.bbs.controller;
 
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.service.IRoleService;
+import org.ehuacui.bbs.service.IUserRoleService;
+import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +34,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/oauth")
 public class OauthController extends BaseController {
+
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IRoleService roleService;
+    @Autowired
+    private IUserRoleService userRoleService;
 
     private static final String STATE = "thirdlogin_state";
 
@@ -93,7 +103,7 @@ public class OauthController extends BaseController {
 
             Date now = new Date();
             String access_token = StringUtil.getUUID();
-            User user = ServiceHolder.userService.findByThirdId(String.valueOf(githubId));
+            User user = userService.findByThirdId(String.valueOf(githubId));
             boolean flag = true;
             if (user == null) {
                 user = new User();
@@ -112,16 +122,16 @@ public class OauthController extends BaseController {
             user.setUrl(html_url);
             user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             if (flag) {
-                ServiceHolder.userService.update(user);
+                userService.update(user);
             } else {
-                ServiceHolder.userService.save(user);
+                userService.save(user);
                 //新注册的用户角色都是普通用户
-                Role role = ServiceHolder.roleService.findByName("user");
+                Role role = roleService.findByName("user");
                 if (role != null) {
                     UserRole userRole = new UserRole();
                     userRole.setUid(user.getId());
                     userRole.setRid(role.getId());
-                    ServiceHolder.userRoleService.save(userRole);
+                    userRoleService.save(userRole);
                 }
             }
             WebUtil.setCookie(response, Constants.USER_ACCESS_TOKEN,

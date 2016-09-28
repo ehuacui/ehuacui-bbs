@@ -34,12 +34,19 @@
                 <property name="defaultInterceptors">
                     <set>
                         <!--基础拦截器-->
-                        <bean class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>
+                        <ref bean="commonInterceptor"/>
                     </set>
                 </property>
             </bean>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!--基础拦截器-->
+    <bean id="commonInterceptor" class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>
+
+    <bean id="permissionInterceptor" class="org.ehuacui.bbs.interceptor.PermissionInterceptor"/>
+    <bean id="userInterceptor" class="org.ehuacui.bbs.interceptor.UserInterceptor"/>
+    <bean id="userStatusInterceptor" class="org.ehuacui.bbs.interceptor.UserStatusInterceptor"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">

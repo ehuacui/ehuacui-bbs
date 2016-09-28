@@ -3,12 +3,15 @@ package org.ehuacui.bbs.controller;
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
 import org.ehuacui.bbs.common.Constants.CacheEnum;
-import org.ehuacui.bbs.common.ServiceHolder;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
+import org.ehuacui.bbs.service.ICollectService;
+import org.ehuacui.bbs.service.INotificationService;
+import org.ehuacui.bbs.service.ITopicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +28,12 @@ import java.util.Date;
 @Controller
 @RequestMapping("/collect")
 public class CollectController extends BaseController {
+    @Autowired
+    private ICollectService collectService;
+    @Autowired
+    private ITopicService topicService;
+    @Autowired
+    private INotificationService notificationService;
 
     /**
      * 收藏话题
@@ -38,10 +47,10 @@ public class CollectController extends BaseController {
         collect.setTid(tid);
         collect.setUid(user.getId());
         collect.setInTime(now);
-        ServiceHolder.collectService.save(collect);
-        Topic topic = ServiceHolder.topicService.findById(tid);
+        collectService.save(collect);
+        Topic topic = topicService.findById(tid);
         //创建通知
-        ServiceHolder.notificationService.sendNotification(user.getNickname(),
+        notificationService.sendNotification(user.getNickname(),
                 topic.getAuthor(), Constants.NotificationEnum.COLLECT.name(), tid, "");
         //清理缓存
         clearCache(CacheEnum.usercollectcount.name() + user.getId());
@@ -58,9 +67,9 @@ public class CollectController extends BaseController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam("tid") Integer tid, HttpServletRequest request) {
         User user = getUser(request);
-        Collect collect = ServiceHolder.collectService.findByTidAndUid(tid, user.getId());
+        Collect collect = collectService.findByTidAndUid(tid, user.getId());
         if (collect != null) {
-            ServiceHolder.collectService.delete(collect.getId());
+            collectService.delete(collect.getId());
             clearCache(CacheEnum.usercollectcount.name() + user.getId());
             clearCache(CacheEnum.collects.name() + user.getId());
             clearCache(CacheEnum.collectcount.name() + tid);
