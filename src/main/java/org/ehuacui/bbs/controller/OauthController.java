@@ -8,10 +8,7 @@ import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.service.IRoleService;
 import org.ehuacui.bbs.service.IUserRoleService;
 import org.ehuacui.bbs.service.IUserService;
-import org.ehuacui.bbs.utils.DateUtil;
-import org.ehuacui.bbs.utils.ResourceUtil;
-import org.ehuacui.bbs.utils.StringUtil;
-import org.ehuacui.bbs.utils.WebUtil;
+import org.ehuacui.bbs.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -74,7 +72,7 @@ public class OauthController extends BaseController {
     @RequestMapping(value = "/githubcallback", method = RequestMethod.GET)
     public String githubcallback(@RequestParam("code") String code, @RequestParam("state") String state,
                                  @RequestParam("callback") String callback,
-                                 HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieState = WebUtil.getCookie(request, STATE);
         if (state.equalsIgnoreCase(cookieState)) {
 //            请求access_token
@@ -86,7 +84,7 @@ public class OauthController extends BaseController {
             headers.put("Accept", "application/json");
             //String resp1 = HttpKit.post("https://github.com/login/oauth/access_token", map1, "", headers);
             String resp1 = "";
-            Map respMap1 = StringUtil.parseToMap(resp1);
+            Map respMap1 = JsonUtil.nonDefaultMapper().fromJson2Map(resp1);
             //access_token, scope, token_type
             String github_access_token = (String) respMap1.get("access_token");
             //获取用户信息
@@ -94,7 +92,7 @@ public class OauthController extends BaseController {
             map2.put("access_token", github_access_token);
             //String resp2 = HttpKit.get("https://api.github.com/user", map2);
             String resp2 = "";
-            Map respMap2 = StringUtil.parseToMap(resp2);
+            Map respMap2 = JsonUtil.nonDefaultMapper().fromJson2Map(resp2);
             Double githubId = (Double) respMap2.get("id");
             String login = (String) respMap2.get("login");
             String avatar_url = (String) respMap2.get("avatar_url");

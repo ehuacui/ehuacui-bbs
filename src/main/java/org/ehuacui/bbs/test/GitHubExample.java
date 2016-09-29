@@ -7,8 +7,10 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.ehuacui.bbs.utils.JsonUtil;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -77,6 +79,8 @@ public final class GitHubExample {
         System.out.println(response.getCode());
         System.out.println(response.getBody());
 
+        Map data = JsonUtil.nonDefaultMapper().fromJson2Map(response.getBody());
+        System.out.println("email===>" + data.get("email"));
         System.out.println();
         System.out.println("Thats it man! Go and build something awesome with ScribeJava! :)");
     }

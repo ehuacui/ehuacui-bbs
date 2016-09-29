@@ -39,8 +39,7 @@ public class QiniuUploadUtil {
             //调用put方法上传
             Response res = uploadManager.put(filePath, key, getUpToken());
             //打印返回的信息
-            Map map = StringUtil.parseToMap(res.bodyString());
-            return map;
+            return JsonUtil.nonDefaultMapper().fromJson2Map(res.bodyString());
         } catch (QiniuException e) {
             Response r = e.response;
             // 请求失败时打印的异常的信息
