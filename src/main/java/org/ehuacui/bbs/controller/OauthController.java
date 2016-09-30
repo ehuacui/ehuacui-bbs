@@ -2,9 +2,11 @@ package org.ehuacui.bbs.controller;
 
 import org.ehuacui.bbs.common.BaseController;
 import org.ehuacui.bbs.common.Constants;
+import org.ehuacui.bbs.model.OAuthUserInfo;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.service.IOAuthService;
 import org.ehuacui.bbs.service.IRoleService;
 import org.ehuacui.bbs.service.IUserRoleService;
 import org.ehuacui.bbs.service.IUserService;
@@ -15,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by ehuacui.
@@ -39,86 +41,62 @@ public class OauthController extends BaseController {
     private IRoleService roleService;
     @Autowired
     private IUserRoleService userRoleService;
+    @Resource(name = "gitHubOAuthService")
+    private IOAuthService gitHubOAuthService;
 
-    private static final String STATE = "thirdlogin_state";
+    private static final String STATE = "third_login_state";
 
     /**
      * github登录
      */
-    @RequestMapping(value = "/githublogin", method = RequestMethod.GET)
-    public String githublogin(HttpServletResponse response) {
-        String state = StringUtil.randomString(6);
-        WebUtil.setCookie(response, STATE, state, 5 * 60, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"), true);
-        StringBuffer sb = new StringBuffer();
-        sb.append("https://github.com/login/oauth/authorize")
-                .append("?")
-                .append("client_id")
-                .append("=")
-                .append(ResourceUtil.getWebConfigValueByKey("github.client_id"))
-                .append("&")
-                .append("state")
-                .append("=")
-                .append(state)
-                .append("&")
-                .append("scope")
-                .append("=")
-                .append("user");
-        return redirect(sb.toString());
+    @RequestMapping(value = "/github/login", method = RequestMethod.GET)
+    public void githubLogin(HttpServletResponse response) throws IOException {
+        String secretState = "secret" + new Random().nextInt(999_999);
+        WebUtil.setCookie(response, STATE, secretState, 5 * 60, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"), true);
+        String authorizationUrl = gitHubOAuthService.getAuthorizationUrl(secretState);
+        response.sendRedirect(authorizationUrl);
     }
 
     /**
      * github登录成功后回调
      */
-    @RequestMapping(value = "/githubcallback", method = RequestMethod.GET)
-    public String githubcallback(@RequestParam("code") String code, @RequestParam("state") String state,
-                                 @RequestParam("callback") String callback,
+    @RequestMapping(value = "/github/callback", method = RequestMethod.GET)
+    public String githubCallback(@RequestParam("code") String code,
+                                 @RequestParam("state") String state,
+                                 @RequestParam(value = "callback", required = false, defaultValue = "/") String callback,
                                  HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieState = WebUtil.getCookie(request, STATE);
         if (state.equalsIgnoreCase(cookieState)) {
-//            请求access_token
-            Map<String, String> map1 = new HashMap<String, String>();
-            map1.put("client_id", ResourceUtil.getWebConfigValueByKey("github.client_id"));
-            map1.put("client_secret", ResourceUtil.getWebConfigValueByKey("github.client_secret"));
-            map1.put("code", code);
-            Map<String, String> headers = new HashMap<String, String>();
-            headers.put("Accept", "application/json");
-            //String resp1 = HttpKit.post("https://github.com/login/oauth/access_token", map1, "", headers);
-            String resp1 = "";
-            Map respMap1 = JsonUtil.nonDefaultMapper().fromJson2Map(resp1);
-            //access_token, scope, token_type
-            String github_access_token = (String) respMap1.get("access_token");
-            //获取用户信息
-            Map<String, String> map2 = new HashMap<String, String>();
-            map2.put("access_token", github_access_token);
-            //String resp2 = HttpKit.get("https://api.github.com/user", map2);
-            String resp2 = "";
-            Map respMap2 = JsonUtil.nonDefaultMapper().fromJson2Map(resp2);
-            Double githubId = (Double) respMap2.get("id");
-            String login = (String) respMap2.get("login");
-            String avatar_url = (String) respMap2.get("avatar_url");
-            String email = (String) respMap2.get("email");
-            String html_url = (String) respMap2.get("html_url");
-
+            OAuthUserInfo oAuthUserInfo = gitHubOAuthService.getOAuthUserInfo(code, state);
+            if (oAuthUserInfo == null) {
+                return redirect("/");
+            }
+            String githubId = oAuthUserInfo.getOauthUserId();
+            String login = oAuthUserInfo.getLoginName();
+            String avatar_url = oAuthUserInfo.getAvatarUrl();
+            String email = oAuthUserInfo.getUserEmail();
+            String html_url = oAuthUserInfo.getHomeUrl();
             Date now = new Date();
             String access_token = StringUtil.getUUID();
-            User user = userService.findByThirdId(String.valueOf(githubId));
+            User user = userService.findByThirdId(githubId);
             boolean flag = true;
             if (user == null) {
                 user = new User();
                 user.setInTime(now);
                 user.setAccessToken(access_token);
                 user.setScore(0);
-                user.setThirdId(String.valueOf(githubId));
+                user.setThirdId(githubId);
                 user.setIsBlock(false);
                 user.setChannel(Constants.LoginEnum.Github.name());
                 user.setReceiveMsg(true);//邮箱接收社区消息
                 flag = false;
+            } else {
+                user.setNickname(login);
+                user.setAvatar(avatar_url);
+                user.setEmail(email);
+                user.setUrl(html_url);
+                user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             }
-            user.setNickname(login);
-            user.setAvatar(avatar_url);
-            user.setEmail(email);
-            user.setUrl(html_url);
-            user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             if (flag) {
                 userService.update(user);
             } else {

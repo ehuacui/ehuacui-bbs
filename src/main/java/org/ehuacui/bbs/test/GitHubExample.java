@@ -8,6 +8,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import org.ehuacui.bbs.utils.JsonUtil;
+import org.ehuacui.bbs.utils.StringUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,7 +32,7 @@ public final class GitHubExample {
                 .apiKey(clientId)
                 .apiSecret(clientSecret)
                 .state(secretState)
-                .callback("http://bbs.ehuacui.org/oauth/githubcallback")
+                .callback("http://bbs.ehuacui.org/oauth/github/callback")
                 .build(GitHubApi.instance());
         final Scanner in = new Scanner(System.in, "UTF-8");
 

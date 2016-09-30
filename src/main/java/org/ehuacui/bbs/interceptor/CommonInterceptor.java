@@ -46,7 +46,7 @@ public class CommonInterceptor implements Interceptor {
         Map<String, String> loginChannelMap = new HashMap<String, String>();
         if (StringUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
             loginChannelMap.put("loginChannelName", Constants.LoginEnum.Github.name());
-            loginChannelMap.put("loginChannelUrl", "/oauth/githublogin");
+            loginChannelMap.put("loginChannelUrl", "/oauth/github/login");
             request.setAttribute("login_channel", loginChannelMap);
         }
         String solrStatus = propMap.get("solr.status").equalsIgnoreCase("true") ? "true" : "false";
