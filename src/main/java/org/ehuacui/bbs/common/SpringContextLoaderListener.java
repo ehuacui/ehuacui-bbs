@@ -1,14 +1,9 @@
 package org.ehuacui.bbs.common;
 
-import freemarker.template.Configuration;
-import org.ehuacui.bbs.template.PyTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.servlet.ServletContextEvent;
 
@@ -32,12 +27,12 @@ public class SpringContextLoaderListener extends ContextLoaderListener {
         MDC.put("app_name", "ehuacui-bbs");
         logger.info("EHuaCui BBS To Start Running");
         super.contextInitialized(event);
-        ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
+     /*   ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         FreeMarkerConfigurer freeMarkerConfigurer = applicationContext.getBean(FreeMarkerConfigurer.class);
         Configuration configuration = freeMarkerConfigurer.getConfiguration();
         if (configuration != null) {
             configuration.setSharedVariable("py", new PyTag());
-        }
+        }*/
         logger.info("EHuaCui BBS To Completed Running");
     }
 }

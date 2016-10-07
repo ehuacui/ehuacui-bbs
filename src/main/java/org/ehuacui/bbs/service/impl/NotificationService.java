@@ -7,6 +7,7 @@ import org.ehuacui.bbs.service.INotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,6 +75,7 @@ public class NotificationService implements INotificationService {
         notification.setTid(tid);
         notification.setContent(content);
         notification.setRead(false);
+        notification.setInTime(new Date());
         notificationMapper.insert(notification);
     }
 }

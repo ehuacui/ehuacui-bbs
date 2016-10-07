@@ -32,7 +32,7 @@ public class NotificationController extends BaseController {
     private INotificationService notificationService;
 
     @BeforeAdviceController(UserInterceptor.class)
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
         User user = getUser(request);
         Page<Notification> page = notificationService.pageByAuthor(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), user.getNickname());

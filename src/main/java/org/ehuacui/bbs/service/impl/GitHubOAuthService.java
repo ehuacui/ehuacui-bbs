@@ -30,10 +30,8 @@ public class GitHubOAuthService implements IOAuthService {
     @Value("${github.callback}")
     private String callback;
 
-    private OAuth20Service oAuth20Service;
-
-    private void initOAuthService(String secretState) {
-        oAuth20Service = new ServiceBuilder()
+    private OAuth20Service buildOAuthService(String secretState) {
+        return new ServiceBuilder()
                 .apiKey(clientId)
                 .apiSecret(clientSecret)
                 .state(secretState)
@@ -43,21 +41,15 @@ public class GitHubOAuthService implements IOAuthService {
 
     @Override
     public String getAuthorizationUrl(String secretState) {
-        if (oAuth20Service == null) {
-            initOAuthService(secretState);
-        }
-        return oAuth20Service.getAuthorizationUrl();
+        return buildOAuthService(secretState).getAuthorizationUrl();
     }
 
     @Override
     public OAuthUserInfo getOAuthUserInfo(String code, String secretState) {
         String resourceUrl = "https://api.github.com/user";
-        if (oAuth20Service == null) {
-            initOAuthService(secretState);
-        }
-        OAuth2AccessToken accessToken;
         try {
-            accessToken = oAuth20Service.getAccessToken(code);
+            OAuth20Service oAuth20Service = buildOAuthService(secretState);
+            OAuth2AccessToken accessToken = oAuth20Service.getAccessToken(code);
             OAuthRequest request = new OAuthRequest(Verb.GET, resourceUrl, oAuth20Service);
             oAuth20Service.signRequest(accessToken, request);
             Response response = request.send();

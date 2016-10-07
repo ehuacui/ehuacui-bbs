@@ -126,6 +126,8 @@
     <!-- SpringContextHolder -->
     <bean id="springContextHolder" class="org.ehuacui.bbs.common.SpringContextHolder"/>
 
+    <bean id="initFreeMarkerConfig" class="org.ehuacui.bbs.common.InitFreeMarkerConfig"/>
+
     <!-- 配置线程池 -->
     <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <!-- 线程池维护线程的最少数量 -->

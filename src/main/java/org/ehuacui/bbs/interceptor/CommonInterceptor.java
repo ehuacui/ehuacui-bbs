@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,15 +38,6 @@ public class CommonInterceptor implements Interceptor {
                 request.setAttribute("notifications", count == 0 ? null : count);
                 request.setAttribute("userinfo", user);
             }
-        }
-
-        //如果是微博登录的话,要在页面头部添加meta标签
-        String loginChannel = propMap.get("login.channel");
-        Map<String, String> loginChannelMap = new HashMap<String, String>();
-        if (StringUtil.isBlank(loginChannel) || loginChannel.equals(Constants.LoginEnum.Github.name())) {
-            loginChannelMap.put("loginChannelName", Constants.LoginEnum.Github.name());
-            loginChannelMap.put("loginChannelUrl", "/oauth/github/login");
-            request.setAttribute("login_channel", loginChannelMap);
         }
         String solrStatus = propMap.get("solr.status").equalsIgnoreCase("true") ? "true" : "false";
         request.setAttribute("solrStatus", solrStatus);

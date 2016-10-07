@@ -10,7 +10,10 @@ import org.ehuacui.bbs.service.IOAuthService;
 import org.ehuacui.bbs.service.IRoleService;
 import org.ehuacui.bbs.service.IUserRoleService;
 import org.ehuacui.bbs.service.IUserService;
-import org.ehuacui.bbs.utils.*;
+import org.ehuacui.bbs.utils.DateUtil;
+import org.ehuacui.bbs.utils.ResourceUtil;
+import org.ehuacui.bbs.utils.StringUtil;
+import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +36,7 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping("/oauth")
-public class OauthController extends BaseController {
+public class OAuthController extends BaseController {
 
     @Autowired
     private IUserService userService;

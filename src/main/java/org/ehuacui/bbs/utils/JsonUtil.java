@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * 简单封装Jackson，实现JSON String<->Java Object的Mapper.
- * <p/>
+ * <p>
  * 封装不同的输出风格, 使用不同的builder函数创建实例.
  */
 public class JsonUtil {
@@ -55,7 +55,7 @@ public class JsonUtil {
 
     /**
      * 反序列化POJO或简单Collection如List<String>.
-     * <p/>
+     * <p>
      * 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
      */
     public <T> T fromJson(String jsonString, Class<T> clazz) throws IOException {

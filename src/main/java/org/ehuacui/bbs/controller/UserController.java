@@ -125,16 +125,22 @@ public class UserController extends BaseController {
     /**
      * 用户设置
      */
+
+    @RequestMapping(value = "/setting", method = RequestMethod.GET)
+    public String setting() {
+        return "user/setting";
+    }
+
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/setting", method = RequestMethod.POST)
     public String setting(HttpServletRequest request,
                           @RequestParam("url") String url,
                           @RequestParam("signature") String signature,
-                          @RequestParam(value = "receive_msg", defaultValue = "0") Integer receive_msg) {
+                          @RequestParam(value = "receiveMsg", defaultValue = "0") Integer receiveMsg) {
         User user = getUser(request);
         user.setSignature(StringUtil.notBlank(signature) ? Jsoup.clean(signature, Whitelist.basic()) : null);
         user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
-        user.setReceiveMsg(receive_msg == 1);
+        user.setReceiveMsg(receiveMsg == 1);
         userService.update(user);
         //清理缓存
         try {
@@ -143,7 +149,6 @@ public class UserController extends BaseController {
         }
         clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
         request.setAttribute("msg", "保存成功。");
-
-        return "user/setting";
+        return redirect("/user/setting");
     }
 }

@@ -211,7 +211,7 @@ public class WebUtil {
 
     /**
      * Render with text and content type.
-     * <p/>
+     * <p>
      * Example: renderText("&lt;user id='5888'&gt;James&lt;/user&gt;", "application/xml");
      */
     public static void renderText(HttpServletResponse response, String text, String contentType) throws IOException {
@@ -234,7 +234,7 @@ public class WebUtil {
 
     /**
      * Render with text and ContentType.
-     * <p/>
+     * <p>
      * Example: renderText("&lt;html&gt;Hello James&lt;/html&gt;", ContentType.HTML);
      */
     public static void renderText(HttpServletResponse response, String text, ContentType contentType) throws IOException {

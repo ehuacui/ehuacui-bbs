@@ -47,7 +47,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
         request.setAttribute("page", userService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
-        return "system/users.ftl";
+        return "system/users";
     }
 
     /**
@@ -68,7 +68,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public String roles(HttpServletRequest request) {
         request.setAttribute("roles", roleService.findAll());
-        return "system/roles.ftl";
+        return "system/roles";
     }
 
     /**

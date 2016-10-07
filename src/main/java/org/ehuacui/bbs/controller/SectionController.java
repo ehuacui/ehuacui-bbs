@@ -27,7 +27,7 @@ public class SectionController extends BaseController {
 
     @Autowired
     private ISectionService sectionService;
-    
+
     /**
      * 板块列表
      */

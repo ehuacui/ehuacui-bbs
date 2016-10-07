@@ -30,13 +30,10 @@
                         <textarea class="form-control" name="signature" id="signature">${userinfo.signature!}</textarea>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="receiveMsg" name="receiveMsg" value="1"
-                               <#if userinfo.receiveMsg>checked</#if>/>
+                        <input type="checkbox" id="receiveMsg" name="receiveMsg" value="1" <#if userinfo.receiveMsg>checked</#if>/>
                         <label for="receiveMsg">是否接收系统邮件</label>
                     </div>
-                    <button type="button" id="userProfileUpdateBtn" onclick="updateUserProfile()"
-                            class="btn btn-default">保存设置
-                    </button>
+                    <button type="button" id="userProfileUpdateBtn" onclick="updateUserProfile()" class="btn btn-default">保存设置</button>
                     <span id="error_message"></span>
                 </form>
             </div>

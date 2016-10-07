@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.template;
 
-import freemarker.ext.beans.DateModel;
 import freemarker.template.SimpleDate;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;

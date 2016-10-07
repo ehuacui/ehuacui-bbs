@@ -30,7 +30,7 @@
                         <a href="/topic/create">发布话题</a>
                     </li>
                     <li <#if page_tab == 'notification'> class="active" </#if>>
-                        <a href="/notification">通知 <span class="badge" id="badge">${notifications!}</span></a>
+                        <a href="/notification/index">通知 <span class="badge" id="badge">${notifications!}</span></a>
                     </li>
                     <li <#if page_tab == 'user'> class="active" </#if>>
                         <a href="/user/${userinfo.nickname!}">
@@ -79,7 +79,7 @@
                     </li>
                 <#else>
                     <li>
-                        <a href="${login_channel.loginChannelUrl!}">${login_channel.loginChannelName!}登录</a>
+                        <a href="/login">登录</a>
                     </li>
                 </#if>
             </ul>
