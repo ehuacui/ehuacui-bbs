@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.mapper.ReplyMapper;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.service.IReplyService;

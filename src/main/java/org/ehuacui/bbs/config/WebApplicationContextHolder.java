@@ -1,12 +1,13 @@
-package org.ehuacui.bbs.common;
+package org.ehuacui.bbs.config;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * 以静态变量保存Spring ApplicationContext, 可在任何代码任何地方任何时候中取出ApplicationContext
+ * WebApplicationContextHolder
+ * Created by Administrator on 2016/9/14.
  */
-public class SpringContextHolder implements ApplicationContextAware {
+public class WebApplicationContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
@@ -15,7 +16,7 @@ public class SpringContextHolder implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
-        SpringContextHolder.applicationContext = applicationContext;
+        WebApplicationContextHolder.applicationContext = applicationContext;
     }
 
     /**
@@ -36,7 +37,7 @@ public class SpringContextHolder implements ApplicationContextAware {
 
     private static void checkApplicationContext() {
         if (applicationContext == null) {
-            throw new IllegalStateException("applicationContext未注入,请在applicationContext.xml中定义SpringContextHolder");
+            throw new IllegalStateException("applicationContext未注入");
         }
     }
 }

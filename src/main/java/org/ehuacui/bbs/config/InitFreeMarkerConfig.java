@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.common;
+package org.ehuacui.bbs.config;
 
 import freemarker.template.Configuration;
 import org.ehuacui.bbs.template.PyTag;

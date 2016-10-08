@@ -124,9 +124,9 @@
     </aop:config>
 
     <!-- SpringContextHolder -->
-    <bean id="springContextHolder" class="org.ehuacui.bbs.common.SpringContextHolder"/>
-
-    <bean id="initFreeMarkerConfig" class="org.ehuacui.bbs.common.InitFreeMarkerConfig"/>
+    <bean id="springContextHolder" class="org.ehuacui.bbs.config.SpringContextHolder"/>
+    <!-- initFreeMarkerConfig -->
+    <bean id="initFreeMarkerConfig" class="org.ehuacui.bbs.config.InitFreeMarkerConfig"/>
 
     <!-- 配置线程池 -->
     <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -154,7 +154,7 @@
 
     <!-- shiro redisManager -->
     <!--
-    <bean id="redisManager" class="org.ehuacui.bbs.redis.RedisManager" init-method="init">
+    <bean id="redisManager" class="org.ehuacui.bbs.config.RedisManager" init-method="init">
         <property name="host" value="${redis.host}"/>
         <property name="port" value="${redis.port}"/>
         <property name="expire" value="${redis.expire}"/>
@@ -202,7 +202,7 @@
                 <!--模板异常信息处理 ignore-->
                 <prop key="template_exception_handler">ignore</prop>
                 <!-- 配置自定义的freemarker异常处理-->
-                <!--<prop key="template_exception_handler">org.ehuacui.bbs.exception.FreemarkerExceptionHandler</prop>-->
+                <!--<prop key="template_exception_handler">org.ehuacui.bbs.config.FreemarkerExceptionHandler</prop>-->
             </props>
         </property>
     </bean>

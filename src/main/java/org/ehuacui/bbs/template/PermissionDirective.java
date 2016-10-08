@@ -5,7 +5,7 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
-import org.ehuacui.bbs.common.SpringContextHolder;
+import org.ehuacui.bbs.config.SpringContextHolder;
 import org.ehuacui.bbs.service.IPermissionService;
 
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
+import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.model.OAuthUserInfo;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;

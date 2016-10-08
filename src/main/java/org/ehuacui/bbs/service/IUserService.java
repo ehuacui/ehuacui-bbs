@@ -1,7 +1,7 @@
 package org.ehuacui.bbs.service;
 
 
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.model.User;
 
 import java.util.List;

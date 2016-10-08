@@ -22,7 +22,7 @@
                         <input type="text" disabled class="form-control" id="email" value="${userinfo.email!}"/>
                     </div>
                     <div class="form-group">
-                        <label for="url">Github主页</label>
+                        <label for="url">主页</label>
                         <input type="text" class="form-control" id="url" name="url" value="${userinfo.url!}"/>
                     </div>
                     <div class="form-group">

@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.mapper.NotificationMapper;
 import org.ehuacui.bbs.model.Notification;
 import org.ehuacui.bbs.service.INotificationService;

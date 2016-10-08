@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
+import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -81,6 +80,7 @@ public class SectionController extends BaseController {
         section.setTab(tab);
         section.setShowStatus(showStatus == 1);
         section.setDisplayIndex(99);
+        section.setPid(0);//默认为顶级节点
         section.setDefaultShow(false);
         sectionService.save(section);
         return redirect("/section/list");
@@ -106,6 +106,7 @@ public class SectionController extends BaseController {
         section.setName(name);
         section.setTab(tab);
         section.setShowStatus(showStatus == 1);
+        section.setPid(0);//默认为顶级节点
         sectionService.update(section);
         return redirect("/section/list");
     }

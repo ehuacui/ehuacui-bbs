@@ -78,8 +78,8 @@
     </bean>
 
     <!-- webApplicationContextHolder -->
-    <bean id="webApplicationContextHolder" class="org.ehuacui.bbs.common.WebApplicationContextHolder"/>
+    <bean id="webApplicationContextHolder" class="org.ehuacui.bbs.config.WebApplicationContextHolder"/>
     <!--定义异常处理类  -->
-    <bean id="exceptionHandler" class="org.ehuacui.bbs.exception.BusinessExceptionHandler"/>
+    <bean id="exceptionHandler" class="org.ehuacui.bbs.config.BusinessExceptionHandler"/>
 
 </beans>

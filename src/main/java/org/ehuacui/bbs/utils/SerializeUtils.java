@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.redis;
+package org.ehuacui.bbs.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

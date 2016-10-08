@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.redis;
+package org.ehuacui.bbs.config;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

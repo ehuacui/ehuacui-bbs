@@ -1,7 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants.CacheEnum;
+import org.ehuacui.bbs.dto.Constants.CacheEnum;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -75,12 +74,12 @@ public class ManageController extends BaseController {
      * 权限列表
      */
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
-    public String permissions(@RequestParam("pid") Integer pid, HttpServletRequest request) {
+    public String permissions(@RequestParam(value = "pid", required = false, defaultValue = "0") Integer pid, HttpServletRequest request) {
         if (pid == null) {
-            request.setAttribute("permissions", permissionService.findByPid(0));
+            request.setAttribute("permissions", permissionService.findByPid(pid));
             request.setAttribute("childPermissions", permissionService.findAll());
         } else {
-            request.setAttribute("permissions", permissionService.findByPid(0));
+            request.setAttribute("permissions", permissionService.findByPid(pid));
             request.setAttribute("childPermissions", permissionService.findByPid(pid));
             request.setAttribute("pid", pid);
         }
@@ -141,7 +140,7 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "/addrole", method = RequestMethod.POST)
     public String addrole(@RequestParam("name") String name,
                           @RequestParam("description") String description,
-                          @RequestParam("id") Integer[] roles) {
+                          @RequestParam(value = "roles", required = false) Integer[] roles) {
         Role role = new Role();
         role.setName(name);
         role.setDescription(description);
@@ -226,7 +225,7 @@ public class ManageController extends BaseController {
     public String rolepermission(@RequestParam("id") Integer id,
                                  @RequestParam("name") String name,
                                  @RequestParam("description") String description,
-                                 @RequestParam("permissions") Integer[] permissions) {
+                                 @RequestParam(value = "permissions", required = false) Integer[] permissions) {
         Role role = roleService.findById(id);
         role.setName(name);
         role.setDescription(description);

@@ -2,7 +2,7 @@ package org.ehuacui.bbs.template;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import org.ehuacui.bbs.common.SpringContextHolder;
+import org.ehuacui.bbs.config.SpringContextHolder;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.IUserService;
 

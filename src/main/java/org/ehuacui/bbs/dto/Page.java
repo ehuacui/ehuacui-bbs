@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.common;
+package org.ehuacui.bbs.dto;
 
 
 import java.io.Serializable;

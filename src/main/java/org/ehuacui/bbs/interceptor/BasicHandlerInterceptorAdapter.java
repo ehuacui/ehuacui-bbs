@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.interceptor;
 
-import org.ehuacui.bbs.common.WebApplicationContextHolder;
+import org.ehuacui.bbs.config.WebApplicationContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

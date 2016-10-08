@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.exception;
+package org.ehuacui.bbs.config;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;

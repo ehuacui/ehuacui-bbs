@@ -25,7 +25,7 @@
     </context-param>
     <!-- 重写了Spring的监听器，负责初始化上下文 -->
     <listener>
-        <listener-class>org.ehuacui.bbs.common.SpringContextLoaderListener</listener-class>
+        <listener-class>org.ehuacui.bbs.config.SpringContextLoaderListener</listener-class>
     </listener>
 
     <!-- 字符集过滤器 -->

@@ -1,5 +1,7 @@
-package org.ehuacui.bbs.common;
+package org.ehuacui.bbs.controller;
 
+import org.ehuacui.bbs.dto.Constants;
+import org.ehuacui.bbs.dto.Result;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.StringUtil;

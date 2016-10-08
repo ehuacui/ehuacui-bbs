@@ -1,8 +1,7 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.common.BaseController;
-import org.ehuacui.bbs.common.Constants;
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Constants;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -211,8 +210,8 @@ public class TopicController extends BaseController {
     }
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
-    @RequestMapping(value = "/append", method = RequestMethod.POST)
-    public String append(HttpServletRequest request, @RequestParam("tid") Integer tid, @RequestParam("content") String content) {
+    @RequestMapping(value = "/append/{tid}", method = RequestMethod.POST)
+    public String append(HttpServletRequest request, @PathVariable("tid") Integer tid, @RequestParam("content") String content) {
         Topic topic = topicService.findById(tid);
         User user = getUser(request);
         if (topic.getAuthor().equals(user.getNickname())) {

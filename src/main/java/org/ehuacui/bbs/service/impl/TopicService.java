@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.mapper.TopicAppendMapper;
 import org.ehuacui.bbs.mapper.TopicMapper;
 import org.ehuacui.bbs.model.Topic;

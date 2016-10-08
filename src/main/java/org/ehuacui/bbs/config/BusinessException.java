@@ -1,4 +1,4 @@
-package org.ehuacui.bbs.exception;
+package org.ehuacui.bbs.config;
 
 /**
  * 创建服务报告文件异常

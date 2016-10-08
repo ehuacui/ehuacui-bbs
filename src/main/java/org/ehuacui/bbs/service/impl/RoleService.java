@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.common.Page;
+import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.mapper.RoleMapper;
 import org.ehuacui.bbs.mapper.RolePermissionMapper;
 import org.ehuacui.bbs.model.Role;
