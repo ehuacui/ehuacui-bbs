@@ -27,12 +27,6 @@ public class SpringContextLoaderListener extends ContextLoaderListener {
         MDC.put("app_name", "ehuacui-bbs");
         logger.info("EHuaCui BBS To Start Running");
         super.contextInitialized(event);
-     /*   ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-        FreeMarkerConfigurer freeMarkerConfigurer = applicationContext.getBean(FreeMarkerConfigurer.class);
-        Configuration configuration = freeMarkerConfigurer.getConfiguration();
-        if (configuration != null) {
-            configuration.setSharedVariable("py", new PyTag());
-        }*/
         logger.info("EHuaCui BBS To Completed Running");
     }
 }
