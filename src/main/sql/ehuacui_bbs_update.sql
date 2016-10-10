@@ -21,7 +21,7 @@ ALTER TABLE `tb_notification`
 CHANGE COLUMN `read` `is_read` TINYINT (1) NOT NULL COMMENT '是否已读：0默认 1已读' AFTER `id`;
 
 ALTER TABLE `tb_topic`
-CHANGE COLUMN `view` `view_count` TINYINT (1) NOT NULL COMMENT '1置顶 0默认' AFTER `last_reply_author`,
+CHANGE COLUMN `view` `view_count` INT (11) NOT NULL COMMENT '1置顶 0默认' AFTER `last_reply_author`,
 CHANGE COLUMN `top` `is_top` TINYINT (1) NOT NULL COMMENT '1置顶 0默认' AFTER `author`,
 CHANGE COLUMN `good` `is_good` TINYINT (1) NOT NULL COMMENT '1精华 0默认' AFTER `is_top`;
 
