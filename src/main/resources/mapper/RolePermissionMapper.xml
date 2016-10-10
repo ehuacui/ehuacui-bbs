@@ -3,6 +3,7 @@
 <mapper namespace="org.ehuacui.bbs.mapper.RolePermissionMapper">
 
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.RolePermission">
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="rid" jdbcType="INTEGER" property="rid"/>
         <result column="pid" jdbcType="INTEGER" property="pid"/>
     </resultMap>
@@ -12,13 +13,16 @@
     </select>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.RolePermission">
-    insert into tb_role_permission (rid, pid)
-    values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
+    insert into tb_role_permission (id, rid, pid)
+    values (#{id,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
   </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.RolePermission">
         insert into tb_role_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
             <if test="rid != null">
                 rid,
             </if>
@@ -27,6 +31,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
             <if test="rid != null">
                 #{rid,jdbcType=INTEGER},
             </if>

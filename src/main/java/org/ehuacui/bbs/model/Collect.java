@@ -3,26 +3,26 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * Table: ehuacui_collect
+ * Table: tb_collect
  */
 public class Collect {
     /**
-     * Column: ehuacui_collect.id
+     * Column: tb_collect.id
      */
     private Integer id;
 
     /**
-     * Column: ehuacui_collect.tid
+     * Column: tb_collect.tid
      */
     private Integer tid;
 
     /**
-     * Column: ehuacui_collect.uid
+     * Column: tb_collect.uid
      */
     private Integer uid;
 
     /**
-     * Column: ehuacui_collect.in_time
+     * Column: tb_collect.in_time
      */
     private Date inTime;
 

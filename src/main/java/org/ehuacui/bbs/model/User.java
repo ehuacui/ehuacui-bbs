@@ -3,92 +3,92 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * Table: ehuacui_user
+ * Table: tb_user
  */
 public class User {
     /**
-     * Column: ehuacui_user.id
+     * Column: tb_user.id
      */
     private Integer id;
 
     /**
      * 昵称
-     * Column: ehuacui_user.nickname
+     * Column: tb_user.nickname
      */
     private String nickname;
 
     /**
      * 积分
-     * Column: ehuacui_user.score
+     * Column: tb_user.score
      */
     private Integer score;
 
     /**
      * 头像
-     * Column: ehuacui_user.avatar
+     * Column: tb_user.avatar
      */
     private String avatar;
 
     /**
      * 邮箱
-     * Column: ehuacui_user.email
+     * Column: tb_user.email
      */
     private String email;
 
     /**
      * 个人主页
-     * Column: ehuacui_user.url
+     * Column: tb_user.url
      */
     private String url;
 
     /**
      * 个性签名
-     * Column: ehuacui_user.signature
+     * Column: tb_user.signature
      */
     private String signature;
 
     /**
      * 第三方账户id
-     * Column: ehuacui_user.third_id
+     * Column: tb_user.third_id
      */
     private String thirdId;
 
     /**
-     * Column: ehuacui_user.access_token
+     * Column: tb_user.access_token
      */
     private String accessToken;
 
     /**
      * 邮箱是否接收社区消息
-     * Column: ehuacui_user.receive_msg
+     * Column: tb_user.receive_msg
      */
     private Boolean receiveMsg;
 
     /**
      * 录入时间
-     * Column: ehuacui_user.in_time
+     * Column: tb_user.in_time
      */
     private Date inTime;
 
     /**
-     * Column: ehuacui_user.expire_time
+     * Column: tb_user.expire_time
      */
     private Date expireTime;
 
     /**
-     * Column: ehuacui_user.channel
+     * Column: tb_user.channel
      */
     private String channel;
 
     /**
      * 禁用0默认 1禁用
-     * Column: ehuacui_user.is_block
+     * Column: tb_user.is_block
      */
     private Boolean isBlock;
 
     /**
      * 第三方登录获取的access_token
-     * Column: ehuacui_user.third_access_token
+     * Column: tb_user.third_access_token
      */
     private String thirdAccessToken;
 

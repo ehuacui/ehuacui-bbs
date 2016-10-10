@@ -3,41 +3,41 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * Table: ehuacui_reply
+ * Table: tb_reply
  */
 public class Reply {
     /**
-     * Column: ehuacui_reply.id
+     * Column: tb_reply.id
      */
     private Integer id;
 
     /**
      * 话题id
-     * Column: ehuacui_reply.tid
+     * Column: tb_reply.tid
      */
     private Integer tid;
 
     /**
      * 录入时间
-     * Column: ehuacui_reply.in_time
+     * Column: tb_reply.in_time
      */
     private Date inTime;
 
     /**
      * 当前回复用户id
-     * Column: ehuacui_reply.author
+     * Column: tb_reply.author
      */
     private String author;
 
     /**
      * 是否删除0 默认 1删除
-     * Column: ehuacui_reply.is_delete
+     * Column: tb_reply.is_delete
      */
     private Boolean isDelete;
 
     /**
      * 回复内容
-     * Column: ehuacui_reply.content
+     * Column: tb_reply.content
      */
     private String content;
 

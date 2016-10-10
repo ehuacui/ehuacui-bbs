@@ -11,10 +11,10 @@
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="last_reply_time" jdbcType="TIMESTAMP" property="lastReplyTime"/>
         <result column="last_reply_author" jdbcType="VARCHAR" property="lastReplyAuthor"/>
-        <result column="view" jdbcType="INTEGER" property="view"/>
+        <result column="view_count" jdbcType="INTEGER" property="view"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
-        <result column="top" jdbcType="BIT" property="top"/>
-        <result column="good" jdbcType="BIT" property="good"/>
+        <result column="is_top" jdbcType="BIT" property="top"/>
+        <result column="is_good" jdbcType="BIT" property="good"/>
         <result column="show_status" jdbcType="BIT" property="showStatus"/>
         <result column="reply_count" jdbcType="INTEGER" property="replyCount"/>
         <result column="is_delete" jdbcType="BIT" property="isDelete"/>
@@ -23,8 +23,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, tab, title, tag, in_time, modify_time, last_reply_time, last_reply_author, view, 
-    author, top, good, show_status, reply_count, is_delete, tag_is_count, content
+    id, tab, title, tag, in_time, modify_time, last_reply_time, last_reply_author, view_count,
+    author, is_top, is_good, show_status, reply_count, is_delete, tag_is_count, content
   </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -39,7 +39,7 @@
         <include refid="Base_Column_List"/>
         from tb_topic t
         where t.is_delete = 0
-        order by t.top desc, t.last_reply_time desc
+        order by t.is_top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -59,7 +59,7 @@
         <include refid="Base_Column_List"/>
         from tb_topic t
         where t.is_delete = 0 and t.tab = #{tab,jdbcType=VARCHAR}
-        order by t.top desc, t.last_reply_time desc
+        order by t.is_top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -78,8 +78,8 @@
         select
         <include refid="Base_Column_List"/>
         from tb_topic t
-        where t.is_delete = 0 and t.good = 1
-        order by t.top desc, t.last_reply_time desc
+        where t.is_delete = 0 and t.is_good = 1
+        order by t.is_top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -91,7 +91,7 @@
     <select id="countAllGood" resultType="java.lang.Integer">
         select count(id)
         from tb_topic t
-        where t.is_delete = 0 and t.good = 1
+        where t.is_delete = 0 and t.is_good = 1
     </select>
 
     <select id="selectAllNoReply" resultMap="BaseResultMap">
@@ -99,7 +99,7 @@
         <include refid="Base_Column_List"/>
         from tb_topic t
         where t.is_delete = 0 and t.id not in (select r.tid from tb_reply r)
-        order by t.top desc, t.last_reply_time desc
+        order by t.is_top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -157,8 +157,8 @@
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Topic" keyProperty="id" useGeneratedKeys="true">
     insert into tb_topic (id, tab, title,
       tag, in_time, modify_time, 
-      last_reply_time, last_reply_author, view, 
-      author, top, good, show_status, 
+      last_reply_time, last_reply_author, view_count,
+      author, is_top, is_good, show_status,
       reply_count, is_delete, tag_is_count, 
       content)
     values (#{id,jdbcType=INTEGER}, #{tab,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
@@ -197,16 +197,16 @@
                 last_reply_author,
             </if>
             <if test="view != null">
-                view,
+                view_count,
             </if>
             <if test="author != null">
                 author,
             </if>
             <if test="top != null">
-                top,
+                is_top,
             </if>
             <if test="good != null">
-                good,
+                is_good,
             </if>
             <if test="showStatus != null">
                 show_status,
@@ -304,16 +304,16 @@
                 last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
             </if>
             <if test="view != null">
-                view = #{view,jdbcType=INTEGER},
+                view_count = #{view,jdbcType=INTEGER},
             </if>
             <if test="author != null">
                 author = #{author,jdbcType=VARCHAR},
             </if>
             <if test="top != null">
-                top = #{top,jdbcType=BIT},
+                is_top = #{top,jdbcType=BIT},
             </if>
             <if test="good != null">
-                good = #{good,jdbcType=BIT},
+                is_good = #{good,jdbcType=BIT},
             </if>
             <if test="showStatus != null">
                 show_status = #{showStatus,jdbcType=BIT},
@@ -343,10 +343,10 @@
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       last_reply_time = #{lastReplyTime,jdbcType=TIMESTAMP},
       last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
-      view = #{view,jdbcType=INTEGER},
+      view_count = #{view,jdbcType=INTEGER},
       author = #{author,jdbcType=VARCHAR},
-      top = #{top,jdbcType=BIT},
-      good = #{good,jdbcType=BIT},
+      is_top = #{top,jdbcType=BIT},
+      is_good = #{good,jdbcType=BIT},
       show_status = #{showStatus,jdbcType=BIT},
       reply_count = #{replyCount,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=BIT},
@@ -363,13 +363,13 @@
 
     <update id="updateTopById" parameterType="java.lang.Integer">
         update tb_topic
-        set top = 1
+        set is_top = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateGoodById" parameterType="java.lang.Integer">
         update tb_topic
-        set good = 1
+        set is_good = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 

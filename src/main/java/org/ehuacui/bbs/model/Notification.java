@@ -3,52 +3,52 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * Table: ehuacui_notification
+ * Table: tb_notification
  */
 public class Notification {
     /**
-     * Column: ehuacui_notification.id
+     * Column: tb_notification.id
      */
     private Integer id;
 
     /**
      * 是否已读：0默认 1已读
-     * Column: ehuacui_notification.read
+     * Column: tb_notification.read
      */
     private Boolean read;
 
     /**
      * 发起通知用户昵称
-     * Column: ehuacui_notification.author
+     * Column: tb_notification.author
      */
     private String author;
 
     /**
      * 要通知用户的昵称
-     * Column: ehuacui_notification.target_author
+     * Column: tb_notification.target_author
      */
     private String targetAuthor;
 
     /**
      * 录入时间
-     * Column: ehuacui_notification.in_time
+     * Column: tb_notification.in_time
      */
     private Date inTime;
 
     /**
      * 通知动作
-     * Column: ehuacui_notification.action
+     * Column: tb_notification.action
      */
     private String action;
 
     /**
      * 话题id
-     * Column: ehuacui_notification.tid
+     * Column: tb_notification.tid
      */
     private Integer tid;
 
     /**
-     * Column: ehuacui_notification.content
+     * Column: tb_notification.content
      */
     private String content;
 

@@ -5,7 +5,7 @@
 
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Notification">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="read" jdbcType="BIT" property="read"/>
+        <result column="is_read" jdbcType="BIT" property="read"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="target_author" jdbcType="VARCHAR" property="targetAuthor"/>
         <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
@@ -15,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `read`, author, target_author, in_time, action, tid, content
+        id, is_read, author, target_author, in_time, action, tid, content
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -26,7 +26,7 @@
     </select>
 
     <select id="countNotReadByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(id) from tb_notification where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
+        select count(id) from tb_notification where is_read = 0 and target_author = #{author,jdbcType=VARCHAR}
     </select>
 
     <select id="countByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -37,7 +37,7 @@
         select n.*, t.title
         from tb_notification n, tb_topic t
         where n.tid = t.id and n.target_author = #{author,jdbcType=VARCHAR}
-        order by n.read, n.in_time desc
+        order by n.is_read, n.in_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -52,9 +52,8 @@
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
-        insert into tb_notification (id, `read`, author,
-        target_author, in_time, action,
-        tid, content)
+        insert into tb_notification (id, is_read, author,
+        target_author, in_time, action,tid, content)
         values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR},
         #{targetAuthor,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR},
         #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
@@ -68,7 +67,7 @@
                 id,
             </if>
             <if test="read != null">
-                `read`,
+                is_read,
             </if>
             <if test="author != null">
                 author,
@@ -121,7 +120,7 @@
         update tb_notification
         <set>
             <if test="read != null">
-                `read` = #{read,jdbcType=BIT},
+                is_read = #{read,jdbcType=BIT},
             </if>
             <if test="author != null">
                 author = #{author,jdbcType=VARCHAR},
@@ -147,7 +146,7 @@
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
         update tb_notification
-        set `read` = #{read,jdbcType=BIT},
+        set is_read = #{read,jdbcType=BIT},
         author = #{author,jdbcType=VARCHAR},
         target_author = #{targetAuthor,jdbcType=VARCHAR},
         in_time = #{inTime,jdbcType=TIMESTAMP},
@@ -158,7 +157,7 @@
     </update>
 
     <update id="updateUnreadToRead" parameterType="java.lang.String">
-        update tb_notification set `read` = 1 where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
+        update tb_notification set is_read = 1 where is_read = 0 and target_author = #{author,jdbcType=VARCHAR}
     </update>
 
 </mapper>

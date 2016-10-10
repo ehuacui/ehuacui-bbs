@@ -3,35 +3,35 @@ package org.ehuacui.bbs.model;
 import java.util.List;
 
 /**
- * Table: ehuacui_permission
+ * Table: tb_permission
  */
 public class Permission {
     /**
-     * Column: ehuacui_permission.id
+     * Column: tb_permission.id
      */
     private Integer id;
 
     /**
      * 权限名称
-     * Column: ehuacui_permission.name
+     * Column: tb_permission.name
      */
     private String name;
 
     /**
      * 授权路径
-     * Column: ehuacui_permission.url
+     * Column: tb_permission.url
      */
     private String url;
 
     /**
      * 权限描述
-     * Column: ehuacui_permission.description
+     * Column: tb_permission.description
      */
     private String description;
 
     /**
      * 父节点0
-     * Column: ehuacui_permission.pid
+     * Column: tb_permission.pid
      */
     private Integer pid;
 

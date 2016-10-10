@@ -1,21 +1,21 @@
 package org.ehuacui.bbs.model;
 
 /**
- * Table: ehuacui_role
+ * Table: tb_role
  */
 public class Role {
     /**
-     * Column: ehuacui_role.id
+     * Column: tb_role.id
      */
     private Integer id;
 
     /**
-     * Column: ehuacui_role.name
+     * Column: tb_role.name
      */
     private String name;
 
     /**
-     * Column: ehuacui_role.description
+     * Column: tb_role.description
      */
     private String description;
 

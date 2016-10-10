@@ -4,107 +4,107 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Table: ehuacui_topic
+ * Table: tb_topic
  */
 public class Topic {
     /**
-     * Column: ehuacui_topic.id
+     * Column: tb_topic.id
      */
     private Integer id;
 
     /**
      * 版块标识
-     * Column: ehuacui_topic.tab
+     * Column: tb_topic.tab
      */
     private String tab;
 
     /**
      * 话题标题
-     * Column: ehuacui_topic.title
+     * Column: tb_topic.title
      */
     private String title;
 
     /**
      * 话题内容标签
-     * Column: ehuacui_topic.tag
+     * Column: tb_topic.tag
      */
     private String tag;
 
     /**
      * 录入时间
-     * Column: ehuacui_topic.in_time
+     * Column: tb_topic.in_time
      */
     private Date inTime;
 
     /**
      * 修改时间
-     * Column: ehuacui_topic.modify_time
+     * Column: tb_topic.modify_time
      */
     private Date modifyTime;
 
     /**
      * 最后回复话题时间，用于排序
-     * Column: ehuacui_topic.last_reply_time
+     * Column: tb_topic.last_reply_time
      */
     private Date lastReplyTime;
 
     /**
      * 最后回复话题的用户id
-     * Column: ehuacui_topic.last_reply_author
+     * Column: tb_topic.last_reply_author
      */
     private String lastReplyAuthor;
 
     /**
      * 浏览量
-     * Column: ehuacui_topic.view
+     * Column: tb_topic.view
      */
     private Integer view;
 
     /**
      * 话题作者id
-     * Column: ehuacui_topic.author
+     * Column: tb_topic.author
      */
     private String author;
 
     /**
      * 1置顶 0默认
-     * Column: ehuacui_topic.top
+     * Column: tb_topic.top
      */
     private Boolean top;
 
     /**
      * 1精华 0默认
-     * Column: ehuacui_topic.good
+     * Column: tb_topic.good
      */
     private Boolean good;
 
     /**
      * 1显示0不显示
-     * Column: ehuacui_topic.show_status
+     * Column: tb_topic.show_status
      */
     private Boolean showStatus;
 
     /**
      * 回复数量
-     * Column: ehuacui_topic.reply_count
+     * Column: tb_topic.reply_count
      */
     private Integer replyCount;
 
     /**
      * 1删除0默认
-     * Column: ehuacui_topic.is_delete
+     * Column: tb_topic.is_delete
      */
     private Boolean isDelete;
 
     /**
      * 话题内容标签是否被统计过1是0否默认
-     * Column: ehuacui_topic.tag_is_count
+     * Column: tb_topic.tag_is_count
      */
     private Boolean tagIsCount;
 
     /**
      * 话题内容
-     * Column: ehuacui_topic.content
+     * Column: tb_topic.content
      */
     private String content;
 

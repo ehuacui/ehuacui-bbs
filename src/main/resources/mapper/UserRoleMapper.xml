@@ -3,6 +3,7 @@
 <mapper namespace="org.ehuacui.bbs.mapper.UserRoleMapper">
 
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.UserRole">
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="uid" jdbcType="INTEGER" property="uid"/>
         <result column="rid" jdbcType="INTEGER" property="rid"/>
     </resultMap>
@@ -16,13 +17,16 @@
     </select>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.UserRole">
-        insert into tb_user_role (uid, rid)
-        values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
+        insert into tb_user_role (id, uid, rid)
+        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.UserRole">
         insert into tb_user_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
             <if test="uid != null">
                 uid,
             </if>
@@ -31,6 +35,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
             <if test="uid != null">
                 #{uid,jdbcType=INTEGER},
             </if>

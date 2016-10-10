@@ -1,47 +1,47 @@
 package org.ehuacui.bbs.model;
 
 /**
- * Table: ehuacui_section
+ * Table: tb_section
  */
 public class Section {
     /**
-     * Column: ehuacui_section.id
+     * Column: tb_section.id
      */
     private Integer id;
 
     /**
      * 板块名称
-     * Column: ehuacui_section.name
+     * Column: tb_section.name
      */
     private String name;
 
     /**
      * 板块标签
-     * Column: ehuacui_section.tab
+     * Column: tb_section.tab
      */
     private String tab;
 
     /**
      * 是否显示，0不显示1显示
-     * Column: ehuacui_section.show_status
+     * Column: tb_section.show_status
      */
     private Boolean showStatus;
 
     /**
      * 板块排序
-     * Column: ehuacui_section.display_index
+     * Column: tb_section.display_index
      */
     private Integer displayIndex;
 
     /**
      * 默认显示板块 0默认，1显示
-     * Column: ehuacui_section.default_show
+     * Column: tb_section.default_show
      */
     private Boolean defaultShow;
 
     /**
      * 模块父节点
-     * Column: ehuacui_section.pid
+     * Column: tb_section.pid
      */
     private Integer pid;
 

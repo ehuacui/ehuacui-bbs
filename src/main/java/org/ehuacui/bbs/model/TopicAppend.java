@@ -3,31 +3,31 @@ package org.ehuacui.bbs.model;
 import java.util.Date;
 
 /**
- * Table: ehuacui_topic_append
+ * Table: tb_topic_append
  */
 public class TopicAppend {
     /**
-     * Column: ehuacui_topic_append.id
+     * Column: tb_topic_append.id
      */
     private Integer id;
 
     /**
-     * Column: ehuacui_topic_append.tid
+     * Column: tb_topic_append.tid
      */
     private Integer tid;
 
     /**
-     * Column: ehuacui_topic_append.in_time
+     * Column: tb_topic_append.in_time
      */
     private Date inTime;
 
     /**
-     * Column: ehuacui_topic_append.is_delete
+     * Column: tb_topic_append.is_delete
      */
     private Boolean isDelete;
 
     /**
-     * Column: ehuacui_topic_append.content
+     * Column: tb_topic_append.content
      */
     private String content;
 
