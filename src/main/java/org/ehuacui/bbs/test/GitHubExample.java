@@ -24,8 +24,8 @@ public final class GitHubExample {
 
     public static void main(String... args) throws IOException {
         // Replace these with your client id and secret
-        final String clientId = "c5678378866b1cdc8c83";
-        final String clientSecret = "e305974cf85e961f4be5f214d4616acc107a9829";
+        final String clientId = "c389219e105628399f96";
+        final String clientSecret = "6a2348ef45e99c04a1423130bc5b89b5ee9c71e9";
         final String secretState = "secret" + new Random().nextInt(999_999);
         final OAuth20Service service = new ServiceBuilder()
                 .apiKey(clientId)

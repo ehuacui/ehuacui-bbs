@@ -8,6 +8,7 @@ import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,9 @@ import java.util.Map;
  * http://www.ehuacui.org
  */
 public class CommonInterceptor implements Interceptor {
+
+    @Value("${share.domain}")
+    private String shareDomain;
 
     @Autowired
     private IUserService userService;
