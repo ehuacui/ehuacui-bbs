@@ -5,7 +5,6 @@ import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
-import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
@@ -56,7 +55,7 @@ public class UserController extends BaseController {
     public String index(HttpServletRequest request, @PathVariable("nickname") String nickname) {
         User currentUser = userService.findByNickname(nickname);
         if (currentUser != null) {
-            Long collectCount = collectService.countByUid(currentUser.getId());
+            Long collectCount = topicService.countByUid(currentUser.getId());
             currentUser.setCollectCount(collectCount);
             Page<Topic> topicPage = topicService.pageByAuthor(1, 7, nickname);
             Page<Reply> replyPage = replyService.pageByAuthor(1, 7, nickname);
@@ -114,7 +113,7 @@ public class UserController extends BaseController {
                            @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Collect> page = collectService.findByUid(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), user.getId());
+        Page<Topic> page = topicService.findByUid(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), user.getId());
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getNameByTab", new GetNameByTab());

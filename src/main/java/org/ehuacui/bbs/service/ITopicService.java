@@ -107,4 +107,22 @@ public interface ITopicService {
 
     void update(Topic topic);
 
+    /**
+     * 收藏话题列表
+     *
+     * @param pageNumber
+     * @param pageSize
+     * @param uid
+     * @return
+     */
+    Page<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid);
+
+    /**
+     * 查询用户收藏的数量
+     *
+     * @param uid
+     * @return
+     */
+    Long countByUid(Integer uid);
+
 }

@@ -22,15 +22,22 @@
     </select>
 
     <select id="selectByUid" resultMap="BaseResultMap">
-        select c.*, t.*
+        select t.*
         from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
         where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
+        order by c.in_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
                 ,#{limit,jdbcType=INTEGER}
             </if>
         </if>
+    </select>
+
+    <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        select count(1) as count
+        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <select id="selectByTidAndUid" resultMap="BaseResultMap">
@@ -42,10 +49,6 @@
 
     <select id="countByTid" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(1) as count from ehuacui_collect where tid = #{tid,jdbcType=INTEGER}
-    </select>
-
-    <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
-        select count(1) as count from ehuacui_collect where uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

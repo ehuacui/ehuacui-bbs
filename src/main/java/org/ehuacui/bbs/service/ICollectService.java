@@ -24,24 +24,6 @@ public interface ICollectService {
      */
     Long countByTid(Integer tid);
 
-    /**
-     * 收藏话题列表
-     *
-     * @param pageNumber
-     * @param pageSize
-     * @param uid
-     * @return
-     */
-    Page<Collect> findByUid(Integer pageNumber, Integer pageSize, Integer uid);
-
-    /**
-     * 查询用户收藏的数量
-     *
-     * @param uid
-     * @return
-     */
-    Long countByUid(Integer uid);
-
     void save(Collect collect);
 
     void delete(Integer id);

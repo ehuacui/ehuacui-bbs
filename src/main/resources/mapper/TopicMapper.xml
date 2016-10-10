@@ -372,4 +372,24 @@
         set good = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select t.*
+        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
+        order by c.in_time desc
+        <if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        select count(1) as count
+        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
+    </select>
+
 </mapper>

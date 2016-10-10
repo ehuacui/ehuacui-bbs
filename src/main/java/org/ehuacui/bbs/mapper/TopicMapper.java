@@ -49,4 +49,8 @@ public interface TopicMapper {
     int updateTopById(@Param("id") Integer id);
 
     int updateGoodById(@Param("id") Integer id);
+
+    List<Topic> selectByUid(@Param("uid") Integer uid, @Param("start") Integer start, @Param("limit") Integer limit);
+
+    long countByUid(@Param("uid") Integer uid);
 }

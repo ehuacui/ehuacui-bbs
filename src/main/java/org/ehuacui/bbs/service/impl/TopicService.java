@@ -190,4 +190,30 @@ public class TopicService implements ITopicService {
     public void update(Topic topic) {
         topicMapper.updateByPrimaryKey(topic);
     }
+
+    /**
+     * 收藏话题列表
+     *
+     * @param pageNumber
+     * @param pageSize
+     * @param uid
+     * @return
+     */
+    @Override
+    public Page<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
+        List<Topic> list = topicMapper.selectByUid(uid, (pageNumber - 1) * pageSize, pageSize);
+        long total = topicMapper.countByUid(uid);
+        return new Page<>(list, pageNumber, pageSize, total);
+    }
+
+    /**
+     * 查询用户收藏的数量
+     *
+     * @param uid
+     * @return
+     */
+    @Override
+    public Long countByUid(Integer uid) {
+        return topicMapper.countByUid(uid);
+    }
 }

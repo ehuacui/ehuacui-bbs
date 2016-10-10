@@ -1,13 +1,10 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.mapper.CollectMapper;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.service.ICollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by ehuacui.
@@ -41,32 +38,6 @@ public class CollectService implements ICollectService {
     @Override
     public Long countByTid(Integer tid) {
         return collectMapper.countByTid(tid);
-    }
-
-    /**
-     * 收藏话题列表
-     *
-     * @param pageNumber
-     * @param pageSize
-     * @param uid
-     * @return
-     */
-    @Override
-    public Page<Collect> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
-        List<Collect> list = collectMapper.selectByUid(uid, (pageNumber - 1) * pageSize, pageSize);
-        long total = collectMapper.countByUid(uid);
-        return new Page<>(list, pageNumber, pageSize, total);
-    }
-
-    /**
-     * 查询用户收藏的数量
-     *
-     * @param uid
-     * @return
-     */
-    @Override
-    public Long countByUid(Integer uid) {
-        return collectMapper.countByUid(uid);
     }
 
     @Override

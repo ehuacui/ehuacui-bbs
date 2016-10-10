@@ -19,11 +19,7 @@ public interface CollectMapper {
 
     int updateByPrimaryKey(Collect record);
 
-    List<Collect> selectByUid(@Param("uid") Integer uid, @Param("start") Integer start, @Param("limit") Integer limit);
-
     Collect selectByTidAndUid(@Param("tid") Integer tid, @Param("uid") Integer uid);
 
     long countByTid(@Param("tid") Integer tid);
-
-    long countByUid(@Param("uid") Integer uid);
 }
