@@ -8,16 +8,16 @@
     </resultMap>
 
     <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select * from ehuacui_role_permission where rid = #{rid,jdbcType=INTEGER}
+        select * from tb_role_permission where rid = #{rid,jdbcType=INTEGER}
     </select>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.RolePermission">
-    insert into ehuacui_role_permission (rid, pid)
+    insert into tb_role_permission (rid, pid)
     values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
   </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.RolePermission">
-        insert into ehuacui_role_permission
+        insert into tb_role_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="rid != null">
                 rid,
@@ -37,12 +37,12 @@
     </insert>
 
     <delete id="deleteByRoleId" parameterType="java.lang.Integer">
-        delete from ehuacui_role_permission
+        delete from tb_role_permission
         where rid = #{rid,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByPermissionId" parameterType="java.lang.Integer">
-        delete from ehuacui_role_permission
+        delete from tb_role_permission
         where pid = #{pid,jdbcType=INTEGER}
     </delete>
 

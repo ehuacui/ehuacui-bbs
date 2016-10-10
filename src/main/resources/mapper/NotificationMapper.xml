@@ -21,21 +21,21 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_notification
+        from tb_notification
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="countNotReadByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(id) from ehuacui_notification where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
+        select count(id) from tb_notification where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
     </select>
 
     <select id="countByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(id) from ehuacui_notification where target_author = #{author,jdbcType=VARCHAR}
+        select count(id) from tb_notification where target_author = #{author,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByAuthor" resultMap="BaseResultMap">
         select n.*, t.title
-        from ehuacui_notification n, ehuacui_topic t
+        from tb_notification n, tb_topic t
         where n.tid = t.id and n.target_author = #{author,jdbcType=VARCHAR}
         order by n.read, n.in_time desc
         <if test="start != null">
@@ -47,12 +47,12 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_notification
+        delete from tb_notification
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_notification (id, `read`, author,
+        insert into tb_notification (id, `read`, author,
         target_author, in_time, action,
         tid, content)
         values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR},
@@ -62,7 +62,7 @@
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id"
             useGeneratedKeys="true">
-        insert into ehuacui_notification
+        insert into tb_notification
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -118,7 +118,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Notification">
-        update ehuacui_notification
+        update tb_notification
         <set>
             <if test="read != null">
                 `read` = #{read,jdbcType=BIT},
@@ -146,7 +146,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
-        update ehuacui_notification
+        update tb_notification
         set `read` = #{read,jdbcType=BIT},
         author = #{author,jdbcType=VARCHAR},
         target_author = #{targetAuthor,jdbcType=VARCHAR},
@@ -158,7 +158,7 @@
     </update>
 
     <update id="updateUnreadToRead" parameterType="java.lang.String">
-        update ehuacui_notification set `read` = 1 where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
+        update tb_notification set `read` = 1 where `read` = 0 and target_author = #{author,jdbcType=VARCHAR}
     </update>
 
 </mapper>

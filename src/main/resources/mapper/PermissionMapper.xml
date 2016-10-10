@@ -17,43 +17,43 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_permission
+        from tb_permission
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_permission
+        from tb_permission
         where pid = #{pid,jdbcType=INTEGER}
     </select>
 
     <select id="selectAllChild" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_permission
+        from tb_permission
         where pid != 0
     </select>
 
     <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select p.*
-        from ehuacui_user u, ehuacui_role r, ehuacui_permission p,ehuacui_user_role ur, ehuacui_role_permission rp
+        from tb_user u, tb_role r, tb_permission p,tb_user_role ur, tb_role_permission rp
         where u.id = ur.uid and r.id = ur.rid and r.id = rp.rid and p.id = rp.pid
         and u.id = #{uid,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_permission
+        delete from tb_permission
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByPid" parameterType="java.lang.Integer">
-        delete from ehuacui_permission
+        delete from tb_permission
         where pid = #{pid,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Permission" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_permission (id, name, url,
+        insert into tb_permission (id, name, url,
         description, pid)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
         #{description,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
@@ -61,7 +61,7 @@
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Permission" keyProperty="id"
             useGeneratedKeys="true">
-        insert into ehuacui_permission
+        insert into tb_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -99,7 +99,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Permission">
-        update ehuacui_permission
+        update tb_permission
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
@@ -118,7 +118,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Permission">
-        update ehuacui_permission
+        update tb_permission
         set name = #{name,jdbcType=VARCHAR},
         url = #{url,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},

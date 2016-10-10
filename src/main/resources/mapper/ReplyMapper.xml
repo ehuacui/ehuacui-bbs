@@ -17,14 +17,14 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_reply
+        from tb_reply
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByTid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_reply where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
+        from tb_reply where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -34,12 +34,12 @@
     </select>
 
     <select id="countByTid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(id) from ehuacui_reply where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
+        select count(id) from tb_reply where is_delete = 0 and tid = #{tid,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select r.author as replyAuthor, r.content, r.in_time, t.id as tid, t.author as topicAuthor, t.title
-        from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id
+        from tb_reply r left join tb_topic t on r.tid = t.id
         order by r.in_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
@@ -51,12 +51,12 @@
 
     <select id="countAll" resultType="java.lang.Integer">
         select count(r.id)
-        from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id
+        from tb_reply r left join tb_topic t on r.tid = t.id
     </select>
 
     <select id="selectByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
         select t.title, t.author as topicAuthor, t.in_time, r.tid, r.content
-        from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id
+        from tb_reply r left join tb_topic t on r.tid = t.id
         where t.is_delete = 0 and r.is_delete = 0 and r.author = #{author,jdbcType=VARCHAR}
         order by r.in_time desc
         <if test="start != null">
@@ -69,24 +69,24 @@
 
     <select id="countByAuthor" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(r.id)
-        from ehuacui_reply r left join ehuacui_topic t on r.tid = t.id
+        from tb_reply r left join tb_topic t on r.tid = t.id
         where t.is_delete = 0 and r.is_delete = 0 and r.author = #{author,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_reply
+        delete from tb_reply
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Reply" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_reply (id, tid, in_time, author, is_delete, content)
+        insert into tb_reply (id, tid, in_time, author, is_delete, content)
         values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP},
         #{author,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR}
         )
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Reply" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_reply
+        insert into tb_reply
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -130,17 +130,17 @@
     </insert>
 
     <update id="deleteById">
-        update ehuacui_reply set is_delete = 1
+        update tb_reply set is_delete = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="deleteByTid">
-        update ehuacui_reply set is_delete = 1
+        update tb_reply set is_delete = 1
         where tid = #{tid,jdbcType=INTEGER}
     </update>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Reply">
-        update ehuacui_reply
+        update tb_reply
         <set>
             <if test="tid != null">
                 tid = #{tid,jdbcType=INTEGER},
@@ -162,7 +162,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Reply">
-        update ehuacui_reply
+        update tb_reply
         set tid = #{tid,jdbcType=INTEGER},
         in_time = #{inTime,jdbcType=TIMESTAMP},
         author = #{author,jdbcType=VARCHAR},

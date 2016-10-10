@@ -28,7 +28,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_user
+        from tb_user
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -38,38 +38,38 @@
     </select>
 
     <select id="countAll" resultType="java.lang.Integer">
-        select count(id) from ehuacui_user
+        select count(id) from tb_user
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_user
+        from tb_user
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByThirdId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_user
+        from tb_user
         where third_id = #{thirdId,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByNickName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_user
+        from tb_user
         where nickname = #{nickname,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByPermissionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select u.* from ehuacui_user u, ehuacui_user_role ur, ehuacui_role r, ehuacui_role_permission rp,
-        ehuacui_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
+        select u.* from tb_user u, tb_user_role ur, tb_role r, tb_role_permission rp,
+        tb_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
         and p.id = #{pid,jdbcType=INTEGER}
     </select>
 
     <select id="selectUserScores" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select user.*, role.description from ehuacui_user user, ehuacui_role role, ehuacui_user_role ur
+        select user.*, role.description from tb_user user, tb_role role, tb_user_role ur
         where user.id = ur.uid and ur.rid = role.id
         order by score desc, in_time desc
         <if test="limit != null">
@@ -80,22 +80,22 @@
     <select id="selectByAccessToken" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_user
+        from tb_user
         where access_token = #{accessToken,jdbcType=VARCHAR} and expire_time &gt; #{expireTime,jdbcType=TIMESTAMP}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_user
+        delete from tb_user
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByNickName" parameterType="java.lang.String">
-        delete from ehuacui_user
+        delete from tb_user
         where nickname = #{nickname,jdbcType=VARCHAR}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_user (id, nickname, score,
+        insert into tb_user (id, nickname, score,
         avatar, email, url,
         signature, third_id, access_token,
         receive_msg, in_time, expire_time,
@@ -110,7 +110,7 @@
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_user
+        insert into tb_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -208,7 +208,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.User">
-        update ehuacui_user
+        update tb_user
         <set>
             <if test="nickname != null">
                 nickname = #{nickname,jdbcType=VARCHAR},
@@ -257,7 +257,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.User">
-        update ehuacui_user
+        update tb_user
         set nickname = #{nickname,jdbcType=VARCHAR},
         score = #{score,jdbcType=INTEGER},
         avatar = #{avatar,jdbcType=VARCHAR},

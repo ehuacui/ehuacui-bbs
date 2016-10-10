@@ -17,13 +17,13 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_collect
+        from tb_collect
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByUid" resultMap="BaseResultMap">
         select t.*
-        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        from tb_collect c left join tb_topic t on c.tid = t.id
         where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
         order by c.in_time desc
         <if test="start != null">
@@ -36,35 +36,35 @@
 
     <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(1) as count
-        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        from tb_collect c left join tb_topic t on c.tid = t.id
         where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <select id="selectByTidAndUid" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_collect
+        from tb_collect
         where tid = #{tid,jdbcType=INTEGER} and uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <select id="countByTid" parameterType="java.lang.Integer" resultType="java.lang.Long">
-        select count(1) as count from ehuacui_collect where tid = #{tid,jdbcType=INTEGER}
+        select count(1) as count from tb_collect where tid = #{tid,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_collect
+        delete from tb_collect
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_collect (id, tid, uid,
+        insert into tb_collect (id, tid, uid,
         in_time)
         values (#{id,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
         #{inTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Collect" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_collect
+        insert into tb_collect
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -96,7 +96,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Collect">
-        update ehuacui_collect
+        update tb_collect
         <set>
             <if test="tid != null">
                 tid = #{tid,jdbcType=INTEGER},
@@ -112,7 +112,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Collect">
-        update ehuacui_collect
+        update tb_collect
         set tid = #{tid,jdbcType=INTEGER},
         uid = #{uid,jdbcType=INTEGER},
         in_time = #{inTime,jdbcType=TIMESTAMP}

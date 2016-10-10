@@ -19,20 +19,20 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_section
+        from tb_section
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_section
+        from tb_section
     </select>
 
     <select id="selectByShowStatus" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_section
+        from tb_section
         where show_status = #{showStatus,jdbcType=BIT}
         order by display_index
     </select>
@@ -40,17 +40,17 @@
     <select id="selectByShowTab" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_section
+        from tb_section
         where tab = #{tab,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_section
+        delete from tb_section
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_section (id, name, tab,
+        insert into tb_section (id, name, tab,
         show_status, display_index, default_show,
         pid)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tab,jdbcType=VARCHAR},
@@ -59,7 +59,7 @@
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Section" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_section
+        insert into tb_section
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -109,7 +109,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Section">
-        update ehuacui_section
+        update tb_section
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
@@ -134,7 +134,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Section">
-        update ehuacui_section
+        update tb_section
         set name = #{name,jdbcType=VARCHAR},
         tab = #{tab,jdbcType=VARCHAR},
         show_status = #{showStatus,jdbcType=BIT},

@@ -15,7 +15,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_role
+        from tb_role
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
             <if test="limit != null">
@@ -26,37 +26,37 @@
 
     <select id="countAll" resultType="java.lang.Integer">
         select count(id)
-        from ehuacui_role
+        from tb_role
     </select>
 
     <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_role
+        from tb_role
         where name = #{name,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_role
+        from tb_role
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_role
+        delete from tb_role
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Role" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_role (id, name, description
+        insert into tb_role (id, name, description
         )
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
         )
     </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Role" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_role
+        insert into tb_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -82,7 +82,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Role">
-        update ehuacui_role
+        update tb_role
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
@@ -95,7 +95,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Role">
-        update ehuacui_role
+        update tb_role
         set name = #{name,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}

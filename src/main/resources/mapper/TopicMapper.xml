@@ -30,14 +30,14 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic
+        from tb_topic
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0
         order by t.top desc, t.last_reply_time desc
         <if test="start != null">
@@ -50,14 +50,14 @@
 
     <select id="countAll" resultType="java.lang.Integer">
         select count(id)
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0
     </select>
 
     <select id="selectByTab" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0 and t.tab = #{tab,jdbcType=VARCHAR}
         order by t.top desc, t.last_reply_time desc
         <if test="start != null">
@@ -70,14 +70,14 @@
 
     <select id="countByTab" resultType="java.lang.Integer">
         select count(id)
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0 and t.tab = #{tab,jdbcType=VARCHAR}
     </select>
 
     <select id="selectAllGood" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0 and t.good = 1
         order by t.top desc, t.last_reply_time desc
         <if test="start != null">
@@ -90,15 +90,15 @@
 
     <select id="countAllGood" resultType="java.lang.Integer">
         select count(id)
-        from ehuacui_topic t
+        from tb_topic t
         where t.is_delete = 0 and t.good = 1
     </select>
 
     <select id="selectAllNoReply" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic t
-        where t.is_delete = 0 and t.id not in (select r.tid from ehuacui_reply r)
+        from tb_topic t
+        where t.is_delete = 0 and t.id not in (select r.tid from tb_reply r)
         order by t.top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
@@ -110,14 +110,14 @@
 
     <select id="countAllNoReply" resultType="java.lang.Integer">
         select count(id)
-        from ehuacui_topic t
-        where t.is_delete = 0 and t.id not in (select r.tid from ehuacui_reply r)
+        from tb_topic t
+        where t.is_delete = 0 and t.id not in (select r.tid from tb_reply r)
     </select>
 
     <select id="selectOtherTopicByAuthor" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic
+        from tb_topic
         where is_delete = 0
         and id != #{id,jdbcType=INTEGER}
         and author = #{author,jdbcType=VARCHAR}
@@ -133,7 +133,7 @@
     <select id="selectByAuthor" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ehuacui_topic
+        from tb_topic
         where is_delete = 0 and author = #{author,jdbcType=VARCHAR}
         order by in_time desc
         <if test="start != null">
@@ -145,17 +145,17 @@
     </select>
 
     <select id="countByAuthor" resultType="java.lang.Integer">
-        select count(id) from ehuacui_topic
+        select count(id) from tb_topic
         where is_delete = 0 and author = #{author,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from ehuacui_topic
+        delete from tb_topic
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Topic" keyProperty="id" useGeneratedKeys="true">
-    insert into ehuacui_topic (id, tab, title, 
+    insert into tb_topic (id, tab, title,
       tag, in_time, modify_time, 
       last_reply_time, last_reply_author, view, 
       author, top, good, show_status, 
@@ -170,7 +170,7 @@
   </insert>
 
     <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.Topic" keyProperty="id" useGeneratedKeys="true">
-        insert into ehuacui_topic
+        insert into tb_topic
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -280,7 +280,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Topic">
-        update ehuacui_topic
+        update tb_topic
         <set>
             <if test="tab != null">
                 tab = #{tab,jdbcType=VARCHAR},
@@ -335,7 +335,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Topic">
-    update ehuacui_topic
+    update tb_topic
     set tab = #{tab,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       tag = #{tag,jdbcType=VARCHAR},
@@ -356,26 +356,26 @@
   </update>
 
     <update id="deleteById" parameterType="java.lang.Integer">
-        update ehuacui_topic
+        update tb_topic
         set is_delete = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateTopById" parameterType="java.lang.Integer">
-        update ehuacui_topic
+        update tb_topic
         set top = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateGoodById" parameterType="java.lang.Integer">
-        update ehuacui_topic
+        update tb_topic
         set good = 1
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByUid" resultMap="BaseResultMap">
         select t.*
-        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        from tb_collect c left join tb_topic t on c.tid = t.id
         where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
         order by c.in_time desc
         <if test="start != null">
@@ -388,7 +388,7 @@
 
     <select id="countByUid" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select count(1) as count
-        from ehuacui_collect c left join ehuacui_topic t on c.tid = t.id
+        from tb_collect c left join tb_topic t on c.tid = t.id
         where t.is_delete = 0 and c.uid = #{uid,jdbcType=INTEGER}
     </select>
 
