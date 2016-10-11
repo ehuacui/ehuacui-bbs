@@ -15,9 +15,9 @@ import org.ehuacui.bbs.service.ITopicService;
 import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +37,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/reply")
 public class ReplyController extends BaseController {
+
+    @Value("${pageSize}")
+    private Integer pageSize;
 
     @Autowired
     private IUserService userService;
@@ -156,7 +159,7 @@ public class ReplyController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
-        request.setAttribute("page", replyService.findAll(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
+        request.setAttribute("page", replyService.findAll(p, pageSize));
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("marked", new Marked());
         return ("reply/list");

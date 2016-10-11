@@ -13,10 +13,10 @@ import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.utils.QiniuUploadUtil;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +36,23 @@ import java.util.Map;
 @Controller
 public class IndexController extends BaseController {
 
+    @Value("${solr.status}")
+    private String solrStatus;
+    @Value("${pageSize}")
+    private Integer pageSize;
+    @Value("${cookie.domain}")
+    private String cookieDomain;
+
+    @Value("${static.path}")
+    private String staticPath;
+    @Value("${upload.type}")
+    private String uploadType;
+    @Value("${file.domain}")
+    private String fileDomain;
+    @Value("${qiniu.url}")
+    private String qiniuURL;
+
+
     @Autowired
     private ISectionService sectionService;
     @Autowired
@@ -53,7 +70,7 @@ public class IndexController extends BaseController {
         } else {
             request.setAttribute("sectionName", "版块");
         }
-        Page<Topic> page = topicService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize", 20), tab);
+        Page<Topic> page = topicService.page(p, pageSize, tab);
         request.setAttribute("tab", tab);
         request.setAttribute("sections", sectionService.findByShowStatus(true));
         request.setAttribute("page", page);
@@ -80,7 +97,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpServletResponse response) {
-        WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"));
+        WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", cookieDomain);
         return redirect("/");
     }
 
@@ -99,9 +116,8 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public void upload(@RequestParam("file") MultipartFile file) {
         try {
-            String path = ResourceUtil.getWebConfigValueByKey("static.path");
             String fileName = file.getOriginalFilename();
-            File targetFile = new File(path, fileName);
+            File targetFile = new File(staticPath, fileName);
             File parentFile = targetFile.getParentFile();
             if (parentFile != null) {
                 parentFile.mkdirs();
@@ -109,14 +125,14 @@ public class IndexController extends BaseController {
             //保存
             file.transferTo(targetFile);
             String url = "";
-            if (ResourceUtil.getWebConfigValueByKey("upload.type").equals("local")) {
-                url = ResourceUtil.getWebConfigValueByKey("file.domain") + "/static/upload/" + fileName;
-            } else if (ResourceUtil.getWebConfigValueByKey("upload.type").equals("qiniu")) {
+            if (uploadType.equals("local")) {
+                url = fileDomain + "/static/upload/" + fileName;
+            } else if (uploadType.equals("qiniu")) {
                 // 将本地文件上传到七牛,并删除本地文件
-                String filePath = path + fileName;
+                String filePath = staticPath + fileName;
                 Map map = new QiniuUploadUtil().upload(filePath);
                 targetFile.delete();
-                url = ResourceUtil.getWebConfigValueByKey("qiniu.url") + "/" + map.get("key");
+                url = qiniuURL + "/" + map.get("key");
             }
             success(url);
         } catch (Exception e) {
@@ -131,7 +147,7 @@ public class IndexController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/solr", method = RequestMethod.GET)
     public String solr() {
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus.equalsIgnoreCase("true")) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.indexAll();
         }
@@ -143,7 +159,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(HttpServletRequest request, @RequestParam(value = "p", defaultValue = "1") Integer p, @RequestParam("q") String q) {
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus.equalsIgnoreCase("true")) {
             SolrUtil solrUtil = new SolrUtil();
             Page page = solrUtil.indexQuery(p, q);
             request.setAttribute("q", q);
@@ -155,7 +171,7 @@ public class IndexController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/delete-all-index", method = RequestMethod.GET)
     public String deleteAllIndex() {
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus.equalsIgnoreCase("true")) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.deleteAll();
         }

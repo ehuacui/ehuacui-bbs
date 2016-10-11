@@ -12,12 +12,12 @@ import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.template.MarkedNotAt;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +38,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/topic")
 public class TopicController extends BaseController {
+
+    @Value("${replyPageSize}")
+    private Integer replyPageSize;
+    @Value("${solr.status}")
+    private Boolean solrStatus;
 
     @Autowired
     private ITopicService topicService;
@@ -84,7 +89,6 @@ public class TopicController extends BaseController {
         //查询作者其他话题
         List<Topic> otherTopics = topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
         //查询回复
-        Integer replyPageSize = ResourceUtil.getWebConfigIntegerValueByKey("replyPageSize");
         Page<Reply> page = replyService.page(p, replyPageSize, tid);
         //查询收藏数量
         long collectCount = collectService.countByTid(tid);
@@ -146,7 +150,7 @@ public class TopicController extends BaseController {
             topic.setIsDelete(false);
             topicService.save(topic);
             //索引话题
-            if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+            if (solrStatus) {
                 SolrUtil solrUtil = new SolrUtil();
                 solrUtil.indexTopic(topic);
             }
@@ -183,7 +187,7 @@ public class TopicController extends BaseController {
         topic.setContent(content);
         topicService.update(topic);
         //索引话题
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.indexTopic(topic);
         }
@@ -223,7 +227,7 @@ public class TopicController extends BaseController {
             topicAppend.setIsDelete(false);
             topicAppendService.save(topicAppend);
             //索引话题
-            if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+            if (solrStatus) {
                 topic.setContent(topic.getContent() + "\n" + content);
                 SolrUtil solrUtil = new SolrUtil();
                 solrUtil.indexTopic(topic);
@@ -257,7 +261,7 @@ public class TopicController extends BaseController {
         topicAppend.setContent(content);
         topicAppendService.update(topicAppend);
         //索引话题
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus) {
             topic.setContent(topic.getContent() + "\n" + content);
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.indexTopic(topic);
@@ -284,7 +288,7 @@ public class TopicController extends BaseController {
         //删除话题（非物理删除）
         topicService.deleteById(id);
         //删除索引
-        if (ResourceUtil.getWebConfigBooleanValueByKey("solr.status")) {
+        if (solrStatus) {
             SolrUtil solrUtil = new SolrUtil();
             solrUtil.indexDelete(String.valueOf(id));
         }

@@ -9,8 +9,8 @@ import org.ehuacui.bbs.service.INotificationService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/notification")
 public class NotificationController extends BaseController {
 
+    @Value("${pageSize}")
+    private Integer pageSize;
+
     @Autowired
     private INotificationService notificationService;
 
@@ -34,7 +37,7 @@ public class NotificationController extends BaseController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
         User user = getUser(request);
-        Page<Notification> page = notificationService.pageByAuthor(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize"), user.getNickname());
+        Page<Notification> page = notificationService.pageByAuthor(p, pageSize, user.getNickname());
         //将通知都设置成已读的
         notificationService.makeUnreadToRead(user.getNickname());
         request.setAttribute("page", page);

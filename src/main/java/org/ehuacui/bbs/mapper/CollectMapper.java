@@ -3,8 +3,6 @@ package org.ehuacui.bbs.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.ehuacui.bbs.model.Collect;
 
-import java.util.List;
-
 public interface CollectMapper {
 
     int deleteByPrimaryKey(@Param("id") Integer id);

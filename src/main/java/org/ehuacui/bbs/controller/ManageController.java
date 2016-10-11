@@ -9,8 +9,8 @@ import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.service.*;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +29,9 @@ import java.util.List;
 @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
 public class ManageController extends BaseController {
 
+    @Value("${pageSize}")
+    private Integer pageSize;
+
     @Autowired
     private IUserService userService;
     @Autowired
@@ -45,7 +48,7 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
-        request.setAttribute("page", userService.page(p, ResourceUtil.getWebConfigIntegerValueByKey("pageSize")));
+        request.setAttribute("page", userService.page(p, pageSize));
         return "system/users";
     }
 

@@ -10,10 +10,10 @@ import org.ehuacui.bbs.service.IRoleService;
 import org.ehuacui.bbs.service.IUserRoleService;
 import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.DateUtil;
-import org.ehuacui.bbs.utils.ResourceUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +37,9 @@ import java.util.Random;
 @RequestMapping("/oauth")
 public class OAuthController extends BaseController {
 
+    @Value("${cookie.domain}")
+    private String cookieDomain;
+
     @Autowired
     private IUserService userService;
     @Autowired
@@ -54,7 +57,7 @@ public class OAuthController extends BaseController {
     @RequestMapping(value = "/github/login", method = RequestMethod.GET)
     public void githubLogin(HttpServletResponse response) throws IOException {
         String secretState = "secret" + new Random().nextInt(999_999);
-        WebUtil.setCookie(response, STATE, secretState, 5 * 60, "/", ResourceUtil.getWebConfigValueByKey("cookie.domain"), true);
+        WebUtil.setCookie(response, STATE, secretState, 5 * 60, "/", cookieDomain, true);
         String authorizationUrl = gitHubOAuthService.getAuthorizationUrl(secretState);
         response.sendRedirect(authorizationUrl);
     }
@@ -114,9 +117,7 @@ public class OAuthController extends BaseController {
             }
             WebUtil.setCookie(response, Constants.USER_ACCESS_TOKEN,
                     StringUtil.getEncryptionToken(user.getAccessToken()),
-                    30 * 24 * 60 * 60, "/",
-                    ResourceUtil.getWebConfigValueByKey("cookie.domain"),
-                    true);
+                    30 * 24 * 60 * 60, "/", cookieDomain, true);
             if (StringUtil.notBlank(callback)) {
                 try {
                     callback = URLDecoder.decode(callback, "UTF-8");
