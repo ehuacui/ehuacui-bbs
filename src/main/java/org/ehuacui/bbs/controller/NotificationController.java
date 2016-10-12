@@ -29,6 +29,8 @@ public class NotificationController extends BaseController {
 
     @Value("${pageSize}")
     private Integer pageSize;
+    @Value("${site.domain}")
+    private String siteDomain;
 
     @Autowired
     private INotificationService notificationService;
@@ -43,7 +45,7 @@ public class NotificationController extends BaseController {
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
-        request.setAttribute("marked", new Marked());
+        request.setAttribute("marked", new Marked(siteDomain));
         return "notification/index";
     }
 }

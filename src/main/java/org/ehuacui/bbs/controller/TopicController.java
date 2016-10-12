@@ -12,7 +12,7 @@ import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.template.MarkedNotAt;
-import org.ehuacui.bbs.utils.SolrUtil;
+import org.ehuacui.bbs.service.impl.SolrService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -43,6 +43,8 @@ public class TopicController extends BaseController {
     private Integer replyPageSize;
     @Value("${solr.status}")
     private Boolean solrStatus;
+    @Value("${site.domain}")
+    private String siteDomain;
 
     @Autowired
     private ITopicService topicService;
@@ -56,6 +58,8 @@ public class TopicController extends BaseController {
     private IUserService userService;
     @Autowired
     private ICollectService collectService;
+    @Autowired
+    private ISearchService searchService;
 
     /**
      * 话题详情
@@ -106,7 +110,7 @@ public class TopicController extends BaseController {
         request.setAttribute("page", page);
         request.setAttribute("collectCount", collectCount);
         request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
-        request.setAttribute("marked", new Marked());
+        request.setAttribute("marked", new Marked(siteDomain));
         request.setAttribute("markedNotAt", new MarkedNotAt());
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getAvatarByNickname", new GetAvatarByNickname());
@@ -151,8 +155,7 @@ public class TopicController extends BaseController {
             topicService.save(topic);
             //索引话题
             if (solrStatus) {
-                SolrUtil solrUtil = new SolrUtil();
-                solrUtil.indexTopic(topic);
+                searchService.indexTopic(topic);
             }
             //给用户加分
             //user.set("score", user.getInt("score") + 5).update();
@@ -188,8 +191,7 @@ public class TopicController extends BaseController {
         topicService.update(topic);
         //索引话题
         if (solrStatus) {
-            SolrUtil solrUtil = new SolrUtil();
-            solrUtil.indexTopic(topic);
+            searchService.indexTopic(topic);
         }
         //清理缓存
         clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(topic.getAuthor(), "utf-8"));
@@ -229,8 +231,7 @@ public class TopicController extends BaseController {
             //索引话题
             if (solrStatus) {
                 topic.setContent(topic.getContent() + "\n" + content);
-                SolrUtil solrUtil = new SolrUtil();
-                solrUtil.indexTopic(topic);
+                searchService.indexTopic(topic);
             }
             //清理缓存
             clearCache(Constants.CacheEnum.topicappends.name() + tid);
@@ -263,8 +264,7 @@ public class TopicController extends BaseController {
         //索引话题
         if (solrStatus) {
             topic.setContent(topic.getContent() + "\n" + content);
-            SolrUtil solrUtil = new SolrUtil();
-            solrUtil.indexTopic(topic);
+            searchService.indexTopic(topic);
         }
         //清理缓存
         clearCache(Constants.CacheEnum.topicappends.name() + topic.getId());
@@ -289,8 +289,7 @@ public class TopicController extends BaseController {
         topicService.deleteById(id);
         //删除索引
         if (solrStatus) {
-            SolrUtil solrUtil = new SolrUtil();
-            solrUtil.indexDelete(String.valueOf(id));
+            searchService.indexDelete(String.valueOf(id));
         }
         //清理缓存
 //            clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));

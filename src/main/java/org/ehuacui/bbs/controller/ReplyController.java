@@ -40,6 +40,8 @@ public class ReplyController extends BaseController {
 
     @Value("${pageSize}")
     private Integer pageSize;
+    @Value("${site.domain}")
+    private String siteDomain;
 
     @Autowired
     private IUserService userService;
@@ -161,7 +163,7 @@ public class ReplyController extends BaseController {
     public String list(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
         request.setAttribute("page", replyService.findAll(p, pageSize));
         request.setAttribute("formatDate", new FormatDate());
-        request.setAttribute("marked", new Marked());
+        request.setAttribute("marked", new Marked(siteDomain));
         return ("reply/list");
     }
 }

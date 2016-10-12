@@ -151,13 +151,4 @@ public class StringUtil {
         }
     }
 
-    /**
-     * json字符串转换成 Map
-     * 依赖Gson包
-     */
-    public static Map<String, Object> parseToMap(String jsonString) {
-        return new Gson().fromJson(jsonString, new TypeToken<Map<String, Object>>() {
-        }.getType());
-    }
-
 }

@@ -7,13 +7,12 @@ import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.service.ISearchService;
 import org.ehuacui.bbs.service.ISectionService;
 import org.ehuacui.bbs.service.ITopicService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
-import org.ehuacui.bbs.utils.QiniuUploadUtil;
-import org.ehuacui.bbs.utils.SolrUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +41,6 @@ public class IndexController extends BaseController {
     private Integer pageSize;
     @Value("${cookie.domain}")
     private String cookieDomain;
-
     @Value("${static.path}")
     private String staticPath;
     @Value("${upload.type}")
@@ -52,11 +50,12 @@ public class IndexController extends BaseController {
     @Value("${qiniu.url}")
     private String qiniuURL;
 
-
     @Autowired
     private ISectionService sectionService;
     @Autowired
     private ITopicService topicService;
+    @Autowired
+    private ISearchService searchService;
 
     /**
      * 首页
@@ -130,7 +129,7 @@ public class IndexController extends BaseController {
             } else if (uploadType.equals("qiniu")) {
                 // 将本地文件上传到七牛,并删除本地文件
                 String filePath = staticPath + fileName;
-                Map map = new QiniuUploadUtil().upload(filePath);
+                Map map = upload(filePath);
                 targetFile.delete();
                 url = qiniuURL + "/" + map.get("key");
             }
@@ -148,8 +147,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/solr", method = RequestMethod.GET)
     public String solr() {
         if (solrStatus.equalsIgnoreCase("true")) {
-            SolrUtil solrUtil = new SolrUtil();
-            solrUtil.indexAll();
+            searchService.indexAll();
         }
         return redirect("/");
     }
@@ -160,8 +158,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(HttpServletRequest request, @RequestParam(value = "p", defaultValue = "1") Integer p, @RequestParam("q") String q) {
         if (solrStatus.equalsIgnoreCase("true")) {
-            SolrUtil solrUtil = new SolrUtil();
-            Page page = solrUtil.indexQuery(p, q);
+            Page page = searchService.indexQuery(p, q);
             request.setAttribute("q", q);
             request.setAttribute("page", page);
         }
@@ -172,8 +169,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/delete-all-index", method = RequestMethod.GET)
     public String deleteAllIndex() {
         if (solrStatus.equalsIgnoreCase("true")) {
-            SolrUtil solrUtil = new SolrUtil();
-            solrUtil.deleteAll();
+            searchService.deleteAll();
         }
         return redirect("/");
     }

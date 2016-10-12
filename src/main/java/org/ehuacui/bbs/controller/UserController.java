@@ -40,6 +40,8 @@ public class UserController extends BaseController {
 
     @Value("${pageSize}")
     private Integer pageSize;
+    @Value("${site.domain}")
+    private String siteDomain;
 
     @Autowired
     private IUserService userService;
@@ -64,7 +66,7 @@ public class UserController extends BaseController {
             request.setAttribute("currentUser", currentUser);
             request.setAttribute("formatDate", new FormatDate());
             request.setAttribute("getNameByTab", new GetNameByTab());
-            request.setAttribute("marked", new Marked());
+            request.setAttribute("marked", new Marked(siteDomain));
             request.setAttribute("pageTitle", currentUser.getNickname() + " 个人主页");
         } else {
             request.setAttribute("pageTitle", "用户未找到");
@@ -100,7 +102,7 @@ public class UserController extends BaseController {
         request.setAttribute("currentUser", user);
         Page<Reply> page = replyService.pageByAuthor(p, pageSize, nickname);
         request.setAttribute("page", page);
-        request.setAttribute("marked", new Marked());
+        request.setAttribute("marked", new Marked(siteDomain));
         request.setAttribute("formatDate", new FormatDate());
         return "user/replies";
     }

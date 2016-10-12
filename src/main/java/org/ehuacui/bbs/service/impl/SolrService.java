@@ -1,23 +1,24 @@
-package org.ehuacui.bbs.utils;
+package org.ehuacui.bbs.service.impl;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.ehuacui.bbs.config.SpringContextHolder;
 import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.TopicAppend;
+import org.ehuacui.bbs.service.ISearchService;
 import org.ehuacui.bbs.service.ITopicAppendService;
 import org.ehuacui.bbs.service.ITopicService;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,19 +28,25 @@ import java.util.Map;
  * Copyright (c) 2016, All Rights Reserved.
  * http://www.ehuacui.org
  */
-public class SolrUtil {
+@Service
+public class SolrService implements ISearchService {
 
-    private final static String URL = ResourceUtil.getWebConfigValueByKey("solr.url");
-    private final static SolrClient client = new HttpSolrClient(URL);
+    @Value("${solr.url}")
+    private String solrURL;
+    @Value("${solr.pageSize}")
+    private Integer solrPageSize;
 
-    private ITopicService topicService = SpringContextHolder.getBean(ITopicService.class);
-    private ITopicAppendService topicAppendService = SpringContextHolder.getBean(ITopicAppendService.class);
+    @Autowired
+    private ITopicService topicService;
+    @Autowired
+    private ITopicAppendService topicAppendService;
 
     /**
      * 将所有的topic都索引
      *
      * @return
      */
+    @Override
     public boolean indexAll() {
         try {
             List<Topic> topics = topicService.findAll();
@@ -58,10 +65,11 @@ public class SolrUtil {
                 doc.addField("content", content.toString());
                 docs.add(doc);
             }
+            SolrClient client = new HttpSolrClient(solrURL);
             client.add(docs);
             client.commit();
             return true;
-        } catch (SolrServerException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -73,6 +81,7 @@ public class SolrUtil {
      * @param topic
      * @return
      */
+    @Override
     public boolean indexTopic(Topic topic) {
         try {
             SolrInputDocument doc = new SolrInputDocument();
@@ -86,10 +95,11 @@ public class SolrUtil {
                         .append(ta.getContent());
             }
             doc.addField("content", content.toString());
+            SolrClient client = new HttpSolrClient(solrURL);
             client.add(doc);
             client.commit();
             return true;
-        } catch (SolrServerException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -102,14 +112,13 @@ public class SolrUtil {
      * @param q
      * @return
      */
+    @Override
     public Page indexQuery(Integer pageNumber, String q) {
         try {
-            String URL = ResourceUtil.getWebConfigValueByKey("solr.url");
-            Integer pageSize = ResourceUtil.getWebConfigIntegerValueByKey("solr.pageSize");
-            SolrClient solrClient = new HttpSolrClient(URL);
+            SolrClient solrClient = new HttpSolrClient(solrURL);
             SolrQuery query = new SolrQuery(q);
-            query.setStart((pageNumber - 1) * pageSize);
-            query.setRows(pageSize);
+            query.setStart((pageNumber - 1) * solrPageSize);
+            query.setRows(solrPageSize);
             query.setSort("in_time", SolrQuery.ORDER.desc);
             query.setHighlight(true);
             query.addHighlightField("title");
@@ -139,8 +148,8 @@ public class SolrUtil {
                 list.add(topic);
             }
             int totalCount = (int) docs.getNumFound();
-            return new Page<>(list, pageNumber, pageSize, totalCount);
-        } catch (SolrServerException | IOException e) {
+            return new Page<>(list, pageNumber, solrPageSize, totalCount);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -151,20 +160,24 @@ public class SolrUtil {
      *
      * @param id
      */
+    @Override
     public void indexDelete(String id) {
         try {
+            SolrClient client = new HttpSolrClient(solrURL);
             client.deleteById(id);
             client.commit();
-        } catch (SolrServerException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void deleteAll() {
         try {
+            SolrClient client = new HttpSolrClient(solrURL);
             client.deleteByQuery("*");
             client.commit();
-        } catch (SolrServerException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
