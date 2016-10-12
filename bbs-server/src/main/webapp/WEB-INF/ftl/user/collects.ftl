@@ -8,7 +8,7 @@
             </div>
             <div class="panel-body">
                 <#include "../components/usertopics.ftl"/>
-                    <@usertopics topics=page.getList()/>
+                    <@usertopics topics=page.list/>
                     <#include "../components/paginate.ftl"/>
                     <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/user/collects/${currentUser.nickname!}" urlParas=""/>
             </div>

@@ -28,7 +28,7 @@
                 <div class="panel-heading">${currentUser.nickname}创建的话题</div>
                 <div class="panel-body">
                     <#include "../components/usertopics.ftl"/>
-                        <@usertopics topics=topicPage.getList()/>
+                        <@usertopics topics=topicPage.list/>
                 </div>
                 <div class="panel-footer">
                     <a href="/user/topics/${currentUser.nickname!}">${currentUser.nickname!}更多话题&gt;&gt;</a>
@@ -37,7 +37,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">${currentUser.nickname}回复的话题</div>
                 <#include "../components/userreplies.ftl"/>
-                <@userreplies replies=replyPage.getList()/>
+                <@userreplies replies=replyPage.list/>
                 <div class="panel-footer">
                     <a href="/user/replies/${currentUser.nickname!}">${currentUser.nickname!}更多回复&gt;&gt;</a>
                 </div>

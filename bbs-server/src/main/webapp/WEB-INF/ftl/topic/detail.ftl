@@ -133,19 +133,19 @@
     </div>
 </div>
 <link rel="stylesheet" href="/static/css/jquery.atwho.min.css"/>
-<script type="text/javascript" src="/static/js/jquery.atwho.min.js"></script>
-<script type="text/javascript" src="/static/js/lodash.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.atwho.min.js"/>
+<script type="text/javascript" src="/static/js/lodash.min.js"/>
 <link rel="stylesheet" href="/static/libs/editor/editor.css"/>
 <style>
     .CodeMirror {
         height: 150px;
     }
 </style>
-<script type="text/javascript" src="/static/js/highlight.min.js"></script>
-<script type="text/javascript" src="/static/libs/webuploader/webuploader.withoutimage.js"></script>
-<script type="text/javascript" src="/static/libs/markdownit.js"></script>
-<script type="text/javascript" src="/static/libs/editor/editor.js"></script>
-<script type="text/javascript" src="/static/libs/editor/ext.js"></script>
+<script type="text/javascript" src="/static/js/highlight.min.js"/>
+<script type="text/javascript" src="/static/libs/webuploader/webuploader.withoutimage.js"/>
+<script type="text/javascript" src="/static/libs/markdownit.js"/>
+<script type="text/javascript" src="/static/libs/editor/editor.js"/>
+<script type="text/javascript" src="/static/libs/editor/ext.js"/>
 <script type="text/javascript">
 
     $('pre code').each(function (i, block) {
@@ -172,7 +172,7 @@
     var codeMirrorGoLineDown = CodeMirror.commands.goLineDown;
     var codeMirrorNewlineAndIndent = CodeMirror.commands.newlineAndIndent;
     var data = [];
-        <#list page.getList() as reply>
+        <#list page.list as reply>
         data.push('${reply.author}');
         </#list>
     data = _.unique(data);

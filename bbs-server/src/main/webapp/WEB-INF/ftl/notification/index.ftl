@@ -8,7 +8,7 @@
                 <span class="pull-right">总共收到通知 ${page.totalRow!}</span>
             </div>
             <div class="panel-body">
-                <#list page.getList() as notification>
+                <#list page.list as notification>
                     <div class="media">
                         <div class="media-left">
                             <img src="${getAvatarByNickname(notification.author)!}" class="avatar-sm">
