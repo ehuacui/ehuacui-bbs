@@ -12,7 +12,6 @@ import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.template.MarkedNotAt;
-import org.ehuacui.bbs.service.impl.SolrService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -70,12 +69,12 @@ public class TopicController extends BaseController {
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
         Topic topic = topicService.findById(tid);
         //处理一下置顶，精华
-        topic.setIsTop(topic.getTop() ? "取消置顶" : "置顶");
-        topic.setIsGood(topic.getGood() ? "取消精华" : "精华");
+        topic.setTop(topic.getIsTop() ? "取消置顶" : "置顶");
+        topic.setGood(topic.getIsGood() ? "取消精华" : "精华");
         //查询追加内容
         List<TopicAppend> topicAppends = topicAppendService.findByTid(tid);
         //话题浏览次数+1
-        topic.setView(topic.getView() + 1);
+        topic.setViewCount(topic.getViewCount() + 1);
         topicService.update(topic);
             /*
             //更新redis里的topic数据
@@ -145,10 +144,10 @@ public class TopicController extends BaseController {
             topic.setTab(tab);
             topic.setInTime(now);
             topic.setLastReplyTime(now);
-            topic.setView(0);
+            topic.setViewCount(0);
             topic.setAuthor(user.getNickname());
-            topic.setTop(false);
-            topic.setGood(false);
+            topic.setIsTop(false);
+            topic.setIsGood(false);
             topic.setShowStatus(true);
             topic.setReplyCount(0);
             topic.setIsDelete(false);
@@ -279,7 +278,7 @@ public class TopicController extends BaseController {
     public String delete(@RequestParam("id") Integer id) {
         topicAppendService.deleteByTid(id);
         replyService.deleteByTid(id);
-        Topic topic = topicService.findById(id);
+        //Topic topic = topicService.findById(id);
         //删除用户积分
 //            User user = userService.findByNickname(topic.getStr("author"));
 //            Integer score = user.getInt("score");

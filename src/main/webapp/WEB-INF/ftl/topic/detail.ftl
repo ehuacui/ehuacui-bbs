@@ -9,10 +9,10 @@
                         <h2 class="topic-detail-title">${topic.title!}</h2>
 
                         <p class="gray">
-                            <#if topic.top>
+                            <#if topic.isTop>
                                 <span class="label label-primary">置顶</span>
                                 <span>•</span>
-                            <#elseif topic.good>
+                            <#elseif topic.isGood>
                                 <span class="label label-success">精华</span>
                                 <span>•</span>
                             </#if>
@@ -20,7 +20,7 @@
                             <span>•</span>
                             <span>${formatDate(topic.inTime)!}</span>
                             <span>•</span>
-                            <span>${topic.view!1}次点击</span>
+                            <span>${topic.viewCount!1}次点击</span>
                             <span>•</span>
                             <span>来自 <a href="/?tab=${section.tab!}">${section.name!}</a></span>
                             <#if userinfo??>
@@ -40,12 +40,12 @@
                                 <@py.hasPermission name="topic:top" id="${userinfo.id!}">
                                     <span>•</span>
                                     <span><a
-                                            href="javascript:if(confirm('确定要${topic.isTop!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.isTop!}</a></span>
+                                            href="javascript:if(confirm('确定要${topic.top!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.top!}</a></span>
                                 </@py.hasPermission>
                                 <@py.hasPermission name="topic:good" id="${userinfo.id!}">
                                     <span>•</span>
                                     <span><a
-                                            href="javascript:if(confirm('确定要${topic.isGood!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.isGood!}</a></span>
+                                            href="javascript:if(confirm('确定要${topic.good!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.good!}</a></span>
                                 </@py.hasPermission>
                             </#if>
                         </p>

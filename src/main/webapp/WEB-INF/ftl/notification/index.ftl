@@ -14,7 +14,7 @@
                             <img src="${getAvatarByNickname(notification.author)!}" class="avatar-sm">
                         </div>
                         <div class="media-body">
-                            <div class="gray" <#if notification.read>style="font-weight:700;"</#if>>
+                            <div class="gray" <#if notification.isRead>style="font-weight:700;"</#if>>
                                 <a href="/user/${notification.author!}">${notification.author!}</a>
                                 <#if notification.action == "COLLECT">
                                     收藏了你发布的话题

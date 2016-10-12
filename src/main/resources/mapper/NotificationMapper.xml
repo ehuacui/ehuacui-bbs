@@ -5,7 +5,7 @@
 
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Notification">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="is_read" jdbcType="BIT" property="read"/>
+        <result column="is_read" jdbcType="BIT" property="isRead"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="target_author" jdbcType="VARCHAR" property="targetAuthor"/>
         <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
@@ -54,7 +54,7 @@
     <insert id="insert" parameterType="org.ehuacui.bbs.model.Notification" keyProperty="id" useGeneratedKeys="true">
         insert into tb_notification (id, is_read, author,
         target_author, in_time, action,tid, content)
-        values (#{id,jdbcType=INTEGER}, #{read,jdbcType=BIT}, #{author,jdbcType=VARCHAR},
+        values (#{id,jdbcType=INTEGER}, #{isRead,jdbcType=BIT}, #{author,jdbcType=VARCHAR},
         #{targetAuthor,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR},
         #{tid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
     </insert>
@@ -66,7 +66,7 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="read != null">
+            <if test="isRead != null">
                 is_read,
             </if>
             <if test="author != null">
@@ -92,8 +92,8 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="read != null">
-                #{read,jdbcType=BIT},
+            <if test="isRead != null">
+                #{isRead,jdbcType=BIT},
             </if>
             <if test="author != null">
                 #{author,jdbcType=VARCHAR},
@@ -119,8 +119,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.Notification">
         update tb_notification
         <set>
-            <if test="read != null">
-                is_read = #{read,jdbcType=BIT},
+            <if test="isRead != null">
+                is_read = #{isRead,jdbcType=BIT},
             </if>
             <if test="author != null">
                 author = #{author,jdbcType=VARCHAR},
@@ -146,7 +146,7 @@
 
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.Notification">
         update tb_notification
-        set is_read = #{read,jdbcType=BIT},
+        set is_read = #{isRead,jdbcType=BIT},
         author = #{author,jdbcType=VARCHAR},
         target_author = #{targetAuthor,jdbcType=VARCHAR},
         in_time = #{inTime,jdbcType=TIMESTAMP},

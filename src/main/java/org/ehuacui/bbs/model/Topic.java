@@ -56,9 +56,9 @@ public class Topic {
 
     /**
      * 浏览量
-     * Column: tb_topic.view
+     * Column: tb_topic.view_count
      */
-    private Integer view;
+    private Integer viewCount;
 
     /**
      * 话题作者id
@@ -68,15 +68,15 @@ public class Topic {
 
     /**
      * 1置顶 0默认
-     * Column: tb_topic.top
+     * Column: tb_topic.is_top
      */
-    private Boolean top;
+    private Boolean isTop;
 
     /**
      * 1精华 0默认
-     * Column: tb_topic.good
+     * Column: tb_topic.is_good
      */
-    private Boolean good;
+    private Boolean isGood;
 
     /**
      * 1显示0不显示
@@ -108,9 +108,9 @@ public class Topic {
      */
     private String content;
 
-    private String isTop;
+    private String top;
 
-    private String isGood;
+    private String good;
 
     private List<TopicAppend> topicAppends;
 
@@ -178,12 +178,12 @@ public class Topic {
         this.lastReplyAuthor = lastReplyAuthor == null ? null : lastReplyAuthor.trim();
     }
 
-    public Integer getView() {
-        return view;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setView(Integer view) {
-        this.view = view;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
     public String getAuthor() {
@@ -194,20 +194,20 @@ public class Topic {
         this.author = author == null ? null : author.trim();
     }
 
-    public Boolean getTop() {
-        return top;
+    public void setIsTop(Boolean isTop) {
+        this.isTop = isTop;
     }
 
-    public void setTop(Boolean top) {
-        this.top = top;
+    public void setIsGood(Boolean isGood) {
+        this.isGood = isGood;
     }
 
-    public Boolean getGood() {
-        return good;
+    public Boolean getIsTop() {
+        return isTop;
     }
 
-    public void setGood(Boolean good) {
-        this.good = good;
+    public Boolean getIsGood() {
+        return isGood;
     }
 
     public Boolean getShowStatus() {
@@ -258,19 +258,19 @@ public class Topic {
         this.topicAppends = topicAppends;
     }
 
-    public String getIsTop() {
-        return isTop;
+    public String getTop() {
+        return top;
     }
 
-    public void setIsTop(String isTop) {
-        this.isTop = isTop;
+    public void setTop(String top) {
+        this.top = top;
     }
 
-    public String getIsGood() {
-        return isGood;
+    public String getGood() {
+        return good;
     }
 
-    public void setIsGood(String isGood) {
-        this.isGood = isGood;
+    public void setGood(String good) {
+        this.good = good;
     }
 }

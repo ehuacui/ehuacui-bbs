@@ -12,7 +12,7 @@
                 <span class="hidden-sm hidden-xs">•</span>
                 <span class="hidden-sm hidden-xs">${topic.replyCount!0}个回复</span>
                 <span class="hidden-sm hidden-xs">•</span>
-                <span class="hidden-sm hidden-xs">${topic.view!0}次浏览</span>
+                <span class="hidden-sm hidden-xs">${topic.viewCount!0}次浏览</span>
                 <span>•</span>
                 <span>${formatDate(topic.inTime)!}</span>
                 <#if topic.lastReplyAuthor?? && topic.lastReplyAuthor != "">

@@ -11,10 +11,10 @@
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="last_reply_time" jdbcType="TIMESTAMP" property="lastReplyTime"/>
         <result column="last_reply_author" jdbcType="VARCHAR" property="lastReplyAuthor"/>
-        <result column="view_count" jdbcType="INTEGER" property="view"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
-        <result column="is_top" jdbcType="BIT" property="top"/>
-        <result column="is_good" jdbcType="BIT" property="good"/>
+        <result column="is_top" jdbcType="BIT" property="isTop"/>
+        <result column="is_good" jdbcType="BIT" property="isGood"/>
         <result column="show_status" jdbcType="BIT" property="showStatus"/>
         <result column="reply_count" jdbcType="INTEGER" property="replyCount"/>
         <result column="is_delete" jdbcType="BIT" property="isDelete"/>
@@ -98,7 +98,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_topic t
-        where t.is_delete = 0 and t.id not in (select r.tid from tb_reply r)
+        where t.is_delete = 0 and t.reply_count = 0
         order by t.is_top desc, t.last_reply_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
@@ -111,7 +111,7 @@
     <select id="countAllNoReply" resultType="java.lang.Integer">
         select count(id)
         from tb_topic t
-        where t.is_delete = 0 and t.id not in (select r.tid from tb_reply r)
+        where t.is_delete = 0 and t.reply_count = 0
     </select>
 
     <select id="selectOtherTopicByAuthor" resultMap="BaseResultMap">
@@ -163,8 +163,8 @@
       content)
     values (#{id,jdbcType=INTEGER}, #{tab,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{tag,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{lastReplyTime,jdbcType=TIMESTAMP}, #{lastReplyAuthor,jdbcType=VARCHAR}, #{view,jdbcType=INTEGER}, 
-      #{author,jdbcType=VARCHAR}, #{top,jdbcType=BIT}, #{good,jdbcType=BIT}, #{showStatus,jdbcType=BIT}, 
+      #{lastReplyTime,jdbcType=TIMESTAMP}, #{lastReplyAuthor,jdbcType=VARCHAR}, #{viewCount,jdbcType=INTEGER},
+      #{author,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{isGood,jdbcType=BIT}, #{showStatus,jdbcType=BIT},
       #{replyCount,jdbcType=INTEGER}, #{isDelete,jdbcType=BIT}, #{tagIsCount,jdbcType=BIT}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
@@ -196,16 +196,16 @@
             <if test="lastReplyAuthor != null">
                 last_reply_author,
             </if>
-            <if test="view != null">
+            <if test="viewCount != null">
                 view_count,
             </if>
             <if test="author != null">
                 author,
             </if>
-            <if test="top != null">
+            <if test="isTop != null">
                 is_top,
             </if>
-            <if test="good != null">
+            <if test="isGood != null">
                 is_good,
             </if>
             <if test="showStatus != null">
@@ -249,17 +249,17 @@
             <if test="lastReplyAuthor != null">
                 #{lastReplyAuthor,jdbcType=VARCHAR},
             </if>
-            <if test="view != null">
-                #{view,jdbcType=INTEGER},
+            <if test="viewCount != null">
+                #{viewCount,jdbcType=INTEGER},
             </if>
             <if test="author != null">
                 #{author,jdbcType=VARCHAR},
             </if>
-            <if test="top != null">
-                #{top,jdbcType=BIT},
+            <if test="isTop != null">
+                #{isTop,jdbcType=BIT},
             </if>
-            <if test="good != null">
-                #{good,jdbcType=BIT},
+            <if test="isGood != null">
+                #{isGood,jdbcType=BIT},
             </if>
             <if test="showStatus != null">
                 #{showStatus,jdbcType=BIT},
@@ -303,17 +303,17 @@
             <if test="lastReplyAuthor != null">
                 last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
             </if>
-            <if test="view != null">
-                view_count = #{view,jdbcType=INTEGER},
+            <if test="viewCount != null">
+                view_count = #{viewCount,jdbcType=INTEGER},
             </if>
             <if test="author != null">
                 author = #{author,jdbcType=VARCHAR},
             </if>
-            <if test="top != null">
-                is_top = #{top,jdbcType=BIT},
+            <if test="isTop != null">
+                is_top = #{isTop,jdbcType=BIT},
             </if>
-            <if test="good != null">
-                is_good = #{good,jdbcType=BIT},
+            <if test="isGood != null">
+                is_good = #{isGood,jdbcType=BIT},
             </if>
             <if test="showStatus != null">
                 show_status = #{showStatus,jdbcType=BIT},
@@ -343,10 +343,10 @@
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       last_reply_time = #{lastReplyTime,jdbcType=TIMESTAMP},
       last_reply_author = #{lastReplyAuthor,jdbcType=VARCHAR},
-      view_count = #{view,jdbcType=INTEGER},
+      view_count = #{viewCount,jdbcType=INTEGER},
       author = #{author,jdbcType=VARCHAR},
-      is_top = #{top,jdbcType=BIT},
-      is_good = #{good,jdbcType=BIT},
+      is_top = #{isTop,jdbcType=BIT},
+      is_good = #{isGood,jdbcType=BIT},
       show_status = #{showStatus,jdbcType=BIT},
       reply_count = #{replyCount,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=BIT},

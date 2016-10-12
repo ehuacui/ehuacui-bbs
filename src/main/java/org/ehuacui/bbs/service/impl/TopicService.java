@@ -162,7 +162,7 @@ public class TopicService implements ITopicService {
     public void top(Integer id) {
         Topic topic = topicMapper.selectByPrimaryKey(id);
         if (topic != null) {
-            topic.setTop(!topic.getTop());
+            topic.setIsTop(!topic.getIsTop());
             topicMapper.updateByPrimaryKey(topic);
         }
     }
@@ -176,7 +176,7 @@ public class TopicService implements ITopicService {
     public void good(Integer id) {
         Topic topic = topicMapper.selectByPrimaryKey(id);
         if (topic != null) {
-            topic.setGood(!topic.getGood());
+            topic.setIsGood(!topic.getIsGood());
             topicMapper.updateByPrimaryKey(topic);
         }
     }

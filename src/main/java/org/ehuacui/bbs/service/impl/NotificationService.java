@@ -74,7 +74,7 @@ public class NotificationService implements INotificationService {
         notification.setAction(action);
         notification.setTid(tid);
         notification.setContent(content);
-        notification.setRead(false);
+        notification.setIsRead(false);
         notification.setInTime(new Date());
         notificationMapper.insert(notification);
     }

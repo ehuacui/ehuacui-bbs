@@ -13,9 +13,9 @@ public class Notification {
 
     /**
      * 是否已读：0默认 1已读
-     * Column: tb_notification.read
+     * Column: tb_notification.is_read
      */
-    private Boolean read;
+    private Boolean isRead;
 
     /**
      * 发起通知用户昵称
@@ -60,12 +60,12 @@ public class Notification {
         this.id = id;
     }
 
-    public Boolean getRead() {
-        return read;
+    public Boolean getIsRead() {
+        return isRead;
     }
 
-    public void setRead(Boolean read) {
-        this.read = read;
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
     }
 
     public String getAuthor() {
