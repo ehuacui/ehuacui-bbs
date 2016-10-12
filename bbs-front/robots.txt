@@ -1,0 +1,6 @@
+er-agent: *
+Disallow: 
+Disallow: /manage
+Disallow: /clear
+Disallow: /WEB-INF
+Disallow: /META-INF
