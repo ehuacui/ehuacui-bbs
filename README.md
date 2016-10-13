@@ -1,7 +1,7 @@
 
 ## 介绍
 
-     该项目源于[pybbs](https://github.com/tomoya92/pybbs)。并使用Spring等框架完成了服务端重写，
+   该项目源于[pybbs](https://github.com/tomoya92/pybbs)。并使用Spring等框架完成了服务端重写，
    前台模板和数据库表结构目前仍与[pybbs](https://github.com/tomoya92/pybbs)保持一致。后续计划与
    [pybbs](https://github.com/tomoya92/pybbs)保持独立开发和维护。目前部分功能仍在测试中，若有问题
    请[Issues](https://github.com/zhoujw8792/ehuacui-bbs/issues)。
