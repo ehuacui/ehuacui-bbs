@@ -11,11 +11,8 @@
 hs_err_pid*
 
 .idea/
-pybbs.iml
-pybbs.log
+*.log
 target/
 out/
-dev.config.properties
 /logs
-/*.iml
-/bbs-server/*.iml
+*.iml

@@ -9,7 +9,7 @@ import org.ehuacui.bbs.utils.StringUtil;
 public class ToolTest {
 
     public static void main(String[] args) {
-        System.out.println(StringUtil.getDecryptToken("Vm1wSmVHUXhVbkpOU0dSUFUwZDRWRmxzYUVOVlJuQllUVmh3VGxac1NsbFVWbFpyWVVkR05sWnJXbFppUmtwWVYxWmtSMlJHY0VWVWJHaG9UV3hLV1ZkV1dsWmtNbFpYVm14V1ZXSlZXbGhWYWtwT1pERlplRnBJWkdsaVZscEhWR3hhVjFkdFZuRlJWR3M5"));
+        System.out.println(StringUtil.getDecryptToken(""));
     }
 
 }

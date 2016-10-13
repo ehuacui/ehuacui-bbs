@@ -1,4 +1,4 @@
-##EHuaCui-BBS RoadMap
+##RoadMap
 -------------
 
 #技术RoadMap
@@ -11,7 +11,6 @@
  - 增加缓存
  - 对接ElasticSearch
  - OAuth对接-----scribejava
-  - 国内对接：QQ、微信
   - 国外对接：FaceBook、Google、Twitter、Linkedin
 
 #产品RoadMap
@@ -20,10 +19,10 @@
 #Bug List
 -------------
 
- -
+ - @对方失败
+ - 七牛文件上传
 
 #待验证的功能点
 -------------
 
- - @对方失败
- - 基础数据模型建立[包括数据库表]--修改实体字段(表字段值已基本修改)
+ - 基础数据模型建立[包括数据库表]

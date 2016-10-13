@@ -24,14 +24,14 @@ public final class GitHubExample {
 
     public static void main(String... args) throws IOException {
         // Replace these with your client id and secret
-        final String clientId = "c389219e105628399f96";
-        final String clientSecret = "6a2348ef45e99c04a1423130bc5b89b5ee9c71e9";
+        final String clientId = "";
+        final String clientSecret = "";
         final String secretState = "secret" + new Random().nextInt(999_999);
         final OAuth20Service service = new ServiceBuilder()
                 .apiKey(clientId)
                 .apiSecret(clientSecret)
                 .state(secretState)
-                .callback("http://bbs.ehuacui.org/oauth/github/callback")
+                .callback("http://www.xxx.com/oauth/github/callback")
                 .build(GitHubApi.instance());
         final Scanner in = new Scanner(System.in, "UTF-8");
 
