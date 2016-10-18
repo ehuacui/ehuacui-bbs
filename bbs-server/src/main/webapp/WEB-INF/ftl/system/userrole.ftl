@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">配置角色</div>
             <div class="panel-body">
-                <form action="/manage/userrole" method="post">
+                <form action="/manage/user-role" method="post">
                     <input type="hidden" name="id" value="${user.id!}"/>
 
                     <div class="form-group">

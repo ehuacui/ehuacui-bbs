@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -39,7 +38,7 @@ public class SectionController extends BaseController {
     /**
      * 改变板块显示状态
      */
-    @RequestMapping(value = "/changeshowstatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/change-show-status", method = RequestMethod.GET)
     public String changeShowStatus(@RequestParam("id") Integer id) {
         Section section = sectionService.findById(id);
         section.setShowStatus(!section.getShowStatus());
@@ -52,7 +51,6 @@ public class SectionController extends BaseController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam("id") Integer id) {
-        Section section = sectionService.findById(id);
         sectionService.deleteById(id);
         return redirect("/section/list");
     }

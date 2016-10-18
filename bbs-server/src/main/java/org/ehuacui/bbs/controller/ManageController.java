@@ -1,13 +1,11 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Constants.CacheEnum;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Permission;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.model.UserRole;
 import org.ehuacui.bbs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Created by ehuacui.
@@ -55,7 +52,7 @@ public class ManageController extends BaseController {
     /**
      * 删除用户
      */
-    @RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete-user", method = RequestMethod.GET)
     public String deleteUser(@RequestParam("id") Integer id) {
         //删除与用户关联的角色
         userRoleService.deleteByUserId(id);
@@ -92,7 +89,7 @@ public class ManageController extends BaseController {
     /**
      * 处理用户与角色关联
      */
-    @RequestMapping(value = "/userrole", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-role", method = RequestMethod.GET)
     public String userRole(@RequestParam("id") Integer id, HttpServletRequest request) {
         request.setAttribute("user", userService.findById(id));
         //查询所有的权限
@@ -105,7 +102,7 @@ public class ManageController extends BaseController {
     /**
      * 处理用户与角色关联
      */
-    @RequestMapping(value = "/userrole", method = RequestMethod.POST)
+    @RequestMapping(value = "/user-role", method = RequestMethod.POST)
     public String userRole(@RequestParam("id") Integer id,
                            @RequestParam("roles") Integer[] roles) {
         userService.correlationRole(id, roles);
@@ -115,7 +112,7 @@ public class ManageController extends BaseController {
     /**
      * 禁用账户
      */
-    @RequestMapping(value = "/userblock", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-block", method = RequestMethod.GET)
     public String userBlock(@RequestParam("id") Integer id) {
         User user = userService.findById(id);
         user.setIsBlock(!user.getIsBlock());
@@ -126,7 +123,7 @@ public class ManageController extends BaseController {
     /**
      * 添加角色
      */
-    @RequestMapping(value = "/addrole", method = RequestMethod.GET)
+    @RequestMapping(value = "/add-role", method = RequestMethod.GET)
     public String addRole(HttpServletRequest request) {
         //查询所有的权限
         request.setAttribute("permissions", permissionService.findWithChild());
@@ -136,7 +133,7 @@ public class ManageController extends BaseController {
     /**
      * 添加角色
      */
-    @RequestMapping(value = "/addrole", method = RequestMethod.POST)
+    @RequestMapping(value = "/add-role", method = RequestMethod.POST)
     public String addRole(@RequestParam("name") String name,
                           @RequestParam("description") String description,
                           @RequestParam(value = "roles", required = false) Integer[] roles) {
@@ -152,14 +149,14 @@ public class ManageController extends BaseController {
     /**
      * 添加权限
      */
-    @RequestMapping(value = "/addpermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/add-permission", method = RequestMethod.GET)
     public String addPermission(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         request.setAttribute("pid", pid);
         request.setAttribute("permissions", permissionService.findByPid(0));
         return "system/addpermission";
     }
 
-    @RequestMapping(value = "/addpermission", method = RequestMethod.POST)
+    @RequestMapping(value = "/add-permission", method = RequestMethod.POST)
     public String addPermission(@RequestParam("pid") Integer pid,
                                 @RequestParam("name") String name,
                                 @RequestParam("url") String url,
@@ -180,14 +177,14 @@ public class ManageController extends BaseController {
     /**
      * 编辑权限
      */
-    @RequestMapping(value = "/editpermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit-permission", method = RequestMethod.GET)
     public String editPermission(@RequestParam("id") Integer id, HttpServletRequest request) {
         request.setAttribute("_permission", permissionService.findById(id));
         request.setAttribute("permissions", permissionService.findByPid(0));
         return "system/editpermission";
     }
 
-    @RequestMapping(value = "/editpermission", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit-permission", method = RequestMethod.POST)
     public String editPermission(@RequestParam("id") Integer id, @RequestParam("pid") Integer pid,
                                  @RequestParam("name") String name,
                                  @RequestParam("url") String url,
@@ -204,7 +201,7 @@ public class ManageController extends BaseController {
     /**
      * 处理角色与权限关系
      */
-    @RequestMapping(value = "/rolepermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/role-permission", method = RequestMethod.GET)
     public String rolePermission(@RequestParam("id") Integer id, HttpServletRequest request) {
         Role role = roleService.findById(id);
         request.setAttribute("role", role);
@@ -215,7 +212,7 @@ public class ManageController extends BaseController {
         return "system/rolepermission";
     }
 
-    @RequestMapping(value = "/rolepermission", method = RequestMethod.POST)
+    @RequestMapping(value = "/role-permission", method = RequestMethod.POST)
     public String rolePermission(@RequestParam("id") Integer id,
                                  @RequestParam("name") String name,
                                  @RequestParam("description") String description,
@@ -231,7 +228,7 @@ public class ManageController extends BaseController {
     /**
      * 删除角色
      */
-    @RequestMapping(value = "/deleterole", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete-role", method = RequestMethod.GET)
     public String deleteRole(@RequestParam("id") Integer id) {
         userRoleService.deleteByRoleId(id);
         rolePermissionService.deleteByRoleId(id);
@@ -242,7 +239,7 @@ public class ManageController extends BaseController {
     /**
      * 删除权限
      */
-    @RequestMapping(value = "/deletepermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete-permission", method = RequestMethod.GET)
     public String deletePermission(@RequestParam("id") Integer id) {
         Permission permission = permissionService.findById(id);
         Integer pid = permission.getPid();

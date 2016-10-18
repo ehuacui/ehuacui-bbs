@@ -17,8 +17,8 @@
                             <td><a href="mailto:${user.email!}" target="_blank">${user.email!}</a></td>
                             <td><a href="${user.url!}" target="_blank">${user.url!}</a></td>
                             <td>
-                                <a href="/manage/userrole?id=${user.id!}" class="btn btn-xs btn-warning">配置角色</a>
-                                <a href="javascript:if(confirm('确认此操作吗?')) location.href='/manage/userblock?id=${user.id!}'"
+                                <a href="/manage/user-role?id=${user.id!}" class="btn btn-xs btn-warning">配置角色</a>
+                                <a href="javascript:if(confirm('确认此操作吗?')) location.href='/manage/user-block?id=${user.id!}'"
                                    class="btn btn-xs btn-danger">
                                     <#if user.isBlock == true>
                                         取消禁用
@@ -26,7 +26,7 @@
                                         禁用账户
                                     </#if>
                                 </a>
-                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deleteuser?id=${user.id!}'"
+                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/delete-user?id=${user.id!}'"
                                    class="btn btn-xs btn-danger">删除</a>
                             </td>
                         </tr>

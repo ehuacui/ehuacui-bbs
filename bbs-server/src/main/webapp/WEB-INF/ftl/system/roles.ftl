@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 角色管理
-                <a href="/manage/addrole" class="pull-right">添加角色</a>
+                <a href="/manage/add-role" class="pull-right">添加角色</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-responsive">
@@ -16,8 +16,8 @@
                             <td>${role.name!}</td>
                             <td>${role.description!}</td>
                             <td>
-                                <a href="/manage/rolepermission?id=${role.id!}" class="btn btn-xs btn-warning">配置权限</a>
-                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deleterole?id=${role.id!}'"
+                                <a href="/manage/role-permission?id=${role.id!}" class="btn btn-xs btn-warning">配置权限</a>
+                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/delete-role?id=${role.id!}'"
                                    class="btn btn-xs btn-danger">删除</a>
                             </td>
                         </tr>

@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 权限管理
-                <a class="pull-right" href="/manage/addpermission?pid=${pid!}">添加权限</a>
+                <a class="pull-right" href="/manage/add-permission?pid=${pid!}">添加权限</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-responsive">
@@ -17,9 +17,9 @@
                             <td>${permission.url!}</td>
                             <td>${permission.description!}</td>
                             <td>
-                                <a href="/manage/editpermission?id=${permission.id!}"
+                                <a href="/manage/edit-permission?id=${permission.id!}"
                                    class="btn btn-xs btn-warning">编辑</a>
-                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/deletepermission?id=${permission.id!}'"
+                                <a href="javascript:if(confirm('确认删除吗?')) location.href='/manage/delete-permission?id=${permission.id!}'"
                                    class="btn btn-xs btn-danger">删除</a>
                             </td>
                         </tr>
@@ -35,7 +35,7 @@
             <div class="list-group">
                 <#list permissions as permission>
                     <li class="list-group-item permission-item <#if pid?? && pid == permission.id>active</#if>">
-                        <a href="javascript:if(confirm('确认删除吗?'))location.href='/manage/deletepermission?id=${permission.id!}'">删除</a>
+                        <a href="javascript:if(confirm('确认删除吗?'))location.href='/manage/delete-permission?id=${permission.id!}'">删除</a>
                         <a href="/manage/permissions?pid=${permission.id!}">
                         ${permission.description!}
                         </a>

@@ -8,7 +8,7 @@
             </div>
             <div class="panel-body">
                 <div class="panel-body">
-                    <form action="/manage/editpermission" method="post" id="permissionForm">
+                    <form action="/manage/edit-permission" method="post" id="permissionForm">
                         <input type="hidden" name="id" value="${_permission.id!}"/>
 
                         <div class="form-group">

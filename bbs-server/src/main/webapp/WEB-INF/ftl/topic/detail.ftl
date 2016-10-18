@@ -71,7 +71,7 @@
                         <#if userinfo??>
                             <@py.hasPermission name="topic:append:edit" id="${userinfo.id!}">
                                 <span>•</span>
-                                <a href="/topic/appendedit?id=${topicAppend.id!}">编辑</a>
+                                <a href="/topic/append-edit?id=${topicAppend.id!}">编辑</a>
                             </@py.hasPermission>
                         </#if>
                     </p>

@@ -25,7 +25,7 @@
                                 </#if>
                             </td>
                             <td>
-                                <a href="/section/changeshowstatus?id=${section.id!}" class="btn btn-xs btn-primary">改变显示状态</a>
+                                <a href="/section/change-show-status?id=${section.id!}" class="btn btn-xs btn-primary">改变显示状态</a>
                                 <a href="/section/edit?id=${section.id!}" class="btn btn-xs btn-warning">编辑</a>
                                 <a href="javascript:if(confirm('确定要删除吗？')) location.href='/section/delete?id=${section.id!}'"
                                    class="btn btn-xs btn-danger">删除</a>

@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">添加角色</div>
             <div class="panel-body">
-                <form action="/manage/addrole" method="post" id="roleForm">
+                <form action="/manage/add-role" method="post" id="roleForm">
                     <div class="form-group">
                         <label for="name">角色名称</label>
                         <input type="text" id="name" name="name" class="form-control"/>

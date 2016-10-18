@@ -177,7 +177,7 @@ public class IndexController extends BaseController {
     /**
      * 积分前100名用户
      */
-    @RequestMapping(value = "/top100", method = RequestMethod.GET)
+    @RequestMapping(value = "/top/100", method = RequestMethod.GET)
     public String top100() {
         return "top100";
     }

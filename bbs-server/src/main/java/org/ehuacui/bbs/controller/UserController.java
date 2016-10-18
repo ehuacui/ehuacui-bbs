@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -26,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * Created by ehuacui.

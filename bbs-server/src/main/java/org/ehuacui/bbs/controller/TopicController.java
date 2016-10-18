@@ -1,6 +1,5 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.dto.Page;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -76,15 +74,6 @@ public class TopicController extends BaseController {
         //话题浏览次数+1
         topic.setViewCount(topic.getViewCount() + 1);
         topicService.update(topic);
-            /*
-            //更新redis里的topic数据
-            Cache cache = Redis.use();
-            Topic _topic = cache.get(Constants.CacheEnum.topic.name() + tid);
-            if (_topic != null) {
-                _topic.setView(_topic.getView() + 1);
-                cache.set(Constants.CacheEnum.topic.name() + tid, _topic);
-            }
-            */
         //查询版块名称
         Section section = sectionService.findByTab(topic.getTab());
         //查询话题作者信息
@@ -236,8 +225,8 @@ public class TopicController extends BaseController {
      * 编辑追加的内容
      */
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
-    @RequestMapping(value = "/appendedit", method = RequestMethod.GET)
-    public String appendedit(HttpServletRequest request, @RequestParam("id") Integer id) {
+    @RequestMapping(value = "/append-edit", method = RequestMethod.GET)
+    public String appendEdit(HttpServletRequest request, @RequestParam("id") Integer id) {
         TopicAppend topicAppend = topicAppendService.findById(id);
         Topic topic = topicService.findById(topicAppend.getTid());
         request.setAttribute("topicAppend", topicAppend);
@@ -246,8 +235,8 @@ public class TopicController extends BaseController {
     }
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
-    @RequestMapping(value = "/appendedit", method = RequestMethod.POST)
-    public String appendedit(@RequestParam("id") Integer id, String content) {
+    @RequestMapping(value = "/append-edit", method = RequestMethod.POST)
+    public String appendEdit(@RequestParam("id") Integer id, String content) {
         TopicAppend topicAppend = topicAppendService.findById(id);
         Topic topic = topicService.findById(topicAppend.getTid());
         topicAppend.setContent(content);
@@ -280,9 +269,6 @@ public class TopicController extends BaseController {
         if (solrStatus) {
             searchService.indexDelete(String.valueOf(id));
         }
-        //清理缓存
-//            clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
-//            clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
         return redirect("/");
     }
 

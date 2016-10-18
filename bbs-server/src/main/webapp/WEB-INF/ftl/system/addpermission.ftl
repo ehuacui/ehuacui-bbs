@@ -8,7 +8,7 @@
             </div>
             <div class="panel-body">
                 <div class="panel-body">
-                    <form action="/manage/addpermission" method="post" id="permissionForm">
+                    <form action="/manage/add-permission" method="post" id="permissionForm">
                         <div class="form-group">
                             <label for="pid">父节点</label>
                             <select name="pid" id="pid" class="form-control">

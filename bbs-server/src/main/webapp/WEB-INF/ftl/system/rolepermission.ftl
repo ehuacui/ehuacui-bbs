@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">配置权限</div>
             <div class="panel-body">
-                <form action="/manage/rolepermission" method="post" id="roleForm">
+                <form action="/manage/role-permission" method="post" id="roleForm">
                     <input type="hidden" name="id" value="${role.id!}"/>
 
                     <div class="form-group">
