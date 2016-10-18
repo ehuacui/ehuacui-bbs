@@ -188,12 +188,6 @@ public class IndexController extends BaseController {
     @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/clear", method = RequestMethod.GET)
     public String clear() {
-        /*
-        Cache cache = Redis.use();
-        if (cache != null) {
-            cache.getJedis().flushDB();
-        }
-        */
         return redirect("/");
     }
 

@@ -67,12 +67,6 @@ public class BaseController {
         }
     }
 
-    /**
-     * 删除redis里的缓存
-     */
-    protected void clearCache(String key) {
-    }
-
     protected String redirect(String url) {
         return "redirect:" + url;
     }

@@ -142,12 +142,6 @@ public class UserController extends BaseController {
         user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
         user.setReceiveMsg(receiveMsg == 1);
         userService.update(user);
-        //清理缓存
-        try {
-            clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-        }
-        clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
         request.setAttribute("msg", "保存成功。");
         return redirect("/user/setting");
     }

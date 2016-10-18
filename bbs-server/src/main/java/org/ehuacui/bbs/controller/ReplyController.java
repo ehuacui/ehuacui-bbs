@@ -100,13 +100,6 @@ public class ReplyController extends BaseController {
                 }
             }
         }
-        //清理缓存，保持数据最新
-        clearCache(CacheEnum.topic.name() + tid);
-        try {
-            clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-        }
-        clearCache(CacheEnum.useraccesstoken.name() + user.getAccessToken());
         return redirect("/topic/" + tid + "#reply" + reply.getId());
     }
 
@@ -143,15 +136,11 @@ public class ReplyController extends BaseController {
         topic.setReplyCount(topic.getReplyCount() - 1);
         topicService.update(topic);
         replyService.deleteById(id);
-        clearCache(CacheEnum.topic.name() + topic.getId());
         //用户积分计算
 //        User user = userService.findByNickname(reply.getStr("author"));
 //        Integer score = user.getInt("score");
 //        score = score > 7 ? score - 7 : 0;
 //        user.set("score", score).update();
-        //清理缓存
-//        clearCache(CacheEnum.usernickname.name() + URLEncoder.encode(user.getStr("nickname"), "utf-8"));
-//        clearCache(CacheEnum.useraccesstoken.name() + user.getStr("access_token"));
         return redirect("/topic/" + topic.getId());
     }
 

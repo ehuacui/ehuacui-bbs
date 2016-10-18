@@ -88,7 +88,7 @@ public class TopicController extends BaseController {
         //查询版块名称
         Section section = sectionService.findByTab(topic.getTab());
         //查询话题作者信息
-        User authorinfo = userService.findByNickname(topic.getAuthor());
+        User authorInfo = userService.findByNickname(topic.getAuthor());
         //查询作者其他话题
         List<Topic> otherTopics = topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
         //查询回复
@@ -104,7 +104,7 @@ public class TopicController extends BaseController {
         request.setAttribute("topic", topic);
         request.setAttribute("topicAppends", topicAppends);
         request.setAttribute("section", section);
-        request.setAttribute("authorinfo", authorinfo);
+        request.setAttribute("authorinfo", authorInfo);
         request.setAttribute("otherTopics", otherTopics);
         request.setAttribute("page", page);
         request.setAttribute("collectCount", collectCount);
@@ -158,9 +158,6 @@ public class TopicController extends BaseController {
             }
             //给用户加分
             //user.set("score", user.getInt("score") + 5).update();
-            //清理用户缓存
-            clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(user.getNickname(), "utf-8"));
-            clearCache(Constants.CacheEnum.useraccesstoken.name() + user.getAccessToken());
             return redirect("/topic/" + topic.getId());
         }
     }
@@ -192,9 +189,6 @@ public class TopicController extends BaseController {
         if (solrStatus) {
             searchService.indexTopic(topic);
         }
-        //清理缓存
-        clearCache(Constants.CacheEnum.usernickname.name() + URLEncoder.encode(topic.getAuthor(), "utf-8"));
-        clearCache(Constants.CacheEnum.topic.name() + id);
         return redirect("/topic/" + topic.getId());
     }
 
@@ -232,8 +226,6 @@ public class TopicController extends BaseController {
                 topic.setContent(topic.getContent() + "\n" + content);
                 searchService.indexTopic(topic);
             }
-            //清理缓存
-            clearCache(Constants.CacheEnum.topicappends.name() + tid);
             return redirect("/topic/" + tid);
         } else {
             return "";
@@ -265,8 +257,6 @@ public class TopicController extends BaseController {
             topic.setContent(topic.getContent() + "\n" + content);
             searchService.indexTopic(topic);
         }
-        //清理缓存
-        clearCache(Constants.CacheEnum.topicappends.name() + topic.getId());
         return redirect("/topic/" + topic.getId());
     }
 
@@ -303,7 +293,6 @@ public class TopicController extends BaseController {
     @RequestMapping(value = "/top", method = RequestMethod.GET)
     public String top(@RequestParam("id") Integer id) {
         topicService.top(id);
-        clearCache(Constants.CacheEnum.topic.name() + id);
         return redirect("/topic/" + id);
     }
 
@@ -314,7 +303,6 @@ public class TopicController extends BaseController {
     @RequestMapping(value = "/good", method = RequestMethod.GET)
     public String good(@RequestParam("id") Integer id) {
         topicService.good(id);
-        clearCache(Constants.CacheEnum.topic.name() + id);
         return redirect("/topic/" + id);
     }
 }

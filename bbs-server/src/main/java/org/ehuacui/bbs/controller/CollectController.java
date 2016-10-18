@@ -51,11 +51,6 @@ public class CollectController extends BaseController {
         //创建通知
         notificationService.sendNotification(user.getNickname(),
                 topic.getAuthor(), Constants.NotificationEnum.COLLECT.name(), tid, "");
-        //清理缓存
-        clearCache(CacheEnum.usercollectcount.name() + user.getId());
-        clearCache(CacheEnum.collects.name() + user.getId());
-        clearCache(CacheEnum.collectcount.name() + tid);
-        clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
         return redirect("/topic/" + tid);
     }
 
@@ -69,10 +64,6 @@ public class CollectController extends BaseController {
         Collect collect = collectService.findByTidAndUid(tid, user.getId());
         if (collect != null) {
             collectService.delete(collect.getId());
-            clearCache(CacheEnum.usercollectcount.name() + user.getId());
-            clearCache(CacheEnum.collects.name() + user.getId());
-            clearCache(CacheEnum.collectcount.name() + tid);
-            clearCache(CacheEnum.collect.name() + tid + "_" + user.getId());
         }
         return redirect("/topic/" + tid);
     }

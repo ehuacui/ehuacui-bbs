@@ -40,13 +40,10 @@ public class SectionController extends BaseController {
      * 改变板块显示状态
      */
     @RequestMapping(value = "/changeshowstatus", method = RequestMethod.GET)
-    public String changeshowstatus(@RequestParam("id") Integer id) {
+    public String changeShowStatus(@RequestParam("id") Integer id) {
         Section section = sectionService.findById(id);
         section.setShowStatus(!section.getShowStatus());
         sectionService.update(section);
-        clearCache(Constants.CacheEnum.sections.name() + true);
-        clearCache(Constants.CacheEnum.sections.name() + false);
-        clearCache(Constants.CacheEnum.section.name() + section.getTab());
         return redirect("/section/list");
     }
 
@@ -57,9 +54,6 @@ public class SectionController extends BaseController {
     public String delete(@RequestParam("id") Integer id) {
         Section section = sectionService.findById(id);
         sectionService.deleteById(id);
-        clearCache(Constants.CacheEnum.sections.name() + true);
-        clearCache(Constants.CacheEnum.sections.name() + false);
-        clearCache(Constants.CacheEnum.section.name() + section.getTab());
         return redirect("/section/list");
     }
 
