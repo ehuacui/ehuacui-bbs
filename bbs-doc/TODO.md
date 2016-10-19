@@ -8,6 +8,7 @@
  - 异常统一处理
  - 增加缓存
  - 对接ElasticSearch
+ - HTTPS支持
 
 #产品RoadMap
 -------------

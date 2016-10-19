@@ -23,26 +23,26 @@
                             <span>${topic.viewCount!1}次点击</span>
                             <span>•</span>
                             <span>来自 <a href="/?tab=${section.tab!}">${section.name!}</a></span>
-                            <#if userinfo??>
-                                <#if userinfo.id == authorInfo.id>
+                            <#if userInfo??>
+                                <#if userInfo.id == authorInfo.id>
                                     <span>•</span>
                                     <span><a href="/topic/append/${topic.id}">内容追加</a></span>
                                 </#if>
-                                <@py.hasPermission name="topic:edit" id="${userinfo.id!}">
+                                <@py.hasPermission name="topic:edit" id="${userInfo.id!}">
                                     <span>•</span>
                                     <span><a href="/topic/edit?id=${topic.id}">编辑</a></span>
                                 </@py.hasPermission>
-                                <@py.hasPermission name="topic:delete" id="${userinfo.id!}">
+                                <@py.hasPermission name="topic:delete" id="${userInfo.id!}">
                                     <span>•</span>
                                     <span><a
                                             href="javascript:if(confirm('确定要删除吗？'))location.href='/topic/delete?id=${topic.id}'">删除</a></span>
                                 </@py.hasPermission>
-                                <@py.hasPermission name="topic:top" id="${userinfo.id!}">
+                                <@py.hasPermission name="topic:top" id="${userInfo.id!}">
                                     <span>•</span>
                                     <span><a
                                             href="javascript:if(confirm('确定要${topic.top!}吗？'))location.href='/topic/top?id=${topic.id}'">${topic.top!}</a></span>
                                 </@py.hasPermission>
-                                <@py.hasPermission name="topic:good" id="${userinfo.id!}">
+                                <@py.hasPermission name="topic:good" id="${userInfo.id!}">
                                     <span>•</span>
                                     <span><a
                                             href="javascript:if(confirm('确定要${topic.good!}吗？'))location.href='/topic/good?id=${topic.id}'">${topic.good!}</a></span>
@@ -68,8 +68,8 @@
                         <span>第 ${topicAppend_index + 1} 条追加</span>
                         <span>•</span>
                         <span>${formatDate(topicAppend.inTime)!}</span>
-                        <#if userinfo??>
-                            <@py.hasPermission name="topic:append:edit" id="${userinfo.id!}">
+                        <#if userInfo??>
+                            <@py.hasPermission name="topic:append:edit" id="${userInfo.id!}">
                                 <span>•</span>
                                 <a href="/topic/append-edit?id=${topicAppend.id!}">编辑</a>
                             </@py.hasPermission>
@@ -78,7 +78,7 @@
                 ${markedNotAt(topicAppend.content)!}
                 </div>
             </#list>
-            <#if userinfo??>
+            <#if userInfo??>
                 <div class="panel-footer">
                     <#if collect??>
                         <a href="/collect/delete?tid=${topic.id!}">取消收藏</a>
@@ -104,7 +104,7 @@
                 </div>
             </div>
         </#if>
-        <#if userinfo??>
+        <#if userInfo??>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     添加一条新回复

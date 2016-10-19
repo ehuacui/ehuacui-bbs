@@ -15,22 +15,22 @@
                 <form action="/user/setting" method="post" id="userProfileForm">
                     <div class="form-group">
                         <label for="nickname">昵称</label>
-                        <input type="text" disabled class="form-control" id="nickname" value="${userinfo.nickname!}"/>
+                        <input type="text" disabled class="form-control" id="nickname" value="${userInfo.nickname!}"/>
                     </div>
                     <div class="form-group">
                         <label for="email">邮箱</label>
-                        <input type="text" disabled class="form-control" id="email" value="${userinfo.email!}"/>
+                        <input type="text" disabled class="form-control" id="email" value="${userInfo.email!}"/>
                     </div>
                     <div class="form-group">
                         <label for="url">主页</label>
-                        <input type="text" class="form-control" id="url" name="url" value="${userinfo.url!}"/>
+                        <input type="text" class="form-control" id="url" name="url" value="${userInfo.url!}"/>
                     </div>
                     <div class="form-group">
                         <label for="signature">个性签名</label>
-                        <textarea class="form-control" name="signature" id="signature">${userinfo.signature!}</textarea>
+                        <textarea class="form-control" name="signature" id="signature">${userInfo.signature!}</textarea>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="receiveMsg" name="receiveMsg" value="1" <#if userinfo.receiveMsg>checked</#if>/>
+                        <input type="checkbox" id="receiveMsg" name="receiveMsg" value="1" <#if userInfo.receiveMsg>checked</#if>/>
                         <label for="receiveMsg">是否接收系统邮件</label>
                     </div>
                     <button type="button" id="userProfileUpdateBtn" onclick="updateUserProfile()" class="btn btn-default">保存设置</button>
@@ -42,7 +42,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Access Token</div>
         <div class="panel-body">
-            <p>AccessToken: ${userinfo.accessToken!}</p>
+            <p>AccessToken: ${userInfo.accessToken!}</p>
             <p id="qrcode"></p>
         </div>
     </div>
@@ -55,7 +55,7 @@
 <script src="http://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
     $(function () {
-        $('#qrcode').qrcode("${userinfo.accessToken!}");
+        $('#qrcode').qrcode("${userInfo.accessToken!}");
     });
 </script>
 -->

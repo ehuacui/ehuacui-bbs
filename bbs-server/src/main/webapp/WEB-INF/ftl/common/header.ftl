@@ -25,7 +25,7 @@
                  <a href="/about">关于</a>
              </li>
              -->
-                <#if userinfo??>
+                <#if userInfo??>
                     <li class="hidden-md hidden-lg">
                         <a href="/topic/create">发布话题</a>
                     </li>
@@ -33,8 +33,8 @@
                         <a href="/notification/index">通知 <span class="badge" id="badge">${notifications!}</span></a>
                     </li>
                     <li <#if page_tab == 'user'> class="active" </#if>>
-                        <a href="/user/${userinfo.nickname!}">
-                        ${userinfo.nickname!}
+                        <a href="/user/${userInfo.nickname!}">
+                        ${userInfo.nickname!}
                             <span class="badge" id="badge"></span>
                         </a>
                     </li>
@@ -48,31 +48,31 @@
                         <ul class="dropdown-menu">
                             <li><a href="/user/setting">个人资料</a></li>
                             <li><a href="/logout">退出</a></li>
-                            <@py.hasPermission name="section:list" id="${userinfo.id!}">
+                            <@py.hasPermission name="section:list" id="${userInfo.id!}">
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/section/list">板块管理</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="reply:list" id="${userinfo.id!}">
+                            <@py.hasPermission name="reply:list" id="${userInfo.id!}">
                                 <li><a href="/reply/list">回复管理</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:users" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:users" id="${userInfo.id!}">
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/manage/users">用户管理</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:roles" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:roles" id="${userInfo.id!}">
                                 <li><a href="/manage/roles">角色管理</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:permissions" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:permissions" id="${userInfo.id!}">
                                 <li><a href="/manage/permissions">权限管理</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:solr" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:solr" id="${userInfo.id!}">
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/solr">索引所有话题(慎用)</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:delete:all:index" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:delete:all:index" id="${userInfo.id!}">
                                 <li><a href="/delete-all-index">删除所有索引</a></li>
                             </@py.hasPermission>
-                            <@py.hasPermission name="system:clear:cache" id="${userinfo.id!}">
+                            <@py.hasPermission name="system:clear:cache" id="${userInfo.id!}">
                                 <li><a href="/clear">删除所有缓存</a></li>
                             </@py.hasPermission>
                         </ul>

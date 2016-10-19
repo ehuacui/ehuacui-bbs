@@ -8,12 +8,12 @@
             <div class="media-heading gray">
                 <a href="/user/${reply.author!}">${reply.author!} </a>
             ${formatDate(reply.inTime)!}
-                <#if userinfo??>
+                <#if userInfo??>
                     <span class="pull-right">
-                        <@py.hasPermission name="reply:edit" id="${userinfo.id!}">
+                        <@py.hasPermission name="reply:edit" id="${userInfo.id!}">
                             <a href="/reply/edit?id=${reply.id!}">编辑</a>
                         </@py.hasPermission>
-                        <@py.hasPermission name="reply:delete" id="${userinfo.id!}">
+                        <@py.hasPermission name="reply:delete" id="${userInfo.id!}">
                             <a href="javascript:if(confirm('确定要删除吗？'))location.href='/reply/delete?id=${reply.id!}'">删除</a>
                         </@py.hasPermission>
                         <a href="javascript:replythis('${reply.author}');">回复</a>

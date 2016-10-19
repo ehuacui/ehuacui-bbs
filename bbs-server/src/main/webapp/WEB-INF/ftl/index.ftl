@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
-        <#if userinfo??>
+        <#if userInfo??>
             <#include "components/user_info.ftl">
             <@info/>
             <#include "components/create_topic.ftl">

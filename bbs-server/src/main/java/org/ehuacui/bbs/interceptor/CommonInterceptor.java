@@ -47,7 +47,7 @@ public class CommonInterceptor implements Interceptor {
             } else {
                 int count = notificationService.findNotReadCount(user.getNickname());
                 request.setAttribute("notifications", count == 0 ? null : count);
-                request.setAttribute("userinfo", user);
+                request.setAttribute("userInfo", user);
             }
         }
         request.setAttribute("solrStatus", solrStatus.equalsIgnoreCase("true") ? "true" : "false");

@@ -6,19 +6,19 @@
     <div class="panel-body">
         <div class="media">
             <div class="media-left">
-                <a href="/user/${userinfo.nickname!}">
-                    <img src="${userinfo.avatar!}" title="${userinfo.nickname!}" class="avatar"/>
+                <a href="/user/${userInfo.nickname!}">
+                    <img src="${userInfo.avatar!}" title="${userInfo.nickname!}" class="avatar"/>
                 </a>
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a href="/user/${userinfo.nickname!}">${userinfo.nickname!}</a>
+                    <a href="/user/${userInfo.nickname!}">${userInfo.nickname!}</a>
                 </div>
-                <p>积分: ${userinfo.score!}</p>
+                <p>积分: ${userInfo.score!}</p>
             </div>
-            <#if userinfo.signature?? && userinfo.signature != "">
+            <#if userInfo.signature?? && userInfo.signature != "">
                 <div style="color: #7A7A7A; font-size: 12px; margin-top:5px;">
-                    <i>“ ${userinfo.signature!} ” </i>
+                    <i>“ ${userInfo.signature!} ” </i>
                 </div>
             </#if>
         </div>
