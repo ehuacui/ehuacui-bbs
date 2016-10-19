@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Topic;
 
 /**
@@ -30,7 +30,7 @@ public interface ISearchService {
      * @param q
      * @return
      */
-    Page indexQuery(Integer pageNumber, String q);
+    PageDataBody indexQuery(Integer pageNumber, String q);
 
     /**
      * 删除索引

@@ -1,7 +1,7 @@
 package org.ehuacui.bbs.service;
 
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.User;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public interface IUserService {
      * @param pageSize
      * @return
      */
-    Page<User> page(Integer pageNumber, Integer pageSize);
+    PageDataBody<User> page(Integer pageNumber, Integer pageSize);
 
     /**
      * 根据昵称删除用户

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 分页实体
  */
-public class Page<T> implements Serializable {
+public class PageDataBody<T> implements Serializable {
 
     private static final long serialVersionUID = -5395997221963176643L;
 
@@ -25,7 +25,7 @@ public class Page<T> implements Serializable {
      * @param pageSize   the page size
      * @param totalRow   the total row of paginate
      */
-    public Page(List<T> list, int pageNumber, int pageSize, long totalRow) {
+    public PageDataBody(List<T> list, int pageNumber, int pageSize, long totalRow) {
         this.list = list;
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;

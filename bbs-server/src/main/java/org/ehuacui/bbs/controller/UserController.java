@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
@@ -56,8 +56,8 @@ public class UserController extends BaseController {
         if (currentUser != null) {
             Long collectCount = topicService.countByUid(currentUser.getId());
             currentUser.setCollectCount(collectCount);
-            Page<Topic> topicPage = topicService.pageByAuthor(1, 7, nickname);
-            Page<Reply> replyPage = replyService.pageByAuthor(1, 7, nickname);
+            PageDataBody<Topic> topicPage = topicService.pageByAuthor(1, 7, nickname);
+            PageDataBody<Reply> replyPage = replyService.pageByAuthor(1, 7, nickname);
             request.setAttribute("topicPage", topicPage);
             request.setAttribute("replyPage", replyPage);
             request.setAttribute("currentUser", currentUser);
@@ -80,7 +80,7 @@ public class UserController extends BaseController {
                          @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Topic> page = topicService.pageByAuthor(p, pageSize, nickname);
+        PageDataBody<Topic> page = topicService.pageByAuthor(p, pageSize, nickname);
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getNameByTab", new GetNameByTab());
@@ -96,7 +96,7 @@ public class UserController extends BaseController {
                           @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Reply> page = replyService.pageByAuthor(p, pageSize, nickname);
+        PageDataBody<Reply> page = replyService.pageByAuthor(p, pageSize, nickname);
         request.setAttribute("page", page);
         request.setAttribute("marked", new Marked(siteDomain));
         request.setAttribute("formatDate", new FormatDate());
@@ -111,7 +111,7 @@ public class UserController extends BaseController {
                            @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
-        Page<Topic> page = topicService.findByUid(p, pageSize, user.getId());
+        PageDataBody<Topic> page = topicService.findByUid(p, pageSize, user.getId());
         request.setAttribute("page", page);
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("getNameByTab", new GetNameByTab());

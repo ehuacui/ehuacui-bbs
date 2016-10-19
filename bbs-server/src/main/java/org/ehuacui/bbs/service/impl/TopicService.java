@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.TopicAppendMapper;
 import org.ehuacui.bbs.mapper.TopicMapper;
 import org.ehuacui.bbs.model.Topic;
@@ -33,7 +33,7 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> page(Integer pageNumber, Integer pageSize, String tab) {
+    public PageDataBody<Topic> page(Integer pageNumber, Integer pageSize, String tab) {
         if (tab.equals("all")) {
             return pageAll(pageNumber, pageSize);
         } else if (tab.equals("good")) {
@@ -43,7 +43,7 @@ public class TopicService implements ITopicService {
         } else {
             List<Topic> list = topicMapper.selectByTab(tab, (pageNumber - 1) * pageSize, pageSize);
             int total = topicMapper.countByTab(tab);
-            return new Page<>(list, pageNumber, pageSize, total);
+            return new PageDataBody<>(list, pageNumber, pageSize, total);
         }
     }
 
@@ -55,10 +55,10 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> pageAll(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<Topic> pageAll(Integer pageNumber, Integer pageSize) {
         List<Topic> list = topicMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAll();
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -69,10 +69,10 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> pageGood(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<Topic> pageGood(Integer pageNumber, Integer pageSize) {
         List<Topic> list = topicMapper.selectAllGood((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAllGood();
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -83,10 +83,10 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> pageNoReply(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<Topic> pageNoReply(Integer pageNumber, Integer pageSize) {
         List<Topic> list = topicMapper.selectAllNoReply((pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countAllNoReply();
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -122,10 +122,10 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
+    public PageDataBody<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
         List<Topic> list = topicMapper.selectByAuthor(author, (pageNumber - 1) * pageSize, pageSize);
         int total = topicMapper.countByAuthor(author);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -200,10 +200,10 @@ public class TopicService implements ITopicService {
      * @return
      */
     @Override
-    public Page<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
+    public PageDataBody<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid) {
         List<Topic> list = topicMapper.selectByUid(uid, (pageNumber - 1) * pageSize, pageSize);
         long total = topicMapper.countByUid(uid);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**

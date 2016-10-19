@@ -5,7 +5,7 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import org.ehuacui.bbs.dto.Constants;
-import org.ehuacui.bbs.dto.Result;
+import org.ehuacui.bbs.dto.ResponseDataBody;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.DateUtil;
@@ -50,12 +50,12 @@ public class BaseController {
     private static final String CODE_FAILURE = "201";
     private static final String DESC_SUCCESS = "success";
 
-    public Result success(Object object) {
-        return new Result(CODE_SUCCESS, DESC_SUCCESS, object);
+    public ResponseDataBody success(Object object) {
+        return new ResponseDataBody(CODE_SUCCESS, DESC_SUCCESS, object);
     }
 
-    public Result error(String message) {
-        return new Result(CODE_FAILURE, message, null);
+    public ResponseDataBody error(String message) {
+        return new ResponseDataBody(CODE_FAILURE, message, null);
     }
 
     public User getUser(HttpServletRequest request) {

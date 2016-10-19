@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Topic;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface ITopicService {
      * @param tab
      * @return
      */
-    Page<Topic> page(Integer pageNumber, Integer pageSize, String tab);
+    PageDataBody<Topic> page(Integer pageNumber, Integer pageSize, String tab);
 
     /**
      * 分页查询所有话题
@@ -27,7 +27,7 @@ public interface ITopicService {
      * @param pageSize
      * @return
      */
-    Page<Topic> pageAll(Integer pageNumber, Integer pageSize);
+    PageDataBody<Topic> pageAll(Integer pageNumber, Integer pageSize);
 
     /**
      * 分页查询精华话题
@@ -36,7 +36,7 @@ public interface ITopicService {
      * @param pageSize
      * @return
      */
-    Page<Topic> pageGood(Integer pageNumber, Integer pageSize);
+    PageDataBody<Topic> pageGood(Integer pageNumber, Integer pageSize);
 
     /**
      * 分页查询无人回复话题
@@ -45,7 +45,7 @@ public interface ITopicService {
      * @param pageSize
      * @return
      */
-    Page<Topic> pageNoReply(Integer pageNumber, Integer pageSize);
+    PageDataBody<Topic> pageNoReply(Integer pageNumber, Integer pageSize);
 
     /**
      * 根据id查询话题内容并缓存
@@ -73,7 +73,7 @@ public interface ITopicService {
      * @param author
      * @return
      */
-    Page<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
+    PageDataBody<Topic> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
 
     /**
      * 查询所有话题
@@ -115,7 +115,7 @@ public interface ITopicService {
      * @param uid
      * @return
      */
-    Page<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid);
+    PageDataBody<Topic> findByUid(Integer pageNumber, Integer pageSize, Integer uid);
 
     /**
      * 查询用户收藏的数量

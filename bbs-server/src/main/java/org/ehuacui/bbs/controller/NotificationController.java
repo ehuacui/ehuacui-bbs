@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Notification;
@@ -39,7 +39,7 @@ public class NotificationController extends BaseController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(@RequestParam(value = "p", defaultValue = "1") Integer p, HttpServletRequest request) {
         User user = getUser(request);
-        Page<Notification> page = notificationService.pageByAuthor(p, pageSize, user.getNickname());
+        PageDataBody<Notification> page = notificationService.pageByAuthor(p, pageSize, user.getNickname());
         //将通知都设置成已读的
         notificationService.makeUnreadToRead(user.getNickname());
         request.setAttribute("page", page);

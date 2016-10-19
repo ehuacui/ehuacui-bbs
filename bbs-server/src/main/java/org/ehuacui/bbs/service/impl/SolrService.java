@@ -7,7 +7,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.TopicAppend;
 import org.ehuacui.bbs.service.ISearchService;
@@ -113,7 +113,7 @@ public class SolrService implements ISearchService {
      * @return
      */
     @Override
-    public Page indexQuery(Integer pageNumber, String q) {
+    public PageDataBody indexQuery(Integer pageNumber, String q) {
         try {
             SolrClient solrClient = new HttpSolrClient(solrURL);
             SolrQuery query = new SolrQuery(q);
@@ -148,7 +148,7 @@ public class SolrService implements ISearchService {
                 list.add(topic);
             }
             int totalCount = (int) docs.getNumFound();
-            return new Page<>(list, pageNumber, solrPageSize, totalCount);
+            return new PageDataBody<>(list, pageNumber, solrPageSize, totalCount);
         } catch (Exception e) {
             e.printStackTrace();
         }

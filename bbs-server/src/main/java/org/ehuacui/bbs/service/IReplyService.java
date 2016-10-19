@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Reply;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public interface IReplyService {
      * @param pageSize
      * @return
      */
-    Page<Reply> findAll(Integer pageNumber, Integer pageSize);
+    PageDataBody<Reply> findAll(Integer pageNumber, Integer pageSize);
 
     /**
      * 分页查询话题的回复列表
@@ -35,7 +35,7 @@ public interface IReplyService {
      * @param tid
      * @return
      */
-    Page<Reply> page(Integer pageNumber, Integer pageSize, Integer tid);
+    PageDataBody<Reply> page(Integer pageNumber, Integer pageSize, Integer tid);
 
     /**
      * 根据话题id查询回复列表
@@ -53,7 +53,7 @@ public interface IReplyService {
      * @param author
      * @return
      */
-    Page<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
+    PageDataBody<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
 
     /**
      * 删除话题回复内容

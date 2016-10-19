@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.controller;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public class TopicController extends BaseController {
         //查询作者其他话题
         List<Topic> otherTopics = topicService.findOtherTopicByAuthor(tid, topic.getAuthor(), 7);
         //查询回复
-        Page<Reply> page = replyService.page(p, replyPageSize, tid);
+        PageDataBody<Reply> page = replyService.page(p, replyPageSize, tid);
         //查询收藏数量
         long collectCount = collectService.countByTid(tid);
         //查询当前用户是否收藏了该话题

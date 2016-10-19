@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.UserMapper;
 import org.ehuacui.bbs.mapper.UserRoleMapper;
 import org.ehuacui.bbs.model.User;
@@ -81,10 +81,10 @@ public class UserService implements IUserService {
      * @return
      */
     @Override
-    public Page<User> page(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<User> page(Integer pageNumber, Integer pageSize) {
         List<User> list = userMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
         int total = userMapper.countAll();
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**

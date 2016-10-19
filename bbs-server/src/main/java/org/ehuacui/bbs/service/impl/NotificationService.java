@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.NotificationMapper;
 import org.ehuacui.bbs.model.Notification;
 import org.ehuacui.bbs.service.INotificationService;
@@ -41,10 +41,10 @@ public class NotificationService implements INotificationService {
      * @return
      */
     @Override
-    public Page<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
+    public PageDataBody<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
         List<Notification> list = notificationMapper.selectByAuthor(author, (pageNumber - 1) * pageSize, pageSize);
         long total = notificationMapper.countByAuthor(author);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**

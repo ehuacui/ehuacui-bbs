@@ -1,11 +1,10 @@
 package org.ehuacui.bbs.controller;
 
 import org.ehuacui.bbs.dto.Constants;
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
-import org.ehuacui.bbs.model.Section;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.service.ISearchService;
 import org.ehuacui.bbs.service.ISectionService;
@@ -71,7 +70,7 @@ public class IndexController extends BaseController {
             request.setAttribute("sectionName", "版块");
         }
         */
-        Page<Topic> page = topicService.page(p, pageSize, tab);
+        PageDataBody<Topic> page = topicService.page(p, pageSize, tab);
         request.setAttribute("tab", tab);
         request.setAttribute("sections", sectionService.findByShowStatus(true));
         request.setAttribute("page", page);
@@ -160,7 +159,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(HttpServletRequest request, @RequestParam(value = "p", defaultValue = "1") Integer p, @RequestParam("q") String q) {
         if (solrStatus.equalsIgnoreCase("true")) {
-            Page page = searchService.indexQuery(p, q);
+            PageDataBody page = searchService.indexQuery(p, q);
             request.setAttribute("q", q);
             request.setAttribute("page", page);
         }

@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Role;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IRoleService {
 
-    Page<Role> page(Integer pageNumber, Integer pageSize);
+    PageDataBody<Role> page(Integer pageNumber, Integer pageSize);
 
     /**
      * 根据角色名称查询

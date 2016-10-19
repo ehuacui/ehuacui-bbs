@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.RoleMapper;
 import org.ehuacui.bbs.mapper.RolePermissionMapper;
 import org.ehuacui.bbs.model.Role;
@@ -25,10 +25,10 @@ public class RoleService implements IRoleService {
     private RolePermissionMapper rolePermissionMapper;
 
     @Override
-    public Page<Role> page(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<Role> page(Integer pageNumber, Integer pageSize) {
         int total = roleMapper.countAll();
         List<Role> list = roleMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**

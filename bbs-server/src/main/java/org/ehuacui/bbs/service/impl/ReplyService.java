@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service.impl;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.ReplyMapper;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.service.IReplyService;
@@ -39,10 +39,10 @@ public class ReplyService implements IReplyService {
      * @return
      */
     @Override
-    public Page<Reply> findAll(Integer pageNumber, Integer pageSize) {
+    public PageDataBody<Reply> findAll(Integer pageNumber, Integer pageSize) {
         int total = replyMapper.countAll();
         List<Reply> list = replyMapper.selectAll((pageNumber - 1) * pageSize, pageSize);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -54,10 +54,10 @@ public class ReplyService implements IReplyService {
      * @return
      */
     @Override
-    public Page<Reply> page(Integer pageNumber, Integer pageSize, Integer tid) {
+    public PageDataBody<Reply> page(Integer pageNumber, Integer pageSize, Integer tid) {
         int total = replyMapper.countByTid(tid);
         List<Reply> list = replyMapper.selectByTid(tid, (pageNumber - 1) * pageSize, pageSize);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**
@@ -80,10 +80,10 @@ public class ReplyService implements IReplyService {
      * @return
      */
     @Override
-    public Page<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
+    public PageDataBody<Reply> pageByAuthor(Integer pageNumber, Integer pageSize, String author) {
         int total = replyMapper.countByAuthor(author);
         List<Reply> list = replyMapper.selectByAuthor(author, (pageNumber - 1) * pageSize, pageSize);
-        return new Page<>(list, pageNumber, pageSize, total);
+        return new PageDataBody<>(list, pageNumber, pageSize, total);
     }
 
     /**

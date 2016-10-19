@@ -1,6 +1,6 @@
 package org.ehuacui.bbs.service;
 
-import org.ehuacui.bbs.dto.Page;
+import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Notification;
 
 /**
@@ -23,7 +23,7 @@ public interface INotificationService {
      * @param author
      * @return
      */
-    Page<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
+    PageDataBody<Notification> pageByAuthor(Integer pageNumber, Integer pageSize, String author);
 
     /**
      * 将用户的通知都置为已读
