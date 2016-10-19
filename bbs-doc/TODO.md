@@ -6,6 +6,8 @@
  - Controller业务逻辑实现统一放到Service
  - 修改数据事务支持
  - 异常统一处理
+   - HTTP状态码
+   - 跳转的地址和页面
  - 增加缓存
  - 对接ElasticSearch
  - HTTPS支持

@@ -52,6 +52,11 @@ public class Notification {
      */
     private String content;
 
+    /**
+     * 话题的标题
+     */
+    private String title;
+
     public Integer getId() {
         return id;
     }
@@ -116,4 +121,11 @@ public class Notification {
         this.content = content == null ? null : content.trim();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

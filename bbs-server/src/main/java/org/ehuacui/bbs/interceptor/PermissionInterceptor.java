@@ -33,7 +33,8 @@ public class PermissionInterceptor implements Interceptor {
         String path = request.getServletPath();
         //没有权限
         if (!permissions.containsValue(path)) {
-            response.sendRedirect("/401");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.sendRedirect("/401.html");
         }
     }
 }
