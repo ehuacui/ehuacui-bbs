@@ -1,14 +1,14 @@
 
 ## 介绍
 
-   该项目源于[pybbs](https://github.com/tomoya92/pybbs),并使用Spring等框架完成了服务端重写，
-   前台模板和数据库表结构目前仍与[pybbs](https://github.com/tomoya92/pybbs)保持一致。后续计划与
-   [pybbs](https://github.com/tomoya92/pybbs)保持独立开发和维护。目前部分功能仍在测试中，若有问题
-   请[Issues](https://github.com/ehuacui/ehuacui-bbs/issues)。
+   该项目源于[pybbs](https://github.com/tomoya92/pybbs),使用Spring等框架进行服务端重写，优化了
+   源工程部分实现逻辑，前台模板和数据库表结构目前大体与[pybbs](https://github.com/tomoya92/pybbs)
+   保持一致。后续计划与[pybbs](https://github.com/tomoya92/pybbs)保持独立开发和维护。目前部分功能仍
+   在测试中，若有问题请[Issues](https://github.com/ehuacui/ehuacui-bbs/issues)。
  
 ## 使用技术
 
-- jdk1.8
+- jdk1.7
 - tomcat8
 - Spring+MyBatias+SpringMVC
 - freemarker

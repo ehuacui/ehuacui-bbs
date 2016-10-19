@@ -3,7 +3,7 @@
     <div class="panel-heading">
         积分榜
         <#if hidden="true">
-            <span class="pull-right"><a href="/top100">TOP100 &gt;&gt; </a></span>
+            <span class="pull-right"><a href="/top/100">TOP100 &gt;&gt; </a></span>
         </#if>
     </div>
 <#--<div class="panel-body">-->
