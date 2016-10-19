@@ -6,7 +6,7 @@
             <div class="panel-heading">
             ${currentUser.nickname!}回复的话题
             </div>
-            <#include "../components/userreplies.ftl"/>
+            <#include "../components/user_replies.ftl"/>
             <@userreplies replies=page.list/>
             <div class="panel-body" style="padding: 0 15px;">
                 <#include "../components/paginate.ftl"/>

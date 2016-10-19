@@ -7,7 +7,7 @@
             ${currentUser.nickname!}收藏的话题
             </div>
             <div class="panel-body">
-                <#include "../components/usertopics.ftl"/>
+                <#include "../components/user_topics.ftl"/>
                     <@usertopics topics=page.list/>
                     <#include "../components/paginate.ftl"/>
                     <@paginate currentPage=page.pageNumber totalPage=page.totalPage actionUrl="/user/collects/${currentUser.nickname!}" urlParas=""/>

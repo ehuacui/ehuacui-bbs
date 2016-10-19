@@ -33,9 +33,9 @@
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
         <#if userinfo??>
-            <#include "./components/userinfo.ftl">
+            <#include "components/user_info.ftl">
             <@info/>
-            <#include "./components/createtopic.ftl">
+            <#include "components/create_topic.ftl">
             <@createtopic/>
         <#else>
             <#include "./components/welcome.ftl">

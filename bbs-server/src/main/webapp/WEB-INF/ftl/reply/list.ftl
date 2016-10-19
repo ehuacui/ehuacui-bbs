@@ -7,7 +7,7 @@
                 <a href="/">主页</a> / 回复列表
             </div>
             <div class="table-responsive">
-                <#include "../components/replylist.ftl"/>
+                <#include "../components/reply_list.ftl"/>
                 <@userreplies replies=page.list/>
             </div>
             <div class="panel-body" style="padding: 0 15px;">

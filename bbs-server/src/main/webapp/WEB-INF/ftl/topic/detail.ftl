@@ -126,9 +126,9 @@
         </#if>
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
-        <#include "../components/authorinfo.ftl"/>
+        <#include "../components/author_info.ftl"/>
         <@info/>
-        <#include "../components/othertopics.ftl"/>
+        <#include "../components/other_topics.ftl"/>
         <@othertopics/>
     </div>
 </div>

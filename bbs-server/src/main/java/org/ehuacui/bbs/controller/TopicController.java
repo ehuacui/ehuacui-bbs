@@ -231,7 +231,7 @@ public class TopicController extends BaseController {
         Topic topic = topicService.findById(topicAppend.getTid());
         request.setAttribute("topicAppend", topicAppend);
         request.setAttribute("topic", topic);
-        return "topic/appendedit";
+        return "topic/append_edit";
     }
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})

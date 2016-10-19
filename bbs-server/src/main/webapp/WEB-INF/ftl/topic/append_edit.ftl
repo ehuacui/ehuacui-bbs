@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
-        <#include "../components/userinfo.ftl">
+        <#include "../components/user_info.ftl">
         <@info/>
     </div>
 </div>

@@ -96,7 +96,7 @@ public class ManageController extends BaseController {
         request.setAttribute("roles", roleService.findAll());
         //当前用户已经存在的角色
         request.setAttribute("_roles", userRoleService.findByUserId(id));
-        return "system/userrole";
+        return "system/user_role";
     }
 
     /**
@@ -127,7 +127,7 @@ public class ManageController extends BaseController {
     public String addRole(HttpServletRequest request) {
         //查询所有的权限
         request.setAttribute("permissions", permissionService.findWithChild());
-        return "system/addrole";
+        return "system/add_role";
     }
 
     /**
@@ -153,7 +153,7 @@ public class ManageController extends BaseController {
     public String addPermission(@RequestParam("pid") Integer pid, HttpServletRequest request) {
         request.setAttribute("pid", pid);
         request.setAttribute("permissions", permissionService.findByPid(0));
-        return "system/addpermission";
+        return "system/add_permission";
     }
 
     @RequestMapping(value = "/add-permission", method = RequestMethod.POST)
@@ -181,7 +181,7 @@ public class ManageController extends BaseController {
     public String editPermission(@RequestParam("id") Integer id, HttpServletRequest request) {
         request.setAttribute("_permission", permissionService.findById(id));
         request.setAttribute("permissions", permissionService.findByPid(0));
-        return "system/editpermission";
+        return "system/edit_permission";
     }
 
     @RequestMapping(value = "/edit-permission", method = RequestMethod.POST)
@@ -209,7 +209,7 @@ public class ManageController extends BaseController {
         request.setAttribute("permissions", permissionService.findWithChild());
         //查询角色已经配置的权限
         request.setAttribute("_permissions", rolePermissionService.findByRoleId(id));
-        return "system/rolepermission";
+        return "system/role_permission";
     }
 
     @RequestMapping(value = "/role-permission", method = RequestMethod.POST)

@@ -4,7 +4,7 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">搜索结果</div>
-            <#include "./components/searchresult.ftl"/>
+            <#include "components/search_result.ftl"/>
             <@searchresult topics=page.list/>
             <div class="panel-body" style="padding: 0 15px;">
                 <#include "./components/paginate.ftl"/>
