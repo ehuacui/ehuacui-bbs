@@ -4,10 +4,13 @@
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.Reply">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="tid" jdbcType="INTEGER" property="tid"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="is_delete" jdbcType="BIT" property="isDelete"/>
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="replyAuthor" jdbcType="VARCHAR" property="replyAuthor"/>
+        <result column="topicAuthor" jdbcType="VARCHAR" property="topicAuthor"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -40,6 +43,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select r.author as replyAuthor, r.content, r.in_time, t.id as tid, t.author as topicAuthor, t.title
         from tb_reply r left join tb_topic t on r.tid = t.id
+        where t.is_delete = 0 and r.is_delete = 0
         order by r.in_time desc
         <if test="start != null">
             limit #{start,jdbcType=INTEGER}
@@ -52,10 +56,11 @@
     <select id="countAll" resultType="java.lang.Integer">
         select count(r.id)
         from tb_reply r left join tb_topic t on r.tid = t.id
+        where t.is_delete = 0 and r.is_delete = 0
     </select>
 
     <select id="selectByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select t.title, t.author as topicAuthor, t.in_time, r.tid, r.content
+        select t.title, r.author as replyAuthor, t.author as topicAuthor, t.in_time, r.tid, r.content
         from tb_reply r left join tb_topic t on r.tid = t.id
         where t.is_delete = 0 and r.is_delete = 0 and r.author = #{author,jdbcType=VARCHAR}
         order by r.in_time desc

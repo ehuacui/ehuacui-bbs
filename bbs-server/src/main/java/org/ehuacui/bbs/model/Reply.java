@@ -40,6 +40,20 @@ public class Reply {
      * Column: tb_reply.content
      */
     private String content;
+    /**
+     * 回复的作者
+     */
+    private String replyAuthor;
+
+    /**
+     * 作者
+     */
+    private String topicAuthor;
+
+    /**
+     * 回复话题的标题
+     */
+    private String title;
 
     public Integer getId() {
         return id;
@@ -87,5 +101,29 @@ public class Reply {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public String getReplyAuthor() {
+        return replyAuthor;
+    }
+
+    public void setReplyAuthor(String replyAuthor) {
+        this.replyAuthor = replyAuthor;
+    }
+
+    public String getTopicAuthor() {
+        return topicAuthor;
+    }
+
+    public void setTopicAuthor(String topicAuthor) {
+        this.topicAuthor = topicAuthor;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -150,6 +150,6 @@ public class ReplyController extends BaseController {
         request.setAttribute("page", replyService.findAll(p, pageSize));
         request.setAttribute("formatDate", new FormatDate());
         request.setAttribute("marked", new Marked(siteDomain));
-        return ("reply/list");
+        return "reply/list";
     }
 }
