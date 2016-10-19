@@ -92,8 +92,7 @@ public class UserController extends BaseController {
      * 用户的回复列表
      */
     @RequestMapping(value = "/replies/{nickname}", method = RequestMethod.GET)
-    public String replies(HttpServletRequest request,
-                          @PathVariable("nickname") String nickname,
+    public String replies(HttpServletRequest request, @PathVariable("nickname") String nickname,
                           @RequestParam(value = "p", defaultValue = "1") Integer p) {
         User user = userService.findByNickname(nickname);
         request.setAttribute("currentUser", user);
@@ -130,8 +129,7 @@ public class UserController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/setting", method = RequestMethod.POST)
-    public String setting(HttpServletRequest request,
-                          @RequestParam("url") String url,
+    public String setting(HttpServletRequest request, @RequestParam("url") String url,
                           @RequestParam("signature") String signature,
                           @RequestParam(value = "receiveMsg", defaultValue = "0") Integer receiveMsg) {
         User user = getUser(request);

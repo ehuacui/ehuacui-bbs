@@ -24,7 +24,7 @@
                             <span>•</span>
                             <span>来自 <a href="/?tab=${section.tab!}">${section.name!}</a></span>
                             <#if userinfo??>
-                                <#if userinfo.id == authorinfo.id>
+                                <#if userinfo.id == authorInfo.id>
                                     <span>•</span>
                                     <span><a href="/topic/append/${topic.id}">内容追加</a></span>
                                 </#if>

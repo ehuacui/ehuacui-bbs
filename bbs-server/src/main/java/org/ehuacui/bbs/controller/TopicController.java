@@ -62,8 +62,7 @@ public class TopicController extends BaseController {
      * 话题详情
      */
     @RequestMapping(value = "/{tid}", method = RequestMethod.GET)
-    public String index(HttpServletRequest request,
-                        @PathVariable("tid") Integer tid,
+    public String index(HttpServletRequest request, @PathVariable("tid") Integer tid,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
         Topic topic = topicService.findById(tid);
         //处理一下置顶，精华
@@ -93,7 +92,7 @@ public class TopicController extends BaseController {
         request.setAttribute("topic", topic);
         request.setAttribute("topicAppends", topicAppends);
         request.setAttribute("section", section);
-        request.setAttribute("authorinfo", authorInfo);
+        request.setAttribute("authorInfo", authorInfo);
         request.setAttribute("otherTopics", otherTopics);
         request.setAttribute("page", page);
         request.setAttribute("collectCount", collectCount);
@@ -117,10 +116,8 @@ public class TopicController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(HttpServletRequest request,
-                         @RequestParam("title") String title,
-                         @RequestParam("content") String content,
-                         @RequestParam("tab") String tab) throws UnsupportedEncodingException {
+    public String create(HttpServletRequest request, @RequestParam("title") String title,
+                         @RequestParam("content") String content, @RequestParam("tab") String tab){
         Date now = new Date();
         if (StringUtil.isBlank(Jsoup.clean(title, Whitelist.basic()))) {
             //renderText(Constants.OP_ERROR_MESSAGE);
@@ -165,10 +162,8 @@ public class TopicController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@RequestParam("id") Integer id,
-                       @RequestParam("title") String title,
-                       @RequestParam("content") String content,
-                       @RequestParam("tab") String tab) throws UnsupportedEncodingException {
+    public String edit(@RequestParam("id") Integer id, @RequestParam("title") String title,
+                       @RequestParam("content") String content, @RequestParam("tab") String tab){
         Topic topic = topicService.findById(id);
         topic.setTab(tab);
         topic.setTitle(Jsoup.clean(title, Whitelist.basic()));
@@ -199,7 +194,8 @@ public class TopicController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/append/{tid}", method = RequestMethod.POST)
-    public String append(HttpServletRequest request, @PathVariable("tid") Integer tid, @RequestParam("content") String content) {
+    public String append(HttpServletRequest request, @PathVariable("tid") Integer tid,
+                         @RequestParam("content") String content) {
         Topic topic = topicService.findById(tid);
         User user = getUser(request);
         if (topic.getAuthor().equals(user.getNickname())) {

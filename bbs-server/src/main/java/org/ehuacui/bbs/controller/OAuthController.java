@@ -66,8 +66,7 @@ public class OAuthController extends BaseController {
      * github登录成功后回调
      */
     @RequestMapping(value = "/github/callback", method = RequestMethod.GET)
-    public String githubCallback(@RequestParam("code") String code,
-                                 @RequestParam("state") String state,
+    public String githubCallback(@RequestParam("code") String code, @RequestParam("state") String state,
                                  @RequestParam(value = "callback", required = false, defaultValue = "/") String callback,
                                  HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieState = WebUtil.getCookie(request, STATE);
@@ -95,13 +94,12 @@ public class OAuthController extends BaseController {
                 user.setChannel(Constants.LoginEnum.Github.name());
                 user.setReceiveMsg(true);//邮箱接收社区消息
                 flag = false;
-            } else {
-                user.setNickname(login);
-                user.setAvatar(avatar_url);
-                user.setEmail(email);
-                user.setUrl(html_url);
-                user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             }
+            user.setNickname(login);
+            user.setAvatar(avatar_url);
+            user.setEmail(email);
+            user.setUrl(html_url);
+            user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
             if (flag) {
                 userService.update(user);
             } else {

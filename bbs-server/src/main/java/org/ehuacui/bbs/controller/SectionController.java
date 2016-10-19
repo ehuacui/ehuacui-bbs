@@ -64,8 +64,7 @@ public class SectionController extends BaseController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@RequestParam("name") String name,
-                      @RequestParam("tab") String tab,
+    public String add(@RequestParam("name") String name, @RequestParam("tab") String tab,
                       @RequestParam("showStatus") Integer showStatus) {
         Section section = new Section();
         section.setName(name);
@@ -89,10 +88,8 @@ public class SectionController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@RequestParam("id") Integer id,
-                       @RequestParam("name") String name,
-                       @RequestParam("tab") String tab,
-                       @RequestParam("showStatus") Integer showStatus) {
+    public String edit(@RequestParam("id") Integer id, @RequestParam("name") String name,
+                       @RequestParam("tab") String tab, @RequestParam("showStatus") Integer showStatus) {
         Section section = sectionService.findById(id);
         section.setId(id);
         section.setName(name);

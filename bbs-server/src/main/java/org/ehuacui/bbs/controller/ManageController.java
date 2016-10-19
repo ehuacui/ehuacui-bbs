@@ -75,14 +75,9 @@ public class ManageController extends BaseController {
      */
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     public String permissions(@RequestParam(value = "pid", required = false, defaultValue = "0") Integer pid, HttpServletRequest request) {
-        if (pid == null) {
-            request.setAttribute("permissions", permissionService.findByPid(pid));
-            request.setAttribute("childPermissions", permissionService.findAll());
-        } else {
-            request.setAttribute("permissions", permissionService.findByPid(pid));
-            request.setAttribute("childPermissions", permissionService.findByPid(pid));
-            request.setAttribute("pid", pid);
-        }
+        request.setAttribute("permissions", permissionService.findByPid(pid));
+        request.setAttribute("childPermissions", permissionService.findByPid(pid));
+        request.setAttribute("pid", pid);
         return "system/permissions";
     }
 
@@ -103,8 +98,7 @@ public class ManageController extends BaseController {
      * 处理用户与角色关联
      */
     @RequestMapping(value = "/user-role", method = RequestMethod.POST)
-    public String userRole(@RequestParam("id") Integer id,
-                           @RequestParam("roles") Integer[] roles) {
+    public String userRole(@RequestParam("id") Integer id, @RequestParam("roles") Integer[] roles) {
         userService.correlationRole(id, roles);
         return redirect("/manage/users");
     }
@@ -134,8 +128,7 @@ public class ManageController extends BaseController {
      * 添加角色
      */
     @RequestMapping(value = "/add-role", method = RequestMethod.POST)
-    public String addRole(@RequestParam("name") String name,
-                          @RequestParam("description") String description,
+    public String addRole(@RequestParam("name") String name, @RequestParam("description") String description,
                           @RequestParam(value = "roles", required = false) Integer[] roles) {
         Role role = new Role();
         role.setName(name);
@@ -157,10 +150,8 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "/add-permission", method = RequestMethod.POST)
-    public String addPermission(@RequestParam("pid") Integer pid,
-                                @RequestParam("name") String name,
-                                @RequestParam("url") String url,
-                                @RequestParam("description") String description) {
+    public String addPermission(@RequestParam("pid") Integer pid, @RequestParam("name") String name,
+                                @RequestParam("url") String url, @RequestParam("description") String description) {
         Permission permission = new Permission();
         permission.setName(name);
         permission.setUrl(pid == 0 ? "" : url);
@@ -186,8 +177,7 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "/edit-permission", method = RequestMethod.POST)
     public String editPermission(@RequestParam("id") Integer id, @RequestParam("pid") Integer pid,
-                                 @RequestParam("name") String name,
-                                 @RequestParam("url") String url,
+                                 @RequestParam("name") String name, @RequestParam("url") String url,
                                  @RequestParam("description") String description) {
         Permission permission = permissionService.findById(id);
         permission.setName(name);
@@ -213,8 +203,7 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "/role-permission", method = RequestMethod.POST)
-    public String rolePermission(@RequestParam("id") Integer id,
-                                 @RequestParam("name") String name,
+    public String rolePermission(@RequestParam("id") Integer id, @RequestParam("name") String name,
                                  @RequestParam("description") String description,
                                  @RequestParam(value = "permissions", required = false) Integer[] permissions) {
         Role role = roleService.findById(id);

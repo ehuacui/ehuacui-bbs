@@ -48,8 +48,7 @@ public class CollectController extends BaseController {
         collectService.save(collect);
         Topic topic = topicService.findById(tid);
         //创建通知
-        notificationService.sendNotification(user.getNickname(),
-                topic.getAuthor(), Constants.NotificationEnum.COLLECT.name(), tid, "");
+        notificationService.sendNotification(user.getNickname(), topic.getAuthor(), Constants.NotificationEnum.COLLECT.name(), tid, "");
         return redirect("/topic/" + tid);
     }
 

@@ -51,9 +51,7 @@ public class ReplyController extends BaseController {
 
     @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(HttpServletRequest request,
-                       @RequestParam("tid") Integer tid,
-                       @RequestParam("content") String content) {
+    public String save(HttpServletRequest request, @RequestParam("tid") Integer tid, @RequestParam("content") String content) {
         Date now = new Date();
         User user = getUser(request);
         Reply reply = new Reply();
@@ -73,13 +71,8 @@ public class ReplyController extends BaseController {
         //发送通知
         //回复者与话题作者不是一个人的时候发送通知
         if (!user.getNickname().equals(topic.getAuthor())) {
-            notificationService.sendNotification(
-                    user.getNickname(),
-                    topic.getAuthor(),
-                    Constants.NotificationEnum.REPLY.name(),
-                    tid,
-                    content
-            );
+            notificationService.sendNotification(user.getNickname(), topic.getAuthor(),
+                    Constants.NotificationEnum.REPLY.name(), tid, content);
         }
         //检查回复内容里有没有at用户,有就发通知
         List<String> atUsers = StringUtil.fetchUsers(content);
@@ -87,13 +80,8 @@ public class ReplyController extends BaseController {
             if (!u.equals(topic.getAuthor())) {
                 User _user = userService.findByNickname(u);
                 if (_user != null) {
-                    notificationService.sendNotification(
-                            user.getNickname(),
-                            _user.getNickname(),
-                            Constants.NotificationEnum.AT.name(),
-                            tid,
-                            content
-                    );
+                    notificationService.sendNotification(user.getNickname(), _user.getNickname(),
+                            Constants.NotificationEnum.AT.name(), tid, content);
                 }
             }
         }

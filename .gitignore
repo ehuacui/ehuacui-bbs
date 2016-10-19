@@ -16,3 +16,6 @@ target/
 out/
 /logs
 *.iml
+
+.project
+.settings
