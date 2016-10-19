@@ -63,12 +63,14 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request, @RequestParam(value = "tab", defaultValue = "all") String tab,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
+        /* 隐藏版块
         if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
             Section section = sectionService.findByTab(tab);
             request.setAttribute("sectionName", section.getName());
         } else {
             request.setAttribute("sectionName", "版块");
         }
+        */
         Page<Topic> page = topicService.page(p, pageSize, tab);
         request.setAttribute("tab", tab);
         request.setAttribute("sections", sectionService.findByShowStatus(true));
