@@ -61,4 +61,30 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- 出错页面定义 -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/ftl/error-page/500.html</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/ftl/error-page/400.html</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/ftl/error-page/401.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/ftl/error-page/403.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/ftl/error-page/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/WEB-INF/ftl/error-page/405.html</location>
+    </error-page>
+
 </web-app>

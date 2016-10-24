@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CommonInterceptor implements Interceptor {
 
-    @Value("${share.domain}")
-    private String shareDomain;
     @Value("${siteTitle}")
     private String siteTitle;
     @Value("${beianName}")
@@ -29,6 +27,8 @@ public class CommonInterceptor implements Interceptor {
     private String tongjiJs;
     @Value("${cookie.domain}")
     private String cookieDomain;
+    @Value("${static.domain}")
+    private String staticDomain;
     @Value("${solr.status}")
     private String solrStatus;
 
@@ -51,8 +51,8 @@ public class CommonInterceptor implements Interceptor {
             }
         }
         request.setAttribute("solrStatus", solrStatus.equalsIgnoreCase("true") ? "true" : "false");
-        request.setAttribute("shareDomain", shareDomain);
         request.setAttribute("siteTitle", siteTitle);
+        request.setAttribute("staticDomain", staticDomain);
         request.setAttribute("beianName", beianName);
         request.setAttribute("tongjiJs", tongjiJs);
     }

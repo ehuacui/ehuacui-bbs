@@ -25,11 +25,11 @@
         <@info/>
     </div>
 </div>
-<link rel="stylesheet" href="/static/libs/editor/editor.css"/>
-<script type="text/javascript" src="/static/libs/webuploader/webuploader.withoutimage.js"></script>
-<script type="text/javascript" src="/static/libs/markdownit.js"></script>
-<script type="text/javascript" src="/static/libs/editor/editor.js"></script>
-<script type="text/javascript" src="/static/libs/editor/ext.js"></script>
+<link rel="stylesheet" href="${staticDomain!}/static/libs/editor/editor.css"/>
+<script type="text/javascript" src="${staticDomain!}/static/libs/webuploader/webuploader.withoutimage.js"></script>
+<script type="text/javascript" src="${staticDomain!}/static/libs/markdownit.js"></script>
+<script type="text/javascript" src="${staticDomain!}/static/libs/editor/editor.js"></script>
+<script type="text/javascript" src="${staticDomain!}/static/libs/editor/ext.js"></script>
 <script type="text/javascript">
     var editor = new Editor({element: $("#content")[0], status: []});
     editor.render();
