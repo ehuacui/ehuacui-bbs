@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -36,7 +35,7 @@ public class BaseController {
     //设置好账号的ACCESS_KEY和SECRET_KEY
     @Value("${qiniu.access_key}")
     private String QINIU_ACCESS_KEY;
-    @Value("${qiniu.access_key}")
+    @Value("${qiniu.secret_key}")
     private String QINIU_SECRET_KEY;
     //要上传的空间
     @Value("${qiniu.bucket_name}")
@@ -73,7 +72,7 @@ public class BaseController {
 
     public Map upload(String filePath) throws IOException {
         //上传到七牛后保存的文件名
-        String key = DateUtil.formatDateTime(new Date(), "yyyyMMddHHmmss") + StringUtil.randomString(6);
+        String key = DateUtil.getNowDateInfo() + "_" + StringUtil.randomString(6);
         try {
             //密钥配置
             Auth auth = Auth.create(QINIU_ACCESS_KEY, QINIU_SECRET_KEY);

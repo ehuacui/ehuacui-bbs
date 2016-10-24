@@ -88,8 +88,8 @@ public class StringUtil {
     }
 
     public static String getUUID() {
-        String uuid = UUID.randomUUID().toString();
-        return uuid.replaceAll("-", "");
+        return UUID.randomUUID().toString();
+        //return uuid.replaceAll("-", "");
     }
 
     public static String randomString(int length) {

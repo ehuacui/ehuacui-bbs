@@ -121,13 +121,11 @@
         </dependency>
 
         <!-- AOP Lib -->
-        <!--
-        <dependency>
+        <!--<dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
-        </dependency>
-         -->
+        </dependency>-->
 
         <!-- AspectJ -->
         <dependency>

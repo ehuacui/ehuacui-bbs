@@ -36,7 +36,7 @@ public class BusinessExceptionHandler implements HandlerExceptionResolver {
             logger.error(ex.getMessage(), ex);
         } else {
             // 其他的异常做为系统编码或者未知异常处理
-            errorMsg = "服务器竟然出小差了，失误皆非偶然，请速速联系管理员。";
+            errorMsg = "服务器竟然出小差了......";
             String lastAccessUrl = "URI:" + request.getRequestURI() + " \n URL:" + request.getRequestURL() + "?" + request.getQueryString();
             logger.error("UnKnown Exception \n URL/URI Access Info--> \n" + lastAccessUrl, ex);
         }

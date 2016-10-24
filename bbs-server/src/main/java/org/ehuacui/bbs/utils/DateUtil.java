@@ -13,8 +13,9 @@ import java.util.TimeZone;
  */
 public class DateUtil {
 
-    public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
-    public static final String FORMAT_DATE = "yyyy-MM-dd";
+    private static final String FORMAT_DATETIME_INFO = "yyyyMMddHHmmss";
+    private static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
+    private static final String FORMAT_DATE = "yyyy-MM-dd";
 
     public static String formatDateTime(Date date) {
         if (date == null) return null;
@@ -35,6 +36,13 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(style);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         return sdf.format(date);
+    }
+
+
+    public static String getNowDateInfo() {
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATETIME_INFO);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        return sdf.format(new Date());
     }
 
     /**

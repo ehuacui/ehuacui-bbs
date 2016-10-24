@@ -161,11 +161,11 @@
             if (res.code == 200) {
                 $(".close").click();
                 $("#error_message").html("");
-                var image = '![' + file.name + '](' + res.detail[0] + ')';
+                var image = '![' + file.name + '](' + res.data + ')';
                 self.editor.push(self.editor.value().length == 0 ? image : '\n' + image);
             } else {
                 self.removeFile();
-                self.showError(res.description || '服务器走神了，上传失败');
+                self.showError(res.message || '服务器走神了，上传失败');
             }
         });
 
