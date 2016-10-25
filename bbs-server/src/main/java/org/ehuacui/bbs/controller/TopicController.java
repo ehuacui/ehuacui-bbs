@@ -4,7 +4,6 @@ import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
-import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.*;
 import org.ehuacui.bbs.service.*;
 import org.ehuacui.bbs.template.FormatDate;
@@ -106,14 +105,14 @@ public class TopicController extends BaseController {
     /**
      * 创建话题
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(HttpServletRequest request) {
         request.setAttribute("sections", sectionService.findByShowStatus(true));
         return "topic/create";
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(HttpServletRequest request, @RequestParam("title") String title,
                          @RequestParam("content") String content, @RequestParam("tab") String tab){
@@ -150,7 +149,7 @@ public class TopicController extends BaseController {
     /**
      * 编辑话题
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request, @RequestParam("id") Integer id) {
         Topic topic = topicService.findById(id);
@@ -159,7 +158,7 @@ public class TopicController extends BaseController {
         return "topic/edit";
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@RequestParam("id") Integer id, @RequestParam("title") String title,
                        @RequestParam("content") String content, @RequestParam("tab") String tab){
@@ -178,7 +177,7 @@ public class TopicController extends BaseController {
     /**
      * 话题追加
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/append/{tid}", method = RequestMethod.GET)
     public String append(HttpServletRequest request, @PathVariable("tid") Integer tid) {
         Topic topic = topicService.findById(tid);
@@ -191,7 +190,7 @@ public class TopicController extends BaseController {
         }
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/append/{tid}", method = RequestMethod.POST)
     public String append(HttpServletRequest request, @PathVariable("tid") Integer tid,
                          @RequestParam("content") String content) {
@@ -219,7 +218,7 @@ public class TopicController extends BaseController {
     /**
      * 编辑追加的内容
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/append-edit", method = RequestMethod.GET)
     public String appendEdit(HttpServletRequest request, @RequestParam("id") Integer id) {
         TopicAppend topicAppend = topicAppendService.findById(id);
@@ -229,7 +228,7 @@ public class TopicController extends BaseController {
         return "topic/append_edit";
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/append-edit", method = RequestMethod.POST)
     public String appendEdit(@RequestParam("id") Integer id, String content) {
         TopicAppend topicAppend = topicAppendService.findById(id);
@@ -247,7 +246,7 @@ public class TopicController extends BaseController {
     /**
      * 删除话题
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam("id") Integer id) {
         topicAppendService.deleteByTid(id);
@@ -270,7 +269,7 @@ public class TopicController extends BaseController {
     /**
      * 置顶
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/top", method = RequestMethod.GET)
     public String top(@RequestParam("id") Integer id) {
         topicService.top(id);
@@ -280,7 +279,7 @@ public class TopicController extends BaseController {
     /**
      * 设置精华
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/good", method = RequestMethod.GET)
     public String good(@RequestParam("id") Integer id) {
         topicService.good(id);

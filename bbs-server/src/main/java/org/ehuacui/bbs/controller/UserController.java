@@ -3,7 +3,6 @@ package org.ehuacui.bbs.controller;
 import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
-import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
@@ -127,7 +126,7 @@ public class UserController extends BaseController {
         return "user/setting";
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/setting", method = RequestMethod.POST)
     public String setting(HttpServletRequest request, @RequestParam("url") String url,
                           @RequestParam("signature") String signature,

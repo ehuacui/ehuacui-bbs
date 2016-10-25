@@ -93,11 +93,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        if (getUser(request) == null) {
-            return "login";
-        } else {
-            return redirect("/");
-        }
+        return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -105,6 +101,7 @@ public class IndexController extends BaseController {
                         @RequestParam("password") String password,
                         @RequestParam(value = "rememberMe", required = false, defaultValue = "false") Boolean rememberMe,
                         @RequestParam(value = "verifyCode", required = false) String verifyCode,
+                        @RequestParam(value = "callback", required = false) String callback,
                         HttpServletRequest request, HttpServletResponse response) {
         if (getUser(request) == null) {
             return "login";

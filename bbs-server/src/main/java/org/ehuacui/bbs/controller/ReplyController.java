@@ -4,7 +4,6 @@ import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
-import org.ehuacui.bbs.interceptor.UserStatusInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
@@ -49,7 +48,7 @@ public class ReplyController extends BaseController {
     @Autowired
     private INotificationService notificationService;
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(HttpServletRequest request, @RequestParam("tid") Integer tid, @RequestParam("content") String content) {
         Date now = new Date();
@@ -91,7 +90,7 @@ public class ReplyController extends BaseController {
     /**
      * 编辑回复
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request, @RequestParam("id") Integer id) {
         Reply reply = replyService.findById(id);
@@ -101,7 +100,7 @@ public class ReplyController extends BaseController {
         return "reply/edit";
     }
 
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@RequestParam("id") Integer id, @RequestParam("content") String content) {
         Reply reply = replyService.findById(id);
@@ -113,7 +112,7 @@ public class ReplyController extends BaseController {
     /**
      * 删除回复
      */
-    @BeforeAdviceController({UserInterceptor.class, UserStatusInterceptor.class, PermissionInterceptor.class})
+    @BeforeAdviceController({UserInterceptor.class, PermissionInterceptor.class})
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam("id") Integer id) {
         Reply reply = replyService.findById(id);

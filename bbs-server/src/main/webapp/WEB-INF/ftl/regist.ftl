@@ -1,10 +1,10 @@
 <#include "./common/layout.ftl"/>
-<@html page_title="修改个人资料" page_tab="setting">
+<@html page_title="加入我们" page_tab="setting">
 <div class="row">
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a href="/">主页</a> / 个人设置
+                <a href="/">主页</a> / 加入我们
             </div>
             <div class="panel-body">
                 <#if msg??>
@@ -38,25 +38,8 @@
                 </form>
             </div>
         </div>
-    <#--
-    <div class="panel panel-default">
-        <div class="panel-heading">Access Token</div>
-        <div class="panel-body">
-            <p>AccessToken: ${userInfo.accessToken!}</p>
-            <p id="qrcode"></p>
-        </div>
-    </div>
-    -->
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
     </div>
 </div>
-<#--
-<script src="http://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
-<script>
-    $(function () {
-        $('#qrcode').qrcode("${userInfo.accessToken!}");
-    });
-</script>
--->
 </@html>
