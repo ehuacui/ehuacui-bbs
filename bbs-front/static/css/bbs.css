@@ -2,6 +2,17 @@ body {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
 }
 
+a:active, a:hover {
+  outline: 0;
+}
+
+a {
+  color: #009fda;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer !important;
+}
+
 .wrapper {
     width: 100%;
     background-color: #e2e2e2;

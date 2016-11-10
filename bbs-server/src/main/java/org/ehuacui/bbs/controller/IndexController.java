@@ -7,15 +7,18 @@ import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Topic;
+import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.ISearchService;
 import org.ehuacui.bbs.service.ISectionService;
 import org.ehuacui.bbs.service.ITopicService;
+import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
+import org.ehuacui.bbs.utils.identicon.Identicon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -63,6 +67,8 @@ public class IndexController extends BaseController {
     private ITopicService topicService;
     @Autowired
     private ISearchService searchService;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 首页
@@ -111,6 +117,39 @@ public class IndexController extends BaseController {
     }
 
     /**
+     * 忘记密码
+     */
+    @RequestMapping(value = "/forget/password", method = RequestMethod.GET)
+    public String forgetPassword(HttpServletRequest request) {
+        if (getUser(request) == null) {
+            return "forget_password";
+        } else {
+            return redirect("/");
+        }
+    }
+
+    @RequestMapping(value = "/forget/password", method = RequestMethod.POST)
+    public String forgetPassword(@RequestParam("email") String email, HttpServletRequest request) {
+        return redirect("/forget/password");
+    }
+
+    /**
+     * 用户重置密码
+     */
+    @RequestMapping(value = "/reset/password", method = RequestMethod.GET)
+    public String updatePassword() {
+        return "reset_password";
+    }
+
+    @RequestMapping(value = "/reset/password", method = RequestMethod.POST)
+    public String updatePassword(HttpServletRequest request,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("newPassword") String newPassword) {
+        request.setAttribute("msg", "密码重置成功。");
+        return redirect("/password/reset");
+    }
+
+    /**
      * 注册
      */
     @RequestMapping(value = "/regist", method = RequestMethod.GET)
@@ -123,14 +162,33 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "/regist", method = RequestMethod.POST)
-    public String regist(@RequestParam("username") String username,
-                         @RequestParam("password") String password,
-                         HttpServletRequest request, HttpServletResponse response) {
-        if (getUser(request) == null) {
-            return "login";
+    public String regist(@RequestParam("username") String username, @RequestParam("password") String password,
+                         @RequestParam("email") String email, HttpServletRequest request) {
+        if (StringUtil.isBlank(username)) {
+            request.setAttribute("errors", "用户名不能为空");
+        } else if (StringUtil.isBlank(email)) {
+            request.setAttribute("errors", "电子邮件不能为空");
+        } else if (StringUtil.isBlank(password)) {
+            request.setAttribute("errors", "密码不能为空");
         } else {
-            return redirect("/");
+            User user = userService.findByNickname(username);
+            if (user != null) {
+                request.setAttribute("errors", "用户名已经被注册");
+            } else {
+                String avatarName = StringUtil.getUUID();
+                Identicon identicon = new Identicon();
+                identicon.generator(staticPath, avatarName);
+                user = new User();
+                user.setNickname(username);
+                user.setPassword(password);
+                user.setEmail(email);
+                user.setInTime(new Date());
+                user.setAvatar(fileDomain + "/imgs/" + avatarName + ".png");
+                userService.save(user);
+                return redirect("/login");
+            }
         }
+        return "regist";
     }
 
     /**

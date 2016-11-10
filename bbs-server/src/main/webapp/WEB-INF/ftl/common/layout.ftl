@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="${staticDomain!}/static/css/bbs.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${staticDomain!}/static/libs/layer/layer.js"></script>
 </head>
 <body>
 <div class="wrapper">

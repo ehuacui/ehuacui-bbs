@@ -118,9 +118,24 @@ public class UserController extends BaseController {
     }
 
     /**
+     * 用户修改密码
+     */
+    @RequestMapping(value = "/password/update", method = RequestMethod.GET)
+    public String updatePassword() {
+        return "user/update_password";
+    }
+
+    @RequestMapping(value = "/password/update", method = RequestMethod.POST)
+    public String updatePassword(HttpServletRequest request,
+                                @RequestParam("oldPassword") String oldPassword,
+                                @RequestParam("newPassword") String newPassword) {
+        request.setAttribute("msg", "密码修改成功。");
+        return redirect("/user/password/update");
+    }
+
+    /**
      * 用户设置
      */
-
     @RequestMapping(value = "/setting", method = RequestMethod.GET)
     public String setting() {
         return "user/setting";

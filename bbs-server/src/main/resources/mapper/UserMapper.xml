@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.User">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="score" jdbcType="INTEGER" property="score"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
@@ -21,7 +22,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, nickname, score, avatar, email, url, signature, third_id, access_token, receive_msg,
+        id, nickname, password, score, avatar, email, url, signature, third_id, access_token, receive_msg,
         in_time, expire_time, channel, is_block, third_access_token
     </sql>
 
@@ -62,6 +63,27 @@
         where nickname = #{nickname,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByNickNameAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where nickname = #{nickname,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByEmailAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where email = #{email,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByPermissionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select u.* from tb_user u, tb_user_role ur, tb_role r, tb_role_permission rp,
         tb_permission p where u.id = ur.uid and ur.rid = r.id and r.id = rp.rid and rp.pid = p.id
@@ -95,13 +117,13 @@
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
-        insert into tb_user (id, nickname, score,
+        insert into tb_user (id, nickname, password, score,
         avatar, email, url,
         signature, third_id, access_token,
         receive_msg, in_time, expire_time,
         channel, is_block, third_access_token
         )
-        values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER},
         #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
         #{signature,jdbcType=VARCHAR}, #{thirdId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR},
         #{receiveMsg,jdbcType=BIT}, #{inTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP},
@@ -117,6 +139,9 @@
             </if>
             <if test="nickname != null">
                 nickname,
+            </if>
+            <if test="password != null">
+                password,
             </if>
             <if test="score != null">
                 score,
@@ -164,6 +189,9 @@
             </if>
             <if test="nickname != null">
                 #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
             </if>
             <if test="score != null">
                 #{score,jdbcType=INTEGER},
@@ -213,6 +241,9 @@
             <if test="nickname != null">
                 nickname = #{nickname,jdbcType=VARCHAR},
             </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
             <if test="score != null">
                 score = #{score,jdbcType=INTEGER},
             </if>
@@ -259,6 +290,7 @@
     <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.User">
         update tb_user
         set nickname = #{nickname,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
         score = #{score,jdbcType=INTEGER},
         avatar = #{avatar,jdbcType=VARCHAR},
         email = #{email,jdbcType=VARCHAR},

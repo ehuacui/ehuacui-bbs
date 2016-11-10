@@ -27,6 +27,12 @@ public interface UserMapper {
 
     User selectByNickName(@Param("nickname") String nickname);
 
+    User selectByEmail(@Param("email") String email);
+
+    User selectByNickNameAndPassword(@Param("nickname") String nickname, @Param("password") String password);
+
+    User selectByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
     List<User> selectByPermissionId(@Param("pid") Integer pid);
 
     List<User> selectUserScores(@Param("limit") Integer limit);

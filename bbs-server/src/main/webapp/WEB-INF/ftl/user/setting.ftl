@@ -7,10 +7,11 @@
                 <a href="/">主页</a> / 个人设置
             </div>
             <div class="panel-body">
+                <#if errors??>
+                    <div class="alert alert-danger">${errors!}</div>
+                </#if>
                 <#if msg??>
-                    <div class="alert alert-success" role="alert">
-                    ${msg!}
-                    </div>
+                    <div class="alert alert-success" role="alert">${msg!}</div>
                 </#if>
                 <form action="/user/setting" method="post" id="userProfileForm">
                     <div class="form-group">
@@ -38,25 +39,8 @@
                 </form>
             </div>
         </div>
-    <#--
-    <div class="panel panel-default">
-        <div class="panel-heading">Access Token</div>
-        <div class="panel-body">
-            <p>AccessToken: ${userInfo.accessToken!}</p>
-            <p id="qrcode"></p>
-        </div>
-    </div>
-    -->
     </div>
     <div class="col-md-3 hidden-sm hidden-xs">
     </div>
 </div>
-<#--
-<script src="http://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
-<script>
-    $(function () {
-        $('#qrcode').qrcode("${userInfo.accessToken!}");
-    });
-</script>
--->
 </@html>

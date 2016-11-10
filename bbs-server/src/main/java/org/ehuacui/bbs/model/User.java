@@ -18,6 +18,12 @@ public class User {
     private String nickname;
 
     /**
+     * 密码
+     * Column: tb_user.password
+     */
+    private String password;
+
+    /**
      * 积分
      * Column: tb_user.score
      */
@@ -108,6 +114,14 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getScore() {
