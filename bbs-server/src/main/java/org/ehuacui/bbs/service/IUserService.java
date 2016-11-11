@@ -42,6 +42,13 @@ public interface IUserService {
     User findByNickname(String nickname);
 
     /**
+     * 根据Email查询用户信息
+     * @param email
+     * @return
+     */
+    User findByEmail(String email);
+
+    /**
      * 分页查询所有用户，倒序
      *
      * @param pageNumber

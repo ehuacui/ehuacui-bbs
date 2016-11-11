@@ -13,21 +13,6 @@
                             <a href="/?tab=${section.tab!}">${section.name!}</a>
                         </li>
                     </#list>
-                    <#--
-                    <li class="dropdown <#if tab != 'good' && tab != 'all' && tab != 'noreply'>active</#if>"
-                        style="margin-right: 8px;">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" data-target="#">
-                        ${sectionName!} <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <#list sections as section>
-                                <li>
-                                    <a href="/?tab=${section.tab!}">${section.name!}</a>
-                                </li>
-                            </#list>
-                        </ul>
-                    </li>
-                    -->
                 </ul>
             </div>
             <div class="panel-body paginate-bot">

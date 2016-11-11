@@ -50,7 +50,11 @@
                     </form>
                 </div>
                 <div class="col-md-8" style="border-left:1px dashed #C0C0C0;height: 200px;padding-left: 10px;">
-                    <div class="alert alert-info">信息！请注意这个信息。</div>
+                    <div class="alert alert-info" style="height: 200px;">
+                        <h5>属于Java语言的bbs</h5>
+
+                        <p>在这里，您可以提问，回答，分享，诉说，这是个属于Java程序员的社区，欢迎您的加入！</p>
+                    </div>
                 </div>
             </div>
         </div>

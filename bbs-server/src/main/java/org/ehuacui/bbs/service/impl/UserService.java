@@ -73,6 +73,11 @@ public class UserService implements IUserService {
         return userMapper.selectByNickName(nickname);
     }
 
+    @Override
+    public User findByEmail(String email) {
+        return userMapper.selectByEmail(email);
+    }
+
     /**
      * 分页查询所有用户，倒序
      *

@@ -171,14 +171,15 @@ public class IndexController extends BaseController {
         } else if (StringUtil.isBlank(password)) {
             request.setAttribute("errors", "密码不能为空");
         } else {
-            User user = userService.findByNickname(username);
-            if (user != null) {
+            if (userService.findByNickname(username) != null) {
                 request.setAttribute("errors", "用户名已经被注册");
+            } else if (userService.findByEmail(username) != null) {
+                request.setAttribute("errors", "Email已经被注册");
             } else {
                 String avatarName = StringUtil.getUUID();
                 Identicon identicon = new Identicon();
                 identicon.generator(staticPath, avatarName);
-                user = new User();
+                User user = new User();
                 user.setNickname(username);
                 user.setPassword(password);
                 user.setEmail(email);

@@ -13,7 +13,7 @@
                 <#if msg??>
                     <div class="alert alert-success" role="alert">${msg!}</div>
                 </#if>
-                <form action="/password/reset" method="post" id="form">
+                <form action="/reset/password" method="post" id="form">
                     <div class="form-group">
                         <label for="password">新密码</label>
                         <input type="password" class="form-control" id="password" name="password"
