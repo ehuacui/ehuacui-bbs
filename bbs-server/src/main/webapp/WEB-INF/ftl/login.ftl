@@ -7,7 +7,7 @@
                 <a href="/">主页</a> / 登录
             </div>
             <div class="panel-body">
-                <div class="col-md-4" style="padding-left: 10px;padding-right: 10px;">
+                <div class="col-md-4">
                     <#if errors??>
                         <div class="alert alert-danger">${errors!}</div>
                     </#if>
@@ -36,7 +36,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-sm-offset-9">
+                            <div class="col-sm-5">
                                 <div class="checkbox">
                                     <a href="/forget/password">忘记密码?</a>
                                 </div>
@@ -49,7 +49,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-8" style="border-left:1px dashed #C0C0C0;height: 200px;padding-left: 10px;">
+                <div class="col-md-8">
                     <div class="alert alert-info" style="height: 200px;">
                         <h5>属于Java语言的bbs</h5>
 

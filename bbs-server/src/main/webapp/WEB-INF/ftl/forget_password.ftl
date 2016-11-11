@@ -7,7 +7,7 @@
                 <a href="/">主页</a> / 忘记密码
             </div>
             <div class="panel-body">
-                <div class="col-md-4" style="padding-left: 10px;padding-right: 10px;">
+                <div class="col-md-4">
                     <#if errors??>
                         <div class="alert alert-danger">${errors!}</div>
                     </#if>
@@ -30,7 +30,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-8" style="border-left:1px dashed #C0C0C0;height: 200px;padding-left: 10px;">
+                <div class="col-md-8">
                     <div class="alert alert-info" style="height: 200px;">
                         <h5>属于Java语言的bbs</h5>
                         <p>在这里，您可以提问，回答，分享，诉说，这是个属于Java程序员的社区，欢迎您的加入！</p>

@@ -209,4 +209,6 @@
 
     <import resource="applicationContext-scheduler.xml"/>
 
+    <import resource="applicationContext-shiro-ehcache.xml"/>
+
 </beans>

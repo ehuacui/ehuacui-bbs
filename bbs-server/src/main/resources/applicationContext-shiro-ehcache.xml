@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>Shiro安全配置</description>
+
+    <!-- Shiro main business-tier object for web-enabled applications -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+    <bean id="shiroRealm" class="org.ehuacui.bbs.security.ShiroRealm">
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+    </bean>
+
+    <!-- 每60秒检查一下Session的有效性  -->
+    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="60000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- SessionDAO用shiro提供的默认实现 -->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <!-- <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/> -->
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+    </bean>
+
+    <!-- 主要是为了注入SessionDAO -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="globalSessionTimeout" value="1800000"/>
+        <!--
+        <property name="sessionIdCookie.path" value="/"/>
+        <property name="sessionIdCookie.name" value="JSESSIONID"/>
+        -->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+    </bean>
+
+    <!-- 用户授权信息Cache, 采用EhCache -->
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="reportAuthenticationFilter" class="org.ehuacui.bbs.security.ShiroAuthenticationFilter"/>
+
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login" />
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/unauthorized" />
+        <property name="filters">
+            <map>
+                <entry key="reportAuthenticationFilter" value-ref="reportAuthenticationFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <!-- /** = reportAuthenticationFilter -->
+            <value>
+                /verify/code = anon
+                /** = reportAuthenticationFilter
+            </value>
+        </property>
+    </bean>
+
+</beans>

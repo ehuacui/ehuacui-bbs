@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>Shiro安全配置</description>
+
+    <!-- shiro redisManager -->
+    <bean id="redisManager" class="org.ehuacui.bbs.config.RedisManager" init-method="init">
+        <property name="host" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="expire" value="${redis.expire}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+        <!-- optional properties:
+        <property name="password" value="123456"/>
+        -->
+    </bean>
+
+    <!-- Shiro main business-tier object for web-enabled applications -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroDbRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+    <bean id="shiroDbRealm" class="org.ehuacui.bbs.security.ShiroRealm">
+        <property name="cacheManager" ref="redisCacheManager"/>
+    </bean>
+
+    <!-- redisCacheManager -->
+    <bean id="redisCacheManager" class="org.ehuacui.bbs.security.ShiroRedisCacheManager">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- 每60秒检查一下Session的有效性  -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="60000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 主要是为了注入SessionDAO -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="redisSessionDAO"/>
+        <property name="globalSessionTimeout" value="1800000"/>
+        <!--
+        <property name="sessionIdCookie.path" value="/"/>
+        <property name="sessionIdCookie.name" value="JSESSIONID"/>
+        -->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+    </bean>
+
+    <!-- redisSessionDAO -->
+    <bean id="redisSessionDAO" class="org.ehuacui.bbs.security.ShiroRedisSessionDAO">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="reportAuthenticationFilter" class="org.ehuacui.bbs.security.ShiroAuthenticationFilter"/>
+
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login" />
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/unauthorized" />
+        <property name="filters">
+            <map>
+                <entry key="reportAuthenticationFilter" value-ref="reportAuthenticationFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <!-- /** = reportAuthenticationFilter -->
+            <value>
+                /verify/code = anon
+                /** = reportAuthenticationFilter
+            </value>
+        </property>
+    </bean>
+
+</beans>

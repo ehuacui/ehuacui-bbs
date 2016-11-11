@@ -42,9 +42,6 @@ public class UserService implements IUserService {
 
     /**
      * 根据Github_access_token查询用户信息
-     *
-     * @param thirdId
-     * @return
      */
     @Override
     public User findByThirdId(String thirdId) {
@@ -53,9 +50,6 @@ public class UserService implements IUserService {
 
     /**
      * 更新access_token查询并缓存用户信息
-     *
-     * @param accessToken
-     * @return
      */
     @Override
     public User findByAccessToken(String accessToken) {
@@ -64,9 +58,6 @@ public class UserService implements IUserService {
 
     /**
      * 根据昵称查询并缓存用户信息
-     *
-     * @param nickname
-     * @return
      */
     @Override
     public User findByNickname(String nickname) {
@@ -78,12 +69,18 @@ public class UserService implements IUserService {
         return userMapper.selectByEmail(email);
     }
 
+    @Override
+    public User findByNickNameAndPassword(String nickname, String password) {
+        return userMapper.selectByNickNameAndPassword(nickname, password);
+    }
+
+    @Override
+    public User findByEmailAndPassword(String email, String password) {
+        return userMapper.selectByEmailAndPassword(email, password);
+    }
+
     /**
      * 分页查询所有用户，倒序
-     *
-     * @param pageNumber
-     * @param pageSize
-     * @return
      */
     @Override
     public PageDataBody<User> page(Integer pageNumber, Integer pageSize) {
@@ -94,8 +91,6 @@ public class UserService implements IUserService {
 
     /**
      * 根据昵称删除用户
-     *
-     * @param nickname
      */
     @Override
     public void deleteByNickname(String nickname) {
@@ -109,9 +104,6 @@ public class UserService implements IUserService {
 
     /**
      * 用户勾选角色关联处理
-     *
-     * @param userId
-     * @param roles
      */
     @Override
     public void correlationRole(Integer userId, Integer[] roles) {
@@ -130,9 +122,6 @@ public class UserService implements IUserService {
 
     /**
      * 根据权限id查询拥有这个权限的用户列表
-     *
-     * @param pid
-     * @return
      */
     @Override
     public List<User> findByPermissionId(Integer pid) {
@@ -141,8 +130,6 @@ public class UserService implements IUserService {
 
     /**
      * 积分榜用户
-     *
-     * @return
      */
     @Override
     public List<User> scores(Integer limit) {
