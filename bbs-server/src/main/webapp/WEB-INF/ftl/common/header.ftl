@@ -82,7 +82,7 @@
                         <a href="/login">登录</a>
                     </li>
                     <li>
-                        <a href="/regist">加入我们</a>
+                        <a href="/register">加入我们</a>
                     </li>
                 </#if>
             </ul>

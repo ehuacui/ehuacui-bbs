@@ -23,17 +23,23 @@ public class UserInterceptor implements Interceptor {
 
     @Override
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
-        User user;
+        User user = null;
         boolean flag = false;
-        if (StringUtil.notBlank(user_cookie)) {
-            user = userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
-            if (user != null) {
-                flag = true;
-                if (user.getIsBlock()) {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.sendRedirect("/403.html");
-                }
+        Object sessionObject = request.getSession().getAttribute("user");
+        if (sessionObject != null) {
+            user = (User) sessionObject;
+        }
+        if (user == null) {
+            String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
+            if (StringUtil.notBlank(user_cookie)) {
+                user = userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
+            }
+        }
+        if (user != null) {
+            flag = true;
+            if (user.getIsBlock()) {
+                //response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.sendRedirect("/403.html");
             }
         }
         if (!flag) {

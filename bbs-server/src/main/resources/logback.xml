@@ -69,6 +69,8 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     <logger name="jndi" level="error" additivity="true"/>
     <logger name="com.alibaba.druid" level="error" additivity="true"/>
     <logger name="org.quartz" level="error" additivity="true"/>
+    <logger name="net.sf.ehcache" level="error" additivity="true"/>
+    <logger name="springfox.documentation" level="error" additivity="true"/>
     <logger name="org.springframework" level="error" additivity="true"/>
     <logger name="org.mybatis" level="error" additivity="true"/>
     <logger name="org.apache.ibatis" level="error" additivity="true"/>
@@ -80,7 +82,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
     要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
     -->
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console"/>
         <!--<appender-ref ref="rollingFile"/>-->
     </root>

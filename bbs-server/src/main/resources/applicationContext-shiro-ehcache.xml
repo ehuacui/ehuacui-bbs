@@ -48,24 +48,30 @@
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-    <bean id="reportAuthenticationFilter" class="org.ehuacui.bbs.security.ShiroAuthenticationFilter"/>
+    <bean id="shiroAuthenticationFilter" class="org.ehuacui.bbs.security.ShiroAuthenticationFilter"/>
 
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login" />
-        <property name="successUrl" value="/index"/>
-        <property name="unauthorizedUrl" value="/unauthorized" />
+        <property name="successUrl" value="/"/>
+        <property name="unauthorizedUrl" value="/401.html" />
         <property name="filters">
             <map>
-                <entry key="reportAuthenticationFilter" value-ref="reportAuthenticationFilter"/>
+                <entry key="shiroAuthenticationFilter" value-ref="shiroAuthenticationFilter"/>
             </map>
         </property>
         <property name="filterChainDefinitions">
             <!-- /** = reportAuthenticationFilter -->
             <value>
                 /verify/code = anon
-                /** = reportAuthenticationFilter
+                /login = anon
+                /forget/password = anon
+                /register = anon
+                /logout = anon
+                /about = anon
+                /oauth = anon
+                /** = shiroAuthenticationFilter
             </value>
         </property>
     </bean>

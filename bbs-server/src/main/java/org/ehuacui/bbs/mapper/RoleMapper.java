@@ -22,6 +22,8 @@ public interface RoleMapper {
 
     List<Role> selectAll();
 
+    List<Role> selectByUid(@Param("uid") Integer uid);
+
     int countAll();
 
     Role selectByName(@Param("name") String name);

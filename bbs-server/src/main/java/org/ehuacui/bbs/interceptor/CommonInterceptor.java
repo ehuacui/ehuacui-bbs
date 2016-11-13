@@ -38,17 +38,24 @@ public class CommonInterceptor implements Interceptor {
     private INotificationService notificationService;
 
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
-        if (StringUtil.notBlank(user_cookie)) {
-            String user_access_token = StringUtil.getDecryptToken(user_cookie);
-            User user = userService.findByAccessToken(user_access_token);
-            if (user == null) {
-                WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", cookieDomain);
-            } else {
-                int count = notificationService.findNotReadCount(user.getNickname());
-                request.setAttribute("notifications", count == 0 ? null : count);
-                request.setAttribute("userInfo", user);
+        User user = null;
+        Object sessionObject = request.getSession().getAttribute("user");
+        if (sessionObject != null) {
+            user = (User) sessionObject;
+        }
+        if (user == null) {
+            String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
+            if (StringUtil.notBlank(user_cookie)) {
+                String user_access_token = StringUtil.getDecryptToken(user_cookie);
+                user = userService.findByAccessToken(user_access_token);
             }
+        }
+        if (user != null) {
+            int count = notificationService.findNotReadCount(user.getNickname());
+            request.setAttribute("notifications", count == 0 ? null : count);
+            request.setAttribute("userInfo", user);
+        } else {
+            WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", cookieDomain);
         }
         request.setAttribute("solrStatus", solrStatus.equalsIgnoreCase("true") ? "true" : "false");
         request.setAttribute("siteTitle", siteTitle);

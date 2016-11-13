@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public class BaseController {
     private static final String CODE_FAILURE = "201";
     private static final String DESC_SUCCESS = "success";
 
+    private HttpSession getHttpSession(HttpServletRequest request) {
+        return request.getSession();
+    }
+
     public ResponseDataBody success(Object object) {
         return new ResponseDataBody(CODE_SUCCESS, DESC_SUCCESS, object);
     }
@@ -58,12 +63,28 @@ public class BaseController {
     }
 
     public User getUser(HttpServletRequest request) {
-        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
-        if (StringUtil.notBlank(user_cookie)) {
-            return userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
-        } else {
-            return null;
+        User user = null;
+        Object sessionObject = getHttpSession(request).getAttribute("user");
+        if (sessionObject != null) {
+            user = (User) sessionObject;
         }
+        if (user == null) {
+            String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
+            if (StringUtil.notBlank(user_cookie)) {
+                user = userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
+            }
+        }
+        return user;
+    }
+
+    public void setUser(HttpServletRequest request, User user) {
+        if (user != null) {
+            getHttpSession(request).setAttribute("user", user);
+        }
+    }
+
+    public void removeUser(HttpServletRequest request) {
+        getHttpSession(request).removeAttribute("user");
     }
 
     protected String redirect(String url) {

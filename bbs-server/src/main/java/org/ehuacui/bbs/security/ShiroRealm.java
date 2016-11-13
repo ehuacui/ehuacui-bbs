@@ -6,8 +6,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.ehuacui.bbs.config.BusinessException;
+import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.service.IPermissionService;
+import org.ehuacui.bbs.service.IRoleService;
 import org.ehuacui.bbs.service.IUserService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.slf4j.Logger;
@@ -15,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * ShiroRealm
@@ -32,6 +31,8 @@ public class ShiroRealm extends AuthorizingRealm implements Serializable {
     private IUserService userService;
     @Autowired
     private IPermissionService permissionService;
+    @Autowired
+    private IRoleService roleService;
 
     /**
      * 授权
@@ -42,22 +43,27 @@ public class ShiroRealm extends AuthorizingRealm implements Serializable {
         Set<String> permissions = new HashSet<>();//权限编码
         User user = ShiroHandle.getUmsUserFromShiro();
         if (user != null) {
-            //处理权限部分
-            Map<String, String> permissionMap = permissionService.findPermissions(user.getId());
-            if (permissionMap != null && permissionMap.size() > 0) {
-                Iterator iterator = permissionMap.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry<String, String> entry = (Map.Entry) iterator.next();
-                    Object key = entry.getKey();
-                    Object val = entry.getValue();
-                    }
-                for (permission:
-                     permissionMap.) {
-                    if (reportPermission != null) {
-                        permissions.add(reportPermission.getPermissionCode());
+            List<Role> roleList = roleService.findByUid(user.getId());
+            if (roleList != null && roleList.size() > 0) {
+                for (Role role : roleList) {
+                    if (role != null) {
+                        roles.add(role.getName());
                     }
                 }
             }
+            //处理权限部分
+            Map<String, String> permissionMap = permissionService.findPermissions(user.getId());
+            if (permissionMap != null && permissionMap.size() > 0) {
+                Iterator<Map.Entry<String, String>> iterator = permissionMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, String> entry = iterator.next();
+                    String permissionName = entry.getKey();
+                    String permissionUrl = entry.getValue();
+                    permissions.add(permissionName);
+                    permissions.add(permissionUrl);
+                }
+            }
+
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(roles);
@@ -87,7 +93,6 @@ public class ShiroRealm extends AuthorizingRealm implements Serializable {
             logger.warn("Authentication failed {}", userName);
             throw new AuthenticationException(e);
         }
-        return null;
     }
 
 }

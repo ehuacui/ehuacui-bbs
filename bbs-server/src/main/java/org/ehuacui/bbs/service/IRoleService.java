@@ -22,6 +22,8 @@ public interface IRoleService {
 
     List<Role> findAll();
 
+    List<Role> findByUid(Integer uid);
+
     void correlationPermission(Integer roleId, Integer[] permissionIds);
 
     void deleteById(Integer id);

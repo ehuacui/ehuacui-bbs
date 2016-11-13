@@ -112,11 +112,28 @@ public class IndexController extends BaseController {
                         @RequestParam(value = "verifyCode", required = false) String verifyCode,
                         @RequestParam(value = "callback", required = false) String callback,
                         HttpServletRequest request, HttpServletResponse response) {
-        if (getUser(request) == null) {
-            return "login";
-        } else {
-
+        User user = null;
+        if (StringUtil.notBlank(username)) {
+            if (StringUtil.isEmail(username)) {
+                user = userService.findByEmailAndPassword(username, password);
+            } else {
+                user = userService.findByNickNameAndPassword(username, password);
+            }
+        }
+        if (user != null) {
+            if (user.getIsBlock()) {
+                return redirect("/403.html");
+            }
+            if (rememberMe) {
+                WebUtil.setCookie(response, Constants.USER_ACCESS_TOKEN,
+                        StringUtil.getEncryptionToken(user.getAccessToken()),
+                        30 * 24 * 60 * 60, "/", cookieDomain, true);
+            }
+            setUser(request, user);
             return redirect("/");
+        } else {
+            request.setAttribute("errors", "登录失败...");
+            return redirect("login");
         }
     }
 
@@ -156,18 +173,18 @@ public class IndexController extends BaseController {
     /**
      * 注册
      */
-    @RequestMapping(value = "/regist", method = RequestMethod.GET)
-    public String regist(HttpServletRequest request) {
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String register(HttpServletRequest request) {
         if (getUser(request) == null) {
-            return "regist";
+            return "register";
         } else {
             return redirect("/");
         }
     }
 
-    @RequestMapping(value = "/regist", method = RequestMethod.POST)
-    public String regist(@RequestParam("username") String username, @RequestParam("password") String password,
-                         @RequestParam("email") String email, HttpServletRequest request) {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@RequestParam("username") String username, @RequestParam("password") String password,
+                           @RequestParam("email") String email, HttpServletRequest request) {
         if (StringUtil.isBlank(username)) {
             request.setAttribute("errors", "用户名不能为空");
         } else if (StringUtil.isBlank(email)) {
@@ -187,20 +204,24 @@ public class IndexController extends BaseController {
                 user.setNickname(username);
                 user.setPassword(password);
                 user.setEmail(email);
+                user.setAccessToken(StringUtil.getUUID());
+                Date now = new Date();
+                user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
                 user.setInTime(new Date());
                 user.setAvatar(fileDomain + "/imgs/" + avatarName + ".png");
                 userService.save(user);
                 return redirect("/login");
             }
         }
-        return "regist";
+        return "register";
     }
 
     /**
      * 登出
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        removeUser(request);
         WebUtil.removeCookie(response, Constants.USER_ACCESS_TOKEN, "/", cookieDomain);
         return redirect("/");
     }

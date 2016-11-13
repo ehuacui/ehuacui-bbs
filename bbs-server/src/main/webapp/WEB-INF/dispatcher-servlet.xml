@@ -13,9 +13,7 @@
     <!-- 引入外部配置信息 -->
     <context:property-placeholder location="classpath:webconfig.properties" file-encoding="UTF-8"/>
 
-    <context:component-scan base-package="org.ehuacui.bbs.controller">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
+    <context:component-scan base-package="org.ehuacui.bbs.controller"/>
 
     <!-- 允许对静态资源文件的访问 -->
     <mvc:default-servlet-handler/>

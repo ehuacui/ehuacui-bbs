@@ -12,6 +12,12 @@
         id, name, description
     </sql>
 
+    <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT b.name,b.description,b.id FROM ehuacui_user_role AS a
+        INNER JOIN ehuacui_role AS b ON b.id = a.rid
+        WHERE a.uid = #{uid,jdbcType=INTEGER}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

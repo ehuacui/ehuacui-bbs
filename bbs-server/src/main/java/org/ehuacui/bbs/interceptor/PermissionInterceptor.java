@@ -26,15 +26,26 @@ public class PermissionInterceptor implements Interceptor {
 
     @Override
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
-        User user = userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
-        //处理权限部分
-        Map<String, String> permissions = permissionService.findPermissions(user.getId());
-        String path = request.getServletPath();
-        //没有权限
-        if (!permissions.containsValue(path)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.sendRedirect("/401.html");
+        User user = null;
+        Object sessionObject = request.getSession().getAttribute("user");
+        if (sessionObject != null) {
+            user = (User) sessionObject;
+        }
+        if (user == null) {
+            String user_cookie = WebUtil.getCookie(request, Constants.USER_ACCESS_TOKEN);
+            if (StringUtil.notBlank(user_cookie)) {
+                user = userService.findByAccessToken(StringUtil.getDecryptToken(user_cookie));
+            }
+        }
+        if (user != null) {
+            //处理权限部分
+            Map<String, String> permissions = permissionService.findPermissions(user.getId());
+            String path = request.getServletPath();
+            //没有权限
+            if (!permissions.containsValue(path)) {
+                //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.sendRedirect("/401.html");
+            }
         }
     }
 }

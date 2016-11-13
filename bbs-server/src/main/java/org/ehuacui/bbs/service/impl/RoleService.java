@@ -48,6 +48,11 @@ public class RoleService implements IRoleService {
     }
 
     @Override
+    public List<Role> findByUid(Integer uid) {
+        return roleMapper.selectByUid(uid);
+    }
+
+    @Override
     public void correlationPermission(Integer roleId, Integer[] permissionIds) {
         //先删除已经存在的关联
         rolePermissionMapper.deleteByRoleId(roleId);
