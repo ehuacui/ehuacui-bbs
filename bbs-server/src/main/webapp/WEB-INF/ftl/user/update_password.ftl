@@ -30,7 +30,7 @@
                                placeholder="确认新密码">
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-3">
+                        <div>
                             <button type="submit" class="btn btn-default">提交</button>
                         </div>
                     </div>

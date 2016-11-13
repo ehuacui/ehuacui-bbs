@@ -17,7 +17,7 @@
                 <span>${formatDate(topic.inTime)!}</span>
                 <#if topic.lastReplyAuthor?? && topic.lastReplyAuthor != "">
                     <span>•</span>
-                    <span>最后回复来自 <a href="#">${topic.lastReplyAuthor!}</a></span>
+                    <span>最后回复来自 <a href="/user/${topic.lastReplyAuthor!}">${topic.lastReplyAuthor!}</a></span>
                 </#if>
             </p>
         </div>
