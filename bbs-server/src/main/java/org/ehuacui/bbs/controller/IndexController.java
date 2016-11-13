@@ -204,6 +204,9 @@ public class IndexController extends BaseController {
                 user.setNickname(username);
                 user.setPassword(password);
                 user.setEmail(email);
+                user.setScore(0);
+                user.setIsBlock(false);
+                user.setReceiveMsg(true);
                 user.setAccessToken(StringUtil.getUUID());
                 Date now = new Date();
                 user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证

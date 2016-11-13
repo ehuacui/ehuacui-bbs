@@ -57,8 +57,10 @@ public class Identicon {
         String md5 = HashUtil.md5(StringUtil.randomString(6));
         BufferedImage image = identicon.create(md5, 420);
         try {
-            File file = new File(avatarPath + fileName + ".png");
-            if (!file.exists()) file.createNewFile();
+            File file = new File(avatarPath, fileName + ".png");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
             ImageIO.write(image, "PNG", file);
         } catch (IOException e) {
             e.printStackTrace();

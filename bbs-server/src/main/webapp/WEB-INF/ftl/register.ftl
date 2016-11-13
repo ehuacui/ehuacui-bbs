@@ -11,7 +11,7 @@
                     <#if errors??>
                         <div class="alert alert-danger">${errors!}</div>
                     </#if>
-                    <form class="form-horizontal" role="form" action="/regist" method="post" id="form">
+                    <form class="form-horizontal" role="form" action="/register" method="post" id="form">
                         <div class="form-group">
                             <label for="username" class="col-sm-3 control-label">昵称</label>
 
