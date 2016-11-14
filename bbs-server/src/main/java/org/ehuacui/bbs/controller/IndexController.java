@@ -6,12 +6,11 @@ import org.ehuacui.bbs.dto.ResponseDataBody;
 import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
+import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.SearchService;
-import org.ehuacui.bbs.service.SectionService;
-import org.ehuacui.bbs.service.TopicService;
-import org.ehuacui.bbs.service.UserService;
+import org.ehuacui.bbs.model.UserRole;
+import org.ehuacui.bbs.service.*;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
@@ -24,10 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +65,10 @@ public class IndexController extends BaseController {
     private SearchService searchService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 首页
@@ -76,14 +76,6 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request, @RequestParam(value = "tab", defaultValue = "all") String tab,
                         @RequestParam(value = "p", defaultValue = "1") Integer p) {
-        /* 隐藏版块
-        if (!tab.equals("all") && !tab.equals("good") && !tab.equals("noreply")) {
-            Section section = sectionService.findByTab(tab);
-            request.setAttribute("sectionName", section.getName());
-        } else {
-            request.setAttribute("sectionName", "版块");
-        }
-        */
         PageDataBody<Topic> page = topicService.page(p, pageSize, tab);
         request.setAttribute("tab", tab);
         request.setAttribute("sections", sectionService.findByShowStatus(true));
@@ -151,7 +143,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/forget/password", method = RequestMethod.POST)
     public String forgetPassword(@RequestParam("email") String email, HttpServletRequest request) {
-        return redirect("/forget/password");
+        request.setAttribute("msg", "密码重置成功。");
+        return "forget_password";
     }
 
     /**
@@ -163,11 +156,29 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "/reset/password", method = RequestMethod.POST)
-    public String updatePassword(HttpServletRequest request,
-                                 @RequestParam("password") String password,
-                                 @RequestParam("newPassword") String newPassword) {
-        request.setAttribute("msg", "密码重置成功。");
+    public String updatePassword(HttpServletRequest request, @RequestParam("password") String password) {
+        request.setAttribute("msg", "已发至您的Email...");
         return redirect("/password/reset");
+    }
+
+    /**
+     * 激活账号
+     */
+    @RequestMapping(value = "/activate/{accessToken}", method = RequestMethod.GET)
+    public String activate(HttpServletRequest request, @PathVariable String accessToken) {
+        if (getUser(request) == null) {
+            User user = userService.findByAccessToken(accessToken);
+            if (user != null) {
+                user.setIsBlock(!user.getIsBlock());
+                userService.update(user);
+                request.setAttribute("msg", "邮件激活成功");
+            } else {
+                request.setAttribute("errors", "邮件激活失败");
+            }
+            return "activate_user";
+        } else {
+            return redirect("/");
+        }
     }
 
     /**
@@ -204,15 +215,23 @@ public class IndexController extends BaseController {
                 user.setNickname(username);
                 user.setPassword(password);
                 user.setEmail(email);
-                user.setScore(0);
+                user.setScore(100);
                 user.setIsBlock(false);
                 user.setReceiveMsg(true);
                 user.setAccessToken(StringUtil.getUUID());
                 Date now = new Date();
-                user.setExpireTime(DateUtil.getDateAfter(now, 30));//30天后过期,要重新认证
+                user.setExpireTime(DateUtil.getDateAfter(now, 30 * 12 * 10));//用户有效期
                 user.setInTime(new Date());
                 user.setAvatar(fileDomain + "/imgs/" + avatarName + ".png");
                 userService.save(user);
+                //新注册的用户角色都是普通用户
+                Role role = roleService.findByName("user");
+                if (role != null) {
+                    UserRole userRole = new UserRole();
+                    userRole.setUid(user.getId());
+                    userRole.setRid(role.getId());
+                    userRoleService.save(userRole);
+                }
                 return redirect("/login");
             }
         }

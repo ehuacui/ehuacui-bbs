@@ -19,12 +19,7 @@ public interface UserService {
     void save(User user);
 
     /**
-     * 根据Github_access_token查询用户信息
-     */
-    User findByThirdId(String thirdId);
-
-    /**
-     * 更新access_token查询并缓存用户信息
+     * access_token查询并缓存用户信息
      */
     User findByAccessToken(String accessToken);
 

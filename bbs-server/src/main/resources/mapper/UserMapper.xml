@@ -11,19 +11,16 @@
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="signature" jdbcType="VARCHAR" property="signature"/>
-        <result column="third_id" jdbcType="VARCHAR" property="thirdId"/>
         <result column="access_token" jdbcType="VARCHAR" property="accessToken"/>
         <result column="receive_msg" jdbcType="BIT" property="receiveMsg"/>
         <result column="in_time" jdbcType="TIMESTAMP" property="inTime"/>
         <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
-        <result column="channel" jdbcType="VARCHAR" property="channel"/>
         <result column="is_block" jdbcType="BIT" property="isBlock"/>
-        <result column="third_access_token" jdbcType="VARCHAR" property="thirdAccessToken"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, nickname, password, score, avatar, email, url, signature, third_id, access_token, receive_msg,
-        in_time, expire_time, channel, is_block, third_access_token
+        id, nickname, password, score, avatar, email, url, signature, access_token, receive_msg,
+        in_time, expire_time, is_block
     </sql>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -47,13 +44,6 @@
         <include refid="Base_Column_List"/>
         from tb_user
         where id = #{id,jdbcType=INTEGER}
-    </select>
-
-    <select id="selectByThirdId" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tb_user
-        where third_id = #{thirdId,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByNickName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -117,17 +107,13 @@
     </delete>
 
     <insert id="insert" parameterType="org.ehuacui.bbs.model.User" keyProperty="id" useGeneratedKeys="true">
-        insert into tb_user (id, nickname, password, score,
-        avatar, email, url,
-        signature, third_id, access_token,
-        receive_msg, in_time, expire_time,
-        channel, is_block, third_access_token
-        )
+        insert into tb_user (id, nickname, password, score, avatar, email, url, signature, access_token,
+        receive_msg, in_time, expire_time, is_block )
         values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER},
         #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
-        #{signature,jdbcType=VARCHAR}, #{thirdId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR},
+        #{signature,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR},
         #{receiveMsg,jdbcType=BIT}, #{inTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP},
-        #{channel,jdbcType=VARCHAR}, #{isBlock,jdbcType=BIT}, #{thirdAccessToken,jdbcType=VARCHAR}
+        #{isBlock,jdbcType=BIT}
         )
     </insert>
 
@@ -158,9 +144,6 @@
             <if test="signature != null">
                 signature,
             </if>
-            <if test="thirdId != null">
-                third_id,
-            </if>
             <if test="accessToken != null">
                 access_token,
             </if>
@@ -173,14 +156,8 @@
             <if test="expireTime != null">
                 expire_time,
             </if>
-            <if test="channel != null">
-                channel,
-            </if>
             <if test="isBlock != null">
                 is_block,
-            </if>
-            <if test="thirdAccessToken != null">
-                third_access_token,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -208,9 +185,6 @@
             <if test="signature != null">
                 #{signature,jdbcType=VARCHAR},
             </if>
-            <if test="thirdId != null">
-                #{thirdId,jdbcType=VARCHAR},
-            </if>
             <if test="accessToken != null">
                 #{accessToken,jdbcType=VARCHAR},
             </if>
@@ -223,14 +197,8 @@
             <if test="expireTime != null">
                 #{expireTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="channel != null">
-                #{channel,jdbcType=VARCHAR},
-            </if>
             <if test="isBlock != null">
                 #{isBlock,jdbcType=BIT},
-            </if>
-            <if test="thirdAccessToken != null">
-                #{thirdAccessToken,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -259,9 +227,6 @@
             <if test="signature != null">
                 signature = #{signature,jdbcType=VARCHAR},
             </if>
-            <if test="thirdId != null">
-                third_id = #{thirdId,jdbcType=VARCHAR},
-            </if>
             <if test="accessToken != null">
                 access_token = #{accessToken,jdbcType=VARCHAR},
             </if>
@@ -274,14 +239,8 @@
             <if test="expireTime != null">
                 expire_time = #{expireTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="channel != null">
-                channel = #{channel,jdbcType=VARCHAR},
-            </if>
             <if test="isBlock != null">
                 is_block = #{isBlock,jdbcType=BIT},
-            </if>
-            <if test="thirdAccessToken != null">
-                third_access_token = #{thirdAccessToken,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -296,14 +255,17 @@
         email = #{email,jdbcType=VARCHAR},
         url = #{url,jdbcType=VARCHAR},
         signature = #{signature,jdbcType=VARCHAR},
-        third_id = #{thirdId,jdbcType=VARCHAR},
         access_token = #{accessToken,jdbcType=VARCHAR},
         receive_msg = #{receiveMsg,jdbcType=BIT},
         in_time = #{inTime,jdbcType=TIMESTAMP},
         expire_time = #{expireTime,jdbcType=TIMESTAMP},
-        channel = #{channel,jdbcType=VARCHAR},
-        is_block = #{isBlock,jdbcType=BIT},
-        third_access_token = #{thirdAccessToken,jdbcType=VARCHAR}
+        is_block = #{isBlock,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserPwd">
+        update tb_user
+        set password = #{password,jdbcType=VARCHAR},
         where id = #{id,jdbcType=INTEGER}
     </update>
 

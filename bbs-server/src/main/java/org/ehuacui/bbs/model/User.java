@@ -54,12 +54,6 @@ public class User {
     private String signature;
 
     /**
-     * 第三方账户id
-     * Column: tb_user.third_id
-     */
-    private String thirdId;
-
-    /**
      * Column: tb_user.access_token
      */
     private String accessToken;
@@ -82,21 +76,10 @@ public class User {
     private Date expireTime;
 
     /**
-     * Column: tb_user.channel
-     */
-    private String channel;
-
-    /**
      * 禁用0默认 1禁用
      * Column: tb_user.is_block
      */
     private Boolean isBlock;
-
-    /**
-     * 第三方登录获取的access_token
-     * Column: tb_user.third_access_token
-     */
-    private String thirdAccessToken;
 
     private Long collectCount;
 
@@ -164,14 +147,6 @@ public class User {
         this.signature = signature == null ? null : signature.trim();
     }
 
-    public String getThirdId() {
-        return thirdId;
-    }
-
-    public void setThirdId(String thirdId) {
-        this.thirdId = thirdId == null ? null : thirdId.trim();
-    }
-
     public String getAccessToken() {
         return accessToken;
     }
@@ -204,28 +179,12 @@ public class User {
         this.expireTime = expireTime;
     }
 
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel == null ? null : channel.trim();
-    }
-
     public Boolean getIsBlock() {
         return isBlock;
     }
 
     public void setIsBlock(Boolean isBlock) {
         this.isBlock = isBlock;
-    }
-
-    public String getThirdAccessToken() {
-        return thirdAccessToken;
-    }
-
-    public void setThirdAccessToken(String thirdAccessToken) {
-        this.thirdAccessToken = thirdAccessToken == null ? null : thirdAccessToken.trim();
     }
 
     public Long getCollectCount() {

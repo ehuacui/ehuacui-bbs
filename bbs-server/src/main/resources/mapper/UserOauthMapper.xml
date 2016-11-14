@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ehuacui.bbs.mapper.UserOauthMapper">
+
+  <resultMap id="BaseResultMap" type="org.ehuacui.bbs.model.UserOauth">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="third_id" jdbcType="INTEGER" property="thirdId" />
+    <result column="third_access_token" jdbcType="VARCHAR" property="thirdAccessToken" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, channel, third_id, third_access_token, uid
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_oauth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user_oauth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="org.ehuacui.bbs.model.UserOauth">
+    insert into tb_user_oauth (id, channel, third_id, 
+      third_access_token, uid)
+    values (#{id,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{thirdId,jdbcType=INTEGER}, 
+      #{thirdAccessToken,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="org.ehuacui.bbs.model.UserOauth">
+    insert into tb_user_oauth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="thirdId != null">
+        third_id,
+      </if>
+      <if test="thirdAccessToken != null">
+        third_access_token,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdId != null">
+        #{thirdId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAccessToken != null">
+        #{thirdAccessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.ehuacui.bbs.model.UserOauth">
+    update tb_user_oauth
+    <set>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdId != null">
+        third_id = #{thirdId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAccessToken != null">
+        third_access_token = #{thirdAccessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="org.ehuacui.bbs.model.UserOauth">
+    update tb_user_oauth
+    set channel = #{channel,jdbcType=VARCHAR},
+      third_id = #{thirdId,jdbcType=INTEGER},
+      third_access_token = #{thirdAccessToken,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

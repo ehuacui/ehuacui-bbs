@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserMapper {
+
     int deleteByPrimaryKey(@Param("id") Integer id);
 
     int insert(User record);
@@ -15,6 +16,8 @@ public interface UserMapper {
 
     User selectByPrimaryKey(@Param("id") Integer id);
 
+    void updateUserPwd(@Param("id") Integer id, @Param("password") String password);
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
@@ -22,8 +25,6 @@ public interface UserMapper {
     List<User> selectAll(@Param("start") Integer start, @Param("limit") Integer limit);
 
     int countAll();
-
-    User selectByThirdId(@Param("thirdId") String thirdId);
 
     User selectByNickName(@Param("nickname") String nickname);
 

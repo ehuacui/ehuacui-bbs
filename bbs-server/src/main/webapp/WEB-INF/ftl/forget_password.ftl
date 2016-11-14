@@ -17,15 +17,17 @@
                     <form class="form-horizontal" role="form" action="/forget/password" method="post" id="form">
                         <div class="form-group">
                             <label for="email" class="col-sm-3 control-label">邮箱</label>
-
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="email" name="email"
                                        placeholder="邮箱">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
+                            <div class="col-sm-offset-3 col-sm-4">
                                 <button type="submit" class="btn btn-default">提交</button>
+                            </div>
+                            <div class="col-sm-5">
+                                <a href="/forget/password">未收到邮件</a>
                             </div>
                         </div>
                     </form>

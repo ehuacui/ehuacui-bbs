@@ -41,15 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据Github_access_token查询用户信息
-     */
-    @Override
-    public User findByThirdId(String thirdId) {
-        return userMapper.selectByThirdId(thirdId);
-    }
-
-    /**
-     * 更新access_token查询并缓存用户信息
+     * access_token查询并缓存用户信息
      */
     @Override
     public User findByAccessToken(String accessToken) {

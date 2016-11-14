@@ -1,7 +1,7 @@
-##RoadMap
+## RoadMap
 -------------
 
-#技术RoadMap
+### 技术RoadMap
 -------------
  - Controller业务逻辑实现统一放到Service
  - 修改数据事务支持
@@ -12,7 +12,7 @@
  - 对接ElasticSearch
  - HTTPS支持
 
-#产品RoadMap
+### 产品RoadMap
 -------------
  - 用户密码加密
  - 用户修改密码
@@ -22,11 +22,12 @@
  - 文章增加标签功能
  - 单点登录-对接：FaceBook、Google、Twitter、Linkedin
 
-#Bug List
+### Bug List
 -------------
  - @对方失败
+ - 注册用户有效期取消掉
 
-#待验证的功能点
+### 待验证的功能点
 -------------
  - 基础数据模型建立[包括数据库表]
  - 模板调用优化

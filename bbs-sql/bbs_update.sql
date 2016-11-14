@@ -142,20 +142,44 @@ INSERT INTO `tb_role_permission` VALUES ('36', '1', '85');
 */
 
 ALTER TABLE `tb_user`
-MODIFY COLUMN `score`  int(11) NULL COMMENT '积分' AFTER `nickname`,
-MODIFY COLUMN `avatar`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '头像' AFTER `score`,
-MODIFY COLUMN `email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱' AFTER `avatar`,
-MODIFY COLUMN `third_id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '第三方账户id' AFTER `signature`,
-MODIFY COLUMN `access_token`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `third_id`,
-MODIFY COLUMN `receive_msg`  tinyint(1) NULL DEFAULT 1 COMMENT '邮箱是否接收社区消息' AFTER `access_token`,
-MODIFY COLUMN `expire_time`  datetime NULL AFTER `in_time`,
-MODIFY COLUMN `channel`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `expire_time`,
-MODIFY COLUMN `is_block`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '禁用0默认 1禁用' AFTER `channel`;
+MODIFY COLUMN `score` int(11) NULL COMMENT '积分' AFTER `nickname`,
+MODIFY COLUMN `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '头像' AFTER `score`,
+MODIFY COLUMN `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱' AFTER `avatar`,
+MODIFY COLUMN `third_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '第三方账户id' AFTER `signature`,
+MODIFY COLUMN `access_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `third_id`,
+MODIFY COLUMN `receive_msg` tinyint(1) NULL DEFAULT 1 COMMENT '邮箱是否接收社区消息' AFTER `access_token`,
+MODIFY COLUMN `expire_time` datetime NULL AFTER `in_time`,
+MODIFY COLUMN `channel` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `expire_time`,
+MODIFY COLUMN `is_block` tinyint(1) NULL DEFAULT 0 COMMENT '禁用0默认 1禁用' AFTER `channel`;
 
 ALTER TABLE `tb_user`
-ADD COLUMN `password`  varchar(125) NULL AFTER `nickname`;
+ADD COLUMN `password` varchar(125) NULL AFTER `nickname`;
 
 /**
 *--- end---修改用户信息表----v_1.0.4
+*/
+
+/**
+*--- start---用户单点登录信息表----v_1.0.5
+*/
+
+ALTER TABLE `tb_user`
+DROP COLUMN `third_id`,
+DROP COLUMN `channel`,
+DROP COLUMN `third_access_token`;
+
+CREATE TABLE `tb_user_oauth` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`channel`  varchar(64) NULL ,
+`third_id`  int NULL ,
+`third_access_token`  varchar(255) NULL ,
+`uid`  int NULL ,
+PRIMARY KEY (`id`)
+)
+COMMENT='用户单点登录'
+;
+
+/**
+*--- end---用户单点登录信息表----v_1.0.5
 */
 

@@ -126,11 +126,18 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/password/update", method = RequestMethod.POST)
-    public String updatePassword(HttpServletRequest request,
-                                @RequestParam("oldPassword") String oldPassword,
-                                @RequestParam("newPassword") String newPassword) {
-        request.setAttribute("msg", "密码修改成功。");
-        return redirect("/user/password/update");
+    public String updatePassword(HttpServletRequest request, @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword) {
+        User user = getUser(request);
+        if (!user.getPassword().equals(oldPassword)) {
+            request.setAttribute("errors", "旧密码不正确");
+        } else {
+            user.setPassword(newPassword);
+            userService.update(user);
+            setUser(request, user);
+            request.setAttribute("msg", "密码修改成功");
+        }
+        return "user/update_password";
     }
 
     /**
@@ -151,7 +158,8 @@ public class UserController extends BaseController {
         user.setUrl(StringUtil.notBlank(url) ? Jsoup.clean(url, Whitelist.basic()) : null);
         user.setReceiveMsg(receiveMsg == 1);
         userService.update(user);
+        setUser(request, user);
         request.setAttribute("msg", "保存成功。");
-        return redirect("/user/setting");
+        return "user/setting";
     }
 }

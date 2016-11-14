@@ -82,16 +82,17 @@ public class OAuthController extends BaseController {
             String html_url = oAuthUserInfo.getHomeUrl();
             Date now = new Date();
             String access_token = StringUtil.getUUID();
-            User user = userService.findByThirdId(githubId);
+            //User user = userService.findByThirdId(githubId);
+            User user = null;
             boolean flag = true;
             if (user == null) {
                 user = new User();
                 user.setInTime(now);
                 user.setAccessToken(access_token);
                 user.setScore(0);
-                user.setThirdId(githubId);
+                //user.setThirdId(githubId);
                 user.setIsBlock(false);
-                user.setChannel(Constants.LoginEnum.Github.name());
+                //user.setChannel(Constants.LoginEnum.Github.name());
                 user.setReceiveMsg(true);//邮箱接收社区消息
                 flag = false;
             }
