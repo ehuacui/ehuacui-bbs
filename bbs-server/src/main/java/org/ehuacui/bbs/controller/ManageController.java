@@ -30,15 +30,15 @@ public class ManageController extends BaseController {
     private Integer pageSize;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IUserRoleService userRoleService;
+    private UserRoleService userRoleService;
     @Autowired
-    private IRoleService roleService;
+    private RoleService roleService;
     @Autowired
-    private IPermissionService permissionService;
+    private PermissionService permissionService;
     @Autowired
-    private IRolePermissionService rolePermissionService;
+    private RolePermissionService rolePermissionService;
 
     /**
      * 用户列表

@@ -6,7 +6,7 @@ import org.ehuacui.bbs.model.Notification;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface INotificationService {
+public interface NotificationService {
     /**
      * 查询未读通知数量
      *

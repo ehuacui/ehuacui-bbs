@@ -6,7 +6,7 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import org.ehuacui.bbs.config.SpringContextHolder;
-import org.ehuacui.bbs.service.IPermissionService;
+import org.ehuacui.bbs.service.PermissionService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class PermissionDirective implements TemplateDirectiveModel {
 
-    private IPermissionService permissionService = SpringContextHolder.getBean(IPermissionService.class);
+    private PermissionService permissionService = SpringContextHolder.getBean(PermissionService.class);
 
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels,

@@ -4,7 +4,7 @@ import freemarker.core.Environment;
 import freemarker.template.*;
 import org.ehuacui.bbs.config.SpringContextHolder;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class ScoresDirective implements TemplateDirectiveModel {
 
-    private IUserService userService = SpringContextHolder.getBean(IUserService.class);
+    private UserService userService = SpringContextHolder.getBean(UserService.class);
 
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels,

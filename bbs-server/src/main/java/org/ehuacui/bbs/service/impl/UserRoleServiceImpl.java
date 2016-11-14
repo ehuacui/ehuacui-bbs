@@ -2,7 +2,7 @@ package org.ehuacui.bbs.service.impl;
 
 import org.ehuacui.bbs.mapper.UserRoleMapper;
 import org.ehuacui.bbs.model.UserRole;
-import org.ehuacui.bbs.service.IUserRoleService;
+import org.ehuacui.bbs.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * http://www.ehuacui.org
  */
 @Service
-public class UserRoleService implements IUserRoleService {
+public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;

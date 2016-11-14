@@ -8,7 +8,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import org.ehuacui.bbs.model.OAuthUserInfo;
-import org.ehuacui.bbs.service.IOAuthService;
+import org.ehuacui.bbs.service.OAuthService;
 import org.ehuacui.bbs.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by jianwei.zhou on 2016/9/29.
  */
 @Service
-public class GitHubOAuthService implements IOAuthService {
+public class OAuthServiceImpl implements OAuthService {
 
     @Value("${github.client_id}")
     private String clientId;

@@ -5,10 +5,10 @@ import org.ehuacui.bbs.model.OAuthUserInfo;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
 import org.ehuacui.bbs.model.UserRole;
-import org.ehuacui.bbs.service.IOAuthService;
-import org.ehuacui.bbs.service.IRoleService;
-import org.ehuacui.bbs.service.IUserRoleService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.OAuthService;
+import org.ehuacui.bbs.service.RoleService;
+import org.ehuacui.bbs.service.UserRoleService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
@@ -41,13 +41,13 @@ public class OAuthController extends BaseController {
     private String cookieDomain;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IRoleService roleService;
+    private RoleService roleService;
     @Autowired
-    private IUserRoleService userRoleService;
-    @Resource(name = "gitHubOAuthService")
-    private IOAuthService gitHubOAuthService;
+    private UserRoleService userRoleService;
+    @Resource(name = "OAuthServiceImpl")
+    private OAuthService gitHubOAuthService;
 
     private static final String STATE = "third_login_state";
 

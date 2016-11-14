@@ -3,7 +3,7 @@ package org.ehuacui.bbs.service.impl;
 import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.NotificationMapper;
 import org.ehuacui.bbs.model.Notification;
-import org.ehuacui.bbs.service.INotificationService;
+import org.ehuacui.bbs.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * http://www.ehuacui.org
  */
 @Service
-public class NotificationService implements INotificationService {
+public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
     private NotificationMapper notificationMapper;

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface ISectionService {
+public interface SectionService {
 
     List<Section> findAll();
 

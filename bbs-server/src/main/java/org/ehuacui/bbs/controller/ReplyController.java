@@ -7,10 +7,10 @@ import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.INotificationService;
-import org.ehuacui.bbs.service.IReplyService;
-import org.ehuacui.bbs.service.ITopicService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.NotificationService;
+import org.ehuacui.bbs.service.ReplyService;
+import org.ehuacui.bbs.service.TopicService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.Marked;
 import org.ehuacui.bbs.utils.StringUtil;
@@ -40,13 +40,13 @@ public class ReplyController extends BaseController {
     private String siteDomain;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IReplyService replyService;
+    private ReplyService replyService;
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
     @Autowired
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @BeforeAdviceController({UserInterceptor.class})
     @RequestMapping(value = "/save", method = RequestMethod.POST)

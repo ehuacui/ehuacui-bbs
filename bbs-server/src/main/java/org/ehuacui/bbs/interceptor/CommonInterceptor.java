@@ -2,8 +2,8 @@ package org.ehuacui.bbs.interceptor;
 
 import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.INotificationService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.NotificationService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,9 @@ public class CommonInterceptor implements Interceptor {
     private String solrStatus;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = null;

@@ -7,10 +7,10 @@ import org.ehuacui.bbs.model.User;
 import java.util.List;
 
 /**
- * IUserService
+ * UserService
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IUserService {
+public interface UserService {
 
     User findById(Integer id);
 

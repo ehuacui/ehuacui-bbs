@@ -42,19 +42,19 @@ public class TopicController extends BaseController {
     private String siteDomain;
 
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
     @Autowired
-    private ITopicAppendService topicAppendService;
+    private TopicAppendService topicAppendService;
     @Autowired
-    private ISectionService sectionService;
+    private SectionService sectionService;
     @Autowired
-    private IReplyService replyService;
+    private ReplyService replyService;
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private ICollectService collectService;
+    private CollectService collectService;
     @Autowired
-    private ISearchService searchService;
+    private SearchService searchService;
 
     /**
      * 话题详情

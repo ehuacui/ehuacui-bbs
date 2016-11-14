@@ -2,7 +2,7 @@ package org.ehuacui.bbs.service.impl;
 
 import org.ehuacui.bbs.mapper.PermissionMapper;
 import org.ehuacui.bbs.model.Permission;
-import org.ehuacui.bbs.service.IPermissionService;
+import org.ehuacui.bbs.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * http://www.ehuacui.org
  */
 @Service
-public class PermissionService implements IPermissionService {
+public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private PermissionMapper permissionMapper;

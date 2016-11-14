@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IPermissionService {
+public interface PermissionService {
 
     /**
      * 根据父节点查询权限列表

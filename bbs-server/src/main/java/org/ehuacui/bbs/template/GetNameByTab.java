@@ -4,7 +4,7 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.ehuacui.bbs.config.SpringContextHolder;
 import org.ehuacui.bbs.model.Section;
-import org.ehuacui.bbs.service.ISectionService;
+import org.ehuacui.bbs.service.SectionService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class GetNameByTab implements TemplateMethodModelEx {
 
-    private ISectionService sectionService = SpringContextHolder.getBean(ISectionService.class);
+    private SectionService sectionService = SpringContextHolder.getBean(SectionService.class);
 
     @Override
     public Object exec(List list) throws TemplateModelException {

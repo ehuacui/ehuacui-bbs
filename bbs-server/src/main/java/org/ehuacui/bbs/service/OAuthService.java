@@ -6,7 +6,7 @@ import org.ehuacui.bbs.model.OAuthUserInfo;
  * OAuth Service Interface
  * Created by jianwei.zhou on 2016/9/30.
  */
-public interface IOAuthService {
+public interface OAuthService {
 
     /**
      * Get AuthorizationUrl

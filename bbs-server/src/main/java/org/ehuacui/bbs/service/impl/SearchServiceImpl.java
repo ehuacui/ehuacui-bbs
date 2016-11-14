@@ -10,9 +10,9 @@ import org.apache.solr.common.SolrInputDocument;
 import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.TopicAppend;
-import org.ehuacui.bbs.service.ISearchService;
-import org.ehuacui.bbs.service.ITopicAppendService;
-import org.ehuacui.bbs.service.ITopicService;
+import org.ehuacui.bbs.service.SearchService;
+import org.ehuacui.bbs.service.TopicAppendService;
+import org.ehuacui.bbs.service.TopicService;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Map;
  * http://www.ehuacui.org
  */
 @Service
-public class SolrService implements ISearchService {
+public class SearchServiceImpl implements SearchService {
 
     @Value("${solr.url}")
     private String solrURL;
@@ -37,9 +37,9 @@ public class SolrService implements ISearchService {
     private Integer solrPageSize;
 
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
     @Autowired
-    private ITopicAppendService topicAppendService;
+    private TopicAppendService topicAppendService;
 
     /**
      * 将所有的topic都索引

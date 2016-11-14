@@ -6,9 +6,9 @@ import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Collect;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.ICollectService;
-import org.ehuacui.bbs.service.INotificationService;
-import org.ehuacui.bbs.service.ITopicService;
+import org.ehuacui.bbs.service.CollectService;
+import org.ehuacui.bbs.service.NotificationService;
+import org.ehuacui.bbs.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +27,11 @@ import java.util.Date;
 @RequestMapping("/collect")
 public class CollectController extends BaseController {
     @Autowired
-    private ICollectService collectService;
+    private CollectService collectService;
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
     @Autowired
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     /**
      * 收藏话题

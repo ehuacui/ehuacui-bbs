@@ -5,7 +5,7 @@ import org.ehuacui.bbs.mapper.TopicAppendMapper;
 import org.ehuacui.bbs.mapper.TopicMapper;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.TopicAppend;
-import org.ehuacui.bbs.service.ITopicService;
+import org.ehuacui.bbs.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * http://www.ehuacui.org
  */
 @Service
-public class TopicService implements ITopicService {
+public class TopicServiceImpl implements TopicService {
 
     @Autowired
     private TopicMapper topicMapper;

@@ -2,8 +2,8 @@ package org.ehuacui.bbs.interceptor;
 
 import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.IPermissionService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.PermissionService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.ehuacui.bbs.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ import java.util.Map;
 public class PermissionInterceptor implements Interceptor {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IPermissionService permissionService;
+    private PermissionService permissionService;
 
     @Override
     public void invoke(HttpServletRequest request, HttpServletResponse response) throws Exception {

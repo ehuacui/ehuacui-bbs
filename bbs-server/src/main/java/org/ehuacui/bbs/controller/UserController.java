@@ -6,9 +6,9 @@ import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Reply;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.IReplyService;
-import org.ehuacui.bbs.service.ITopicService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.ReplyService;
+import org.ehuacui.bbs.service.TopicService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetNameByTab;
 import org.ehuacui.bbs.template.Marked;
@@ -40,11 +40,11 @@ public class UserController extends BaseController {
     private String siteDomain;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IReplyService replyService;
+    private ReplyService replyService;
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
 
     /**
      * 用户个人主页

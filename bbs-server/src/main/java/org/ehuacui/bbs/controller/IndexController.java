@@ -8,10 +8,10 @@ import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Topic;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.ISearchService;
-import org.ehuacui.bbs.service.ISectionService;
-import org.ehuacui.bbs.service.ITopicService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.SearchService;
+import org.ehuacui.bbs.service.SectionService;
+import org.ehuacui.bbs.service.TopicService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.GetNameByTab;
@@ -62,13 +62,13 @@ public class IndexController extends BaseController {
     private String qiniuURL;
 
     @Autowired
-    private ISectionService sectionService;
+    private SectionService sectionService;
     @Autowired
-    private ITopicService topicService;
+    private TopicService topicService;
     @Autowired
-    private ISearchService searchService;
+    private SearchService searchService;
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     /**
      * 首页

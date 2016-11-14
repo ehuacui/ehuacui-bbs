@@ -8,9 +8,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.ehuacui.bbs.config.BusinessException;
 import org.ehuacui.bbs.model.Role;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.IPermissionService;
-import org.ehuacui.bbs.service.IRoleService;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.PermissionService;
+import org.ehuacui.bbs.service.RoleService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +28,11 @@ public class ShiroRealm extends AuthorizingRealm implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
-    private IPermissionService permissionService;
+    private PermissionService permissionService;
     @Autowired
-    private IRoleService roleService;
+    private RoleService roleService;
 
     /**
      * 授权

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface IUserRoleService {
+public interface UserRoleService {
 
     List<UserRole> findByUserId(Integer userId);
 

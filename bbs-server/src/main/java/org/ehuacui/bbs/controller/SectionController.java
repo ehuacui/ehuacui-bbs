@@ -4,7 +4,7 @@ import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.PermissionInterceptor;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Section;
-import org.ehuacui.bbs.service.ISectionService;
+import org.ehuacui.bbs.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class SectionController extends BaseController {
 
     @Autowired
-    private ISectionService sectionService;
+    private SectionService sectionService;
 
     /**
      * 板块列表

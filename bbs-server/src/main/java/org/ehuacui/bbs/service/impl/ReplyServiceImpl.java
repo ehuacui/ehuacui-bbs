@@ -3,7 +3,7 @@ package org.ehuacui.bbs.service.impl;
 import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.mapper.ReplyMapper;
 import org.ehuacui.bbs.model.Reply;
-import org.ehuacui.bbs.service.IReplyService;
+import org.ehuacui.bbs.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * http://www.ehuacui.org
  */
 @Service
-public class ReplyService implements IReplyService {
+public class ReplyServiceImpl implements ReplyService {
 
     @Autowired
     private ReplyMapper replyMapper;

@@ -5,7 +5,7 @@ import org.ehuacui.bbs.interceptor.BeforeAdviceController;
 import org.ehuacui.bbs.interceptor.UserInterceptor;
 import org.ehuacui.bbs.model.Notification;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.INotificationService;
+import org.ehuacui.bbs.service.NotificationService;
 import org.ehuacui.bbs.template.FormatDate;
 import org.ehuacui.bbs.template.GetAvatarByNickname;
 import org.ehuacui.bbs.template.Marked;
@@ -33,7 +33,7 @@ public class NotificationController extends BaseController {
     private String siteDomain;
 
     @Autowired
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @BeforeAdviceController(UserInterceptor.class)
     @RequestMapping(value = "/index", method = RequestMethod.GET)

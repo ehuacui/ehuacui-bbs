@@ -5,7 +5,7 @@ import org.ehuacui.bbs.model.Collect;
 /**
  * Created by jianwei.zhou on 2016/8/15.
  */
-public interface ICollectService {
+public interface CollectService {
     /**
      * 根据话题id与用户查询收藏记录
      *

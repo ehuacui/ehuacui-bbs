@@ -7,7 +7,7 @@ import com.qiniu.util.Auth;
 import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.dto.ResponseDataBody;
 import org.ehuacui.bbs.model.User;
-import org.ehuacui.bbs.service.IUserService;
+import org.ehuacui.bbs.service.UserService;
 import org.ehuacui.bbs.utils.DateUtil;
 import org.ehuacui.bbs.utils.JsonUtil;
 import org.ehuacui.bbs.utils.StringUtil;
@@ -43,7 +43,7 @@ public class BaseController {
     private String bucketName;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     // 接口返回状态码
     private static final String CODE_SUCCESS = "200";

@@ -7,7 +7,7 @@ import org.ehuacui.bbs.model.Topic;
  * 搜索服务
  * Created by jianwei.zhou on 2016/10/12.
  */
-public interface ISearchService {
+public interface SearchService {
     /**
      * 将所有的topic都索引
      *

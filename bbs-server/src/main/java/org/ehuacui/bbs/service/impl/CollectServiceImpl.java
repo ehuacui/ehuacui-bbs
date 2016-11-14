@@ -2,7 +2,7 @@ package org.ehuacui.bbs.service.impl;
 
 import org.ehuacui.bbs.mapper.CollectMapper;
 import org.ehuacui.bbs.model.Collect;
-import org.ehuacui.bbs.service.ICollectService;
+import org.ehuacui.bbs.service.CollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * http://www.ehuacui.org
  */
 @Service
-public class CollectService implements ICollectService {
+public class CollectServiceImpl implements CollectService {
 
     @Autowired
     private CollectMapper collectMapper;
