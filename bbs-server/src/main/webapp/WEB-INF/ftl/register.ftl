@@ -43,7 +43,8 @@
                 </div>
                 <div class="col-md-8">
                     <div class="alert alert-info" style="height: 200px;">
-                        <h5>属于Java语言的bbs</h5>
+                        <h5>属于Java语言的BBS</h5>
+
                         <p>在这里，您可以提问，回答，分享，诉说，这是个属于Java程序员的社区，欢迎您的加入！</p>
                     </div>
                 </div>

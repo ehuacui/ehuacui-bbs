@@ -2,6 +2,7 @@ package org.ehuacui.bbs.service.impl;
 
 import org.ehuacui.bbs.config.BusinessException;
 import org.ehuacui.bbs.service.EmailSendService;
+import org.ehuacui.bbs.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,11 @@ public class EmailSendServiceImpl implements EmailSendService {
     public void sendTextMail(String from, String to, String[] cc, String mailSubject, String mailBody) throws BusinessException {
         try {
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setFrom(from);// 发送人名片
+            if (StringUtil.isBlank(from)) {
+                mail.setFrom(defaultFrom);
+            } else {
+                mail.setFrom(from);// 发送人名片
+            }
             mail.setTo(to);// 收件人邮箱
             if (cc != null && cc.length > 0) {
                 mail.setCc(cc);
@@ -75,17 +80,21 @@ public class EmailSendServiceImpl implements EmailSendService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             // 设置utf-8或GBK编码，否则邮件会有乱码
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setFrom(from);
+            MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            if (StringUtil.isBlank(from)) {
+                mail.setFrom(defaultFrom);
+            } else {
+                mail.setFrom(from);// 发送人名片
+            }
             // 设置收件人名片和地址
-            helper.setTo(to);// 发送者
+            mail.setTo(to);// 发送者
             if (cc != null && cc.length > 0) {
-                helper.setCc(cc);
+                mail.setCc(cc);
             }
             // 邮件发送时间
-            helper.setSentDate(new Date());
-            helper.setSubject(mailSubject);
-            helper.setText(mailBody, true);
+            mail.setSentDate(new Date());
+            mail.setSubject(mailSubject);
+            mail.setText(mailBody, true);
             // 发送
             javaMailSender.send(mimeMessage);
         } catch (MailException | MessagingException e) {
@@ -103,7 +112,7 @@ public class EmailSendServiceImpl implements EmailSendService {
      * @param mailSubject         邮件主题
      * @param mailBody            邮件内容
      * @param attachmentDirectory 附件文件目录
-     * @param attachmentFilename 附件文件名
+     * @param attachmentFilename  附件文件名
      * @throws BusinessException
      */
     @Override
@@ -112,21 +121,25 @@ public class EmailSendServiceImpl implements EmailSendService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             // 设置utf-8或GBK编码，否则邮件会有乱码
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setFrom(from);
+            MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            if (StringUtil.isBlank(from)) {
+                mail.setFrom(defaultFrom);
+            } else {
+                mail.setFrom(from);// 发送人名片
+            }
             // 设置收件人名片和地址
-            helper.setTo(to);// 发送者
+            mail.setTo(to);// 发送者
             if (cc != null && cc.length > 0) {
-                helper.setCc(cc);
+                mail.setCc(cc);
             }
             // 邮件发送时间
-            helper.setSentDate(new Date());
-            helper.setSubject(mailSubject);
-            helper.setText(mailBody, true);
+            mail.setSentDate(new Date());
+            mail.setSubject(mailSubject);
+            mail.setText(mailBody, true);
             File attachmentFile = new File(attachmentDirectory, attachmentFilename);
             if (attachmentFile.exists()) {
-                helper.addAttachment(attachmentFilename, attachmentFile);
-            }else {
+                mail.addAttachment(attachmentFilename, attachmentFile);
+            } else {
                 throw new BusinessException("邮件附件内容不存在");
             }
             // 发送
@@ -136,4 +149,5 @@ public class EmailSendServiceImpl implements EmailSendService {
             throw new BusinessException(e.getMessage(), e);
         }
     }
+
 }

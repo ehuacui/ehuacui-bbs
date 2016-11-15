@@ -1,5 +1,6 @@
 package org.ehuacui.bbs.controller;
 
+import org.ehuacui.bbs.config.BusinessException;
 import org.ehuacui.bbs.dto.Constants;
 import org.ehuacui.bbs.dto.PageDataBody;
 import org.ehuacui.bbs.dto.ResponseDataBody;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,8 +56,11 @@ public class IndexController extends BaseController {
     private String uploadType;
     @Value("${file.domain}")
     private String fileDomain;
+    @Value("${site.domain}")
+    private String siteDomain;
     @Value("${qiniu.url}")
     private String qiniuURL;
+
 
     @Autowired
     private SectionService sectionService;
@@ -69,6 +74,10 @@ public class IndexController extends BaseController {
     private RoleService roleService;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private HtmlGeneratorService htmlGeneratorService;
+    @Autowired
+    private EmailSendService emailSendService;
 
     /**
      * 首页
@@ -122,6 +131,9 @@ public class IndexController extends BaseController {
                         30 * 24 * 60 * 60, "/", cookieDomain, true);
             }
             setUser(request, user);
+            if (StringUtil.notBlank(callback)) {
+                return redirect(callback);
+            }
             return redirect("/");
         } else {
             request.setAttribute("errors", "登录失败...");
@@ -143,22 +155,48 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/forget/password", method = RequestMethod.POST)
     public String forgetPassword(@RequestParam("email") String email, HttpServletRequest request) {
-        request.setAttribute("msg", "密码重置成功。");
-        return "forget_password";
+        if (getUser(request) == null) {
+            Map<String, Object> data = new HashMap<>();
+            try {
+                data.put("resetPwdUrl", siteDomain + "/reset/password?email=" + email);
+                String htmlEmail = htmlGeneratorService.generateHtmlBody("email_forget_password", data);
+                emailSendService.sendHtmlMail(null, email, null, "重置密码", htmlEmail);
+                request.setAttribute("msg", "已发至您的Email...");
+            } catch (BusinessException e) {
+                request.setAttribute("errors", "Email发送失败...");
+            }
+            return "forget_password";
+        } else {
+            return redirect("/");
+        }
     }
 
     /**
      * 用户重置密码
      */
     @RequestMapping(value = "/reset/password", method = RequestMethod.GET)
-    public String updatePassword() {
+    public String updatePassword(HttpServletRequest request, @RequestParam("email") String email) {
+        request.setAttribute("email", email);
         return "reset_password";
     }
 
     @RequestMapping(value = "/reset/password", method = RequestMethod.POST)
-    public String updatePassword(HttpServletRequest request, @RequestParam("password") String password) {
-        request.setAttribute("msg", "已发至您的Email...");
-        return redirect("/password/reset");
+    public String updatePassword(HttpServletRequest request, @RequestParam("email") String email,
+                                 @RequestParam("password") String password) {
+        if (getUser(request) == null) {
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                user.setPassword(password);
+                userService.update(user);
+                request.setAttribute("msg", "重置密码成功");
+                return redirect("/login");
+            } else {
+                request.setAttribute("errors", "重置密码失败");
+                return "reset_password";
+            }
+        } else {
+            return redirect("/");
+        }
     }
 
     /**
