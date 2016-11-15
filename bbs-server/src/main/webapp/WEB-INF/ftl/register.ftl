@@ -16,14 +16,16 @@
                             <label for="username" class="col-sm-3 control-label">昵称</label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="username" name="username" placeholder="昵称">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="昵称"
+                                       value="${username!}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email" class="col-sm-3 control-label">邮箱</label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="邮箱">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="邮箱"
+                                       value="${email!}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -31,12 +33,16 @@
 
                             <div class="col-sm-9">
                                 <input type="password" class="form-control" id="password" name="password"
+                                       value="${password!}"
                                        placeholder="密码">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
+                            <div class="col-sm-offset-3 col-sm-4">
                                 <button type="submit" class="btn btn-default">注册</button>
+                            </div>
+                            <div class="col-sm-5">
+                                <a href="/login">已注册?</a>
                             </div>
                         </div>
                     </form>

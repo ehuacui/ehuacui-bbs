@@ -7,14 +7,9 @@
                 <a href="/">主页</a> / 重置密码
             </div>
             <div class="panel-body">
-                <#if errors??>
-                    <div class="alert alert-danger">${errors!}</div>
-                </#if>
-                <#if msg??>
-                    <div class="alert alert-success" role="alert">${msg!}</div>
-                </#if>
                 <form action="/reset/password" method="post" id="form">
                     <input type="hidden" class="form-control" id="email" name="email" value="${email!}">
+
                     <div class="form-group">
                         <label for="password">新密码</label>
                         <input type="password" class="form-control" id="password" name="password"
@@ -31,6 +26,12 @@
                         </div>
                     </div>
                 </form>
+                <#if errors??>
+                    <div class="alert alert-danger">${errors!}</div>
+                </#if>
+                <#if msg??>
+                    <div class="alert alert-success" role="alert">${msg!}</div>
+                </#if>
             </div>
         </div>
     </div>

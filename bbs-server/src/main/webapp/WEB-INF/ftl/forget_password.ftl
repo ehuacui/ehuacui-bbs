@@ -8,12 +8,6 @@
             </div>
             <div class="panel-body">
                 <div class="col-md-4">
-                    <#if errors??>
-                        <div class="alert alert-danger">${errors!}</div>
-                    </#if>
-                    <#if msg??>
-                        <div class="alert alert-success" role="alert">${msg!}</div>
-                    </#if>
                     <form class="form-horizontal" role="form" action="/forget/password" method="post" id="form">
                         <div class="form-group">
                             <label for="email" class="col-sm-3 control-label">邮箱</label>
@@ -31,6 +25,12 @@
                             </div>
                         </div>
                     </form>
+                    <#if errors??>
+                        <div class="alert alert-danger">${errors!}</div>
+                    </#if>
+                    <#if msg??>
+                        <div class="alert alert-success" role="alert">${msg!}</div>
+                    </#if>
                 </div>
                 <div class="col-md-8">
                     <div class="alert alert-info" style="height: 200px;">

@@ -137,7 +137,7 @@ public class IndexController extends BaseController {
             return redirect("/");
         } else {
             request.setAttribute("errors", "登录失败...");
-            return redirect("login");
+            return "login";
         }
     }
 
@@ -159,11 +159,12 @@ public class IndexController extends BaseController {
             Map<String, Object> data = new HashMap<>();
             try {
                 data.put("resetPwdUrl", siteDomain + "/reset/password?email=" + email);
-                String htmlEmail = htmlGeneratorService.generateHtmlBody("email_forget_password", data);
+                String htmlEmail = htmlGeneratorService.generateHtmlBody("email_forget_password.ftl", data);
                 emailSendService.sendHtmlMail(null, email, null, "重置密码", htmlEmail);
                 request.setAttribute("msg", "已发至您的Email...");
             } catch (BusinessException e) {
                 request.setAttribute("errors", "Email发送失败...");
+                logger.error(e.getMessage(), e);
             }
             return "forget_password";
         } else {
@@ -188,7 +189,6 @@ public class IndexController extends BaseController {
             if (user != null) {
                 user.setPassword(password);
                 userService.update(user);
-                request.setAttribute("msg", "重置密码成功");
                 return redirect("/login");
             } else {
                 request.setAttribute("errors", "重置密码失败");
@@ -234,6 +234,9 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam("username") String username, @RequestParam("password") String password,
                            @RequestParam("email") String email, HttpServletRequest request) {
+        request.setAttribute("username", username);
+        request.setAttribute("password", password);
+        request.setAttribute("email", email);
         if (StringUtil.isBlank(username)) {
             request.setAttribute("errors", "用户名不能为空");
         } else if (StringUtil.isBlank(email)) {

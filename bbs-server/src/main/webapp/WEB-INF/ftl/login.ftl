@@ -8,9 +8,6 @@
             </div>
             <div class="panel-body">
                 <div class="col-md-4">
-                    <#if errors??>
-                        <div class="alert alert-danger">${errors!}</div>
-                    </#if>
                     <form class="form-horizontal" role="form" action="/login" method="post" id="form">
                         <div class="form-group">
                             <label for="username" class="col-sm-3 control-label">用户名</label>
@@ -48,6 +45,9 @@
                             </div>
                         </div>
                     </form>
+                    <#if errors??>
+                        <div class="alert alert-danger">${errors!}</div>
+                    </#if>
                 </div>
                 <div class="col-md-8">
                     <div class="alert alert-info" style="height: 200px;">
