@@ -1,4 +1,27 @@
 /**
+*--- start---系统参数配置信息----v_1.0.0
+*/
+
+DROP TABLE IF EXISTS `tb_sys_config`;
+CREATE TABLE `tb_sys_config` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`param_key`  varchar(255) NULL COMMENT '参数键' ,
+`param_value`  varchar(255) NULL COMMENT '参数值' ,
+`param_mark`  varchar(255) NULL COMMENT '参数描述信息' ,
+PRIMARY KEY (`id`)
+)
+COMMENT='系统参数配置信息'
+;
+
+ALTER TABLE `tb_sys_config` ADD UNIQUE INDEX `index_unique_param_key` (`param_key`) ;
+
+INSERT INTO `tb_sys_config` (`param_key`, `param_value`, `param_mark`) VALUES ('DBVersion', 'v_1.0.0', '数据库版本信息');
+
+/**
+*--- end---系统参数配置信息----v_1.0.0
+*/
+
+/**
 *--- start---增加主键----v_1.0.1
 */
 
@@ -7,6 +30,8 @@ ALTER TABLE `tb_role_permission` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT FIR
 
 ALTER TABLE `tb_user_role` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT FIRST,
  ADD PRIMARY KEY (`id`);
+ 
+ UPDATE `tb_sys_config` SET `param_value`='v_1.0.1' WHERE `param_key`='DBVersion';
 
 /**
 *--- end---增加主键----v_1.0.1
@@ -24,6 +49,8 @@ ALTER TABLE `tb_topic`
 CHANGE COLUMN `view` `view_count` INT (11) NOT NULL COMMENT '1置顶 0默认' AFTER `last_reply_author`,
 CHANGE COLUMN `top` `is_top` TINYINT (1) NOT NULL COMMENT '1置顶 0默认' AFTER `author`,
 CHANGE COLUMN `good` `is_good` TINYINT (1) NOT NULL COMMENT '1精华 0默认' AFTER `is_top`;
+
+UPDATE `tb_sys_config` SET `param_value`='v_1.0.2' WHERE `param_key`='DBVersion';
 
 /**
 *--- end---修改字段名称----v_1.0.2
@@ -133,6 +160,8 @@ INSERT INTO `tb_role_permission` VALUES ('34', '1', '83');
 INSERT INTO `tb_role_permission` VALUES ('35', '1', '84');
 INSERT INTO `tb_role_permission` VALUES ('36', '1', '85');
 
+UPDATE `tb_sys_config` SET `param_value`='v_1.0.3' WHERE `param_key`='DBVersion';
+
 /**
 *--- end---重建权限信息----v_1.0.3
 */
@@ -155,6 +184,8 @@ MODIFY COLUMN `is_block` tinyint(1) NULL DEFAULT 0 COMMENT '禁用0默认 1禁�
 ALTER TABLE `tb_user`
 ADD COLUMN `password` varchar(125) NULL AFTER `nickname`;
 
+UPDATE `tb_sys_config` SET `param_value`='v_1.0.4' WHERE `param_key`='DBVersion';
+
 /**
 *--- end---修改用户信息表----v_1.0.4
 */
@@ -168,6 +199,7 @@ DROP COLUMN `third_id`,
 DROP COLUMN `channel`,
 DROP COLUMN `third_access_token`;
 
+DROP TABLE IF EXISTS `tb_user_oauth`;
 CREATE TABLE `tb_user_oauth` (
 `id`  int NOT NULL AUTO_INCREMENT ,
 `channel`  varchar(64) NULL ,
@@ -179,7 +211,32 @@ PRIMARY KEY (`id`)
 COMMENT='用户单点登录'
 ;
 
+UPDATE `tb_sys_config` SET `param_value`='v_1.0.5' WHERE `param_key`='DBVersion';
+
 /**
 *--- end---用户单点登录信息表----v_1.0.5
 */
+
+/**
+*--- start---表名称增加描述信息----v_1.0.6
+*/
+
+ALTER TABLE `tb_collect` COMMENT='话题收藏';
+ALTER TABLE `tb_notification` COMMENT='用户通知信息';
+ALTER TABLE `tb_permission` COMMENT='权限信息字典';
+ALTER TABLE `tb_reply` COMMENT='话题回复';
+ALTER TABLE `tb_role` COMMENT='角色信息';
+ALTER TABLE `tb_role_permission` COMMENT='角色权限信息关联';
+ALTER TABLE `tb_section` COMMENT='模板信息';
+ALTER TABLE `tb_topic` COMMENT='话题信息表';
+ALTER TABLE `tb_topic_append` COMMENT='话题信息追加';
+ALTER TABLE `tb_user` COMMENT='用户信息';
+ALTER TABLE `tb_user_role` COMMENT='用户与角色关联信息';
+
+UPDATE `tb_sys_config` SET `param_value`='v_1.0.6' WHERE `param_key`='DBVersion';
+
+/**
+*--- end---表名称增加描述信息----v_1.0.6
+*/
+
 

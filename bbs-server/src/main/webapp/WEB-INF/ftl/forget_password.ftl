@@ -21,7 +21,7 @@
                                 <button type="submit" class="btn btn-default">提交</button>
                             </div>
                             <div class="col-sm-5">
-                                <a href="/forget/password">未收到邮件</a>
+                                <a href="/forget/password">未收到邮件?</a>
                             </div>
                         </div>
                     </form>
