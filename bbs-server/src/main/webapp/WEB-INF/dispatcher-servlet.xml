@@ -22,6 +22,13 @@
     <mvc:resources mapping="/api/**" location="/WEB-INF/swagger/"/>
 
     <mvc:interceptors>
+        <!--国际化资源切换（根据请求参数中的locale参数自动切换）-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+                <property name="paramName" value="lang"/>
+            </bean>
+        </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <bean class="org.ehuacui.bbs.interceptor.RequestWatchHandlerInterceptor">
@@ -41,6 +48,22 @@
             </bean>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!-- 国际化配置  -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="i18n/messages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="zh_CN"/>
+    </bean>
+
+    <!--
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="zh_CN"/>
+    </bean>
+    -->
 
     <!--基础拦截器-->
     <bean id="commonInterceptor" class="org.ehuacui.bbs.interceptor.CommonInterceptor"/>

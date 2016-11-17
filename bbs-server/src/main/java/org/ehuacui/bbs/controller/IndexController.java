@@ -376,4 +376,12 @@ public class IndexController extends BaseController {
         return redirect("/");
     }
 
+    /**
+     * 国际化测试
+     */
+    @RequestMapping(value = "/i18n", method = RequestMethod.GET)
+    public String lang() {
+        return "lang";
+    }
+
 }

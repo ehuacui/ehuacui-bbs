@@ -197,6 +197,7 @@
                 <prop key="time_format">HH:mm:ss</prop>
                 <prop key="number_format">#.##</prop>
                 <prop key="whitespace_stripping">true</prop>
+                <prop key="auto_import">common/spring.ftl as spring</prop>
                 <!--模板异常信息处理 ignore-->
                 <prop key="template_exception_handler">ignore</prop>
                 <!-- 配置自定义的freemarker异常处理-->
