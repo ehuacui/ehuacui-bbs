@@ -1,5 +1,5 @@
 <#macro html page_title page_tab="">
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
